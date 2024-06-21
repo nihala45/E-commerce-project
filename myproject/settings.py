@@ -38,7 +38,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'myapp',
+    'adminside',
+    'cart',
+    'category',
+    'checkout',
+    'logintohome',
+    'productdetail',
+    'products',
+    'usermanagement',
+    'userprofile',
 ]
 
 MIDDLEWARE = [
@@ -131,9 +139,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'myapp' / 'static',
-]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static/")]
 
 
 # Default primary key field type

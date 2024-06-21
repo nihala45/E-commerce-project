@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
-from .models import CustomUser
+#from .models import CustomUser
 from django.contrib import messages
 from django.http import JsonResponse
 import random
@@ -9,16 +9,22 @@ from django.core.mail import send_mail
 from django.contrib.auth import authenticate,login
 from django.core.files.base import ContentFile
 from .models import categories
+#from .models import UserAddress
+# from .models import varients
 import base64
 import re
-from .models import newproducts
-from django.views.decorators.cache import never_cache
-from .models import CustomUser
+#from .models import newproducts
+
+#from .models import CustomUser
+from django.contrib.auth.decorators import login_required
+
+
+
+# USER SIDE
 
 
 
 
-@never_cache
 def loginn(request):
    
     if request.method == 'POST':
@@ -30,7 +36,9 @@ def loginn(request):
             print(user,"88888888888888888")
             if user and not user.is_blocked:
                 request.session['email']=email
-                print("1111111111111111")
+                request.session['phone'] = user.phone 
+                request.session['username'] = user.username
+                print("Session variables set successfully:", request.session.items())
                 return redirect('homee')
             else:
                 print("2222222222222222")
@@ -44,17 +52,17 @@ def loginn(request):
 
 
 def userlogout(request):
-    request.session.flush()       
+         
     return redirect('homee')   
-@never_cache
+
 def homee(request):
     if 'email' in request.session:
         print("9888888888888888888888888888888888899999")
         user = request.session['email']
-        return render(request,'home.html',{'user12':user})
-    return render(request,'home.html')
+        return render(request,'userside/home.html',{'user12':user})
+    return render(request,'userside/home.html')
 def otp(request, id):
-    return render(request, 'otpp.html', {'id': id})
+    return render(request, 'userside/otpp.html', {'id': id})
 
 
 def signupp(request):
@@ -110,37 +118,158 @@ def otp_varification(request,id):
             messages.error(request, "Invalid OTP. Please try again.")
             return redirect("otp", id=id)
 
-    return render(request, "otpp.html")
+    return render(request, "userside/otpp.html")
 
    
 def shop(request):
     print("jjjjjjjjjjjjjjjjjjjjj")
     products1=newproducts.objects.all()
     print(products1,"99999999999999999999999999999999999999999999999999999999999999999999999999")
-    return render(request,'shop.html',{'products':products1})
+    return render(request,'userside/shop.html',{'products':products1})
+
+def userdashboard(request):
+    
+    email = request.session.get('email')
+    phone = request.session.get('phone')
+    username = request.session.get('username')
+    
+
+    context = {
+        'username': username,
+        'email': email,
+        'phone': phone,
+    }
+    all_address=UserAddress.objects.get(address_Email=email)
+    if all_address:
+        address_context = {
+            'all_address': all_address,
+            'address_name': all_address.address_name,
+            'address_Phone': all_address.address_Phone,
+            'Address': all_address.Address,
+            'landmark': all_address.landmark,
+            'city': all_address.city,
+            'district': all_address.district,
+            'state': all_address.state,
+            'pin': all_address.pin,
+        }
+        context.update(address_context)
+    jjj="nihala"
+    print("Session variables retrieved in userdashboard view:", email, phone, username,"ttttttttttttttttttttttttttttttttttttt",all_address,all_address.landmark)
+    return render(request, 'userside/userdashboard.html',context)
+
+
+
+    
+
+
+
+
+def signout(request):
+    request.session.flush()
+    return redirect('homee')
+    
 
 
 
 
 
 
+def editprofile(request):
+    username=request.session.get('username')
+    phone=request.session.get('phone')
+    m={
+        'username':username,
+        'phone':phone,
+        
+    }
+    print("Session variables retrieved in EDIT PROFILE:",  phone, username)
+    return render(request, 'userside/editprofile.html', m)
+
+def save_edit(request):
+    print('NEW USERNAME AND NEW PHONE')
+    if request.method == 'POST':
+        new_username = request.POST['edit-username']
+        new_phone = request.POST['edit-phone']
+        user1=request.session.get('email')
+        
+        obj= CustomUser.objects.get(email=user1)
+        print(obj,"iiiii")
+        print(obj.email,".............",obj.username)
+        
+        obj.username = new_username
+        if len(new_phone) == 10 and new_phone.isdigit():
+            obj.phone = new_phone
+        else:
+            print("Invalid phone number:", new_phone)
+            messages.error(request, "Invalid phone number. Please enter a valid 10-digit phone number.")
+            return redirect('editprofile') 
+            
+        print(new_phone,new_username,'obj_username,obj_phone')
+        request.session['username'] = new_username
+        request.session['phone'] = new_phone
+        
+        return redirect('userdashboard')
+
+
+    
+           
+def save_address(request):
+    if request.method == 'POST':
+        address_name = request.POST['address-username']
+        address_Email = request.POST['address-email']
+        address_Phone = request.POST['address-phone']
+        Address = request.POST['detaild-address']
+        landmark = request.POST['address-landmark']
+        city = request.POST['address-city']
+        district = request.POST['address-district']
+        state = request.POST['address-state']
+        pin = request.POST['address-pin']
+        
+        
+        user_address = UserAddress(
+            address_name=address_name,
+            address_Email=address_Email,
+            address_Phone=address_Phone,
+            Address=Address,
+            landmark=landmark,
+            city=city,
+            district=district,
+            state=state,
+            pin=pin
+        )
+        user_address.save()
+        print(address_name)
+
+        return redirect('userdashboard')
+
+def productdetails(request):
+    return render(request,'userside/productsdetails.html')
+    
+    
+# def save_address(request):
 
 
 
 
 
+def cartp(request):
+    return render(request,'userside/cart.html')
+
+
+def checkout(request):
+    return render(request,'userside/checkout.html')
+
+
+def proceed(request):
+    return render(request,'userside/checkout.html')
 
 
 
 
+# ADMIN SIDE  
 
 
 
-
-
-
-from django.contrib import messages
-@never_cache
 def adminloginn(request):
     if request.method == 'POST':
         username = request.POST.get('name')
@@ -160,14 +289,14 @@ def adminloginn(request):
             error_message = "Incorrect username or password. Please try again."
             messages.error(request, error_message)
 
-    return render(request, 'adminlogin.html')
+    return render(request, 'customadmin/adminlogin.html')
 
-@never_cache
+
 def dashboard(request):
-    return render(request,'dashboard.html')
+    return render(request,'customadmin/dashboard.html')
 def usermanagement(request):
     user = CustomUser.objects.all()
-    return render(request,'users.html',{'user': user})
+    return render(request,'customadmin/users.html',{'user': user})
 
 def block_user(request, user_id):
     user = get_object_or_404(CustomUser, id=user_id)
@@ -188,10 +317,10 @@ from .models import categories
 
 def categorymanagement(request):
     categoryy = categories.objects.all()
-    return render(request, 'category.html', {'items': categoryy})
+    return render(request, 'customadmin/category.html', {'items': categoryy})
 
 def addcategory(request):
-    return render(request, 'addcategory.html')
+    return render(request, 'customadmin/addcategory.html')
 
 
 # def edit_category(request, category_id):
@@ -220,19 +349,19 @@ def savecategory(request):
         if not re.match("^[A-Za-z][A-Za-z]*$", name):
             
             messages.error(request, 'Category name must start with a letter and contain only letters without numbers or leading spaces.')
-            return render(request, 'addcategory.html')
+            return render(request, 'customadmin/addcategory.html')
         
         
         if categories.objects.filter(category_name=name):
             messages.error(request,'category already exists.please choose a different name.')
-            return render(request,'addcategory.html')
+            return render(request,'customadmin/addcategory.html')
             
         category2 = categories(category_name=name)
         category2.save()
         
         return redirect('category')  
 
-    return render(request, 'addcategory.html')
+    return render(request, 'customadmin/addcategory.html')
 
         
 
@@ -241,14 +370,14 @@ def savecategory(request):
 def products(request):
     productss=newproducts.objects.all()
     
-    return render(request,'products.html',{'products':productss})
+    return render(request,'customadmin/products.html',{'products':productss})
 
 def addproduct(request):
     categoryy=categories.objects.all()
-    return render(request,'addproduct.html',{'categories':categoryy})
+    return render(request,'customadmin/addproduct.html',{'categories':categoryy})
 
 def logout_view(request):
-    return redirect('adminlogin')
+    return redirect('customadmin/adminlogin')
 
 
 def saveproducts(request):
@@ -295,4 +424,26 @@ def saveproducts(request):
         return redirect('products')
 
       
+def addvarient(request):
+    print('ADD VARIENT FUNCTION IS WORKING')
+    # if request.method == 'POST':
+    #     q1 = request.POST['smallQuantity']
+    #     q2 = request.POST['mediumQuantity']
+    #     q3 = request.POST['largeQuantity']
+    #     print(q1,q2,q3)
+    #     already=newproducts.objects.get(product_id=prod_id)
+    #     if already:
+    #         already.small=q1
+    #         already.medium=q2
+    #         already.large=q2
+    #         already.save()
+    print(prod_id)
+        
+        
+        
+    return redirect('myapp:products')
+
+# def varientreport(request):
+#     report=varients.objects.all()
+#     return render(request,'customadmin/products.html',{'report':report})
     
