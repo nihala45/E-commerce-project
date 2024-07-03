@@ -111,9 +111,9 @@
                 <div> <a href="#" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Shop </span> </a>
                 <div class="nav_list">
                     <a href="/adminhome/" class="nav_link active"> <i title="Dashboard" class='bx bx-grid-alt nav_icon'></i> <span class="nav_name">Dashboard</span>  </a> 
-                    <a href="/usermanagement/" class="nav_link"> <i title="Users" class='bx bx-user nav_icon'></i> <span class="nav_name">Users</span> </a>
-                    <a href="/products/" class="nav_link"> <i title="Products"  class='bx bx-message-square-detail nav_icon'></i> <span class="nav_name">Products</span> </a>
-                    <a href="/category/" class="nav_link"> <i title="Categories" class='bx bx-bookmark nav_icon'></i> <span class="nav_name">Categories</span> </a> 
+                    <a href="{%url 'usermanagement:usermanagement' %}" class="nav_link"> <i title="Users" class='bx bx-user nav_icon'></i> <span class="nav_name">Users</span> </a>
+                    <a href="{%url 'products:products'%}" class="nav_link"> <i title="Products"  class='bx bx-message-square-detail nav_icon'></i> <span class="nav_name">Products</span> </a>
+                    <a href="{%url 'category:categorymanagement'%}" class="nav_link"> <i title="Categories" class='bx bx-bookmark nav_icon'></i> <span class="nav_name">Categories</span> </a> 
                    
 
 
@@ -289,7 +289,7 @@
 
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form action="{% url 'logout'%}" method='POST'>
+                                <form action="{% url 'adminside:logout_view'%}" method='POST'>
                                     {% csrf_token%}
                                     <div class="modal-header">
                                         <h4 class="modal-title">Logout</h4>

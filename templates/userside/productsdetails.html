@@ -90,10 +90,10 @@
                             <span class="sr-only">Toggle mobile menu</span>
                             <i class="icon-bars"></i>
                         </button>
-
+{% comment %} 
                         <a href="index.html" class="logo">
-                            <img src="static/images/logo.png" alt="Molla Logo" width="105" height="25">
-                        </a>
+                            <img src="{{ product.image1.url }}" alt="Molla Logo" width="105" height="25">
+                        </a> {% endcomment %}
 
                         <nav class="main-nav">
                             <ul class="menu sf-arrows">
@@ -596,28 +596,29 @@
                                 <div class="product-gallery product-gallery-vertical">
                                     <div class="row">
                                         <figure class="product-main-image">
-                                            <img id="product-zoom" src="static/images/products/single/1.jpg" data-zoom-image="static/images/products/single/1-big.jpg" alt="product image">
-
+                                            <a href="index.html" class="logo">
+                                                <img src="{{ product.image1.url }}" alt="Molla Logo" width="105" height="25">
+                                            </a>
                                             <a href="#" id="btn-product-gallery" class="btn-product-gallery">
                                                 <i class="icon-arrows"></i>
                                             </a>
                                         </figure><!-- End .product-main-image -->
 
                                         <div id="product-zoom-gallery" class="product-image-gallery">
-                                            <a class="product-gallery-item active" href="#" data-image="static/images/products/single/1.jpg" data-zoom-image="static/images/products/single/1-big.jpg">
-                                                <img src="static/images/products/single/1-small.jpg" alt="product side">
+                                            <a href="index.html" class="logo">
+                                                <img src="{{ product.image1.url }}" alt="Molla Logo" width="105" height="25">
                                             </a>
 
-                                            <a class="product-gallery-item" href="#" data-image="static/images/products/single/2.jpg" data-zoom-image="static/images/products/single/2-big.jpg">
-                                                <img src="static/images/products/single/2-small.jpg" alt="product cross">
+                                            <a href="index.html" class="logo">
+                                                <img src="{{ product.image2.url }}" alt="Molla Logo" width="105" height="25">
                                             </a>
 
-                                            <a class="product-gallery-item" href="#" data-image="static/images/products/single/3.jpg" data-zoom-image="static/images/products/single/3-big.jpg">
-                                                <img src="static/images/products/single/3-small.jpg" alt="product with model">
+                                            <a href="index.html" class="logo">
+                                                <img src="{{ product.image3.url }}" alt="Molla Logo" width="105" height="25">
                                             </a>
 
-                                            <a class="product-gallery-item" href="#" data-image="static/images/products/single/4.jpg" data-zoom-image="static/images/products/single/4-big.jpg">
-                                                <img src="static/images/products/single/4-small.jpg" alt="product back">
+                                            <a href="index.html" class="logo">
+                                                <img src="{{ product.image4.url }}" alt="Molla Logo" width="105" height="25">
                                             </a>
                                         </div><!-- End .product-image-gallery -->
                                     </div><!-- End .row -->
@@ -626,7 +627,7 @@
 
                             <div class="col-md-6">
                                 <div class="product-details">
-                                    <h1 class="product-title">Dark yellow lace cut out swing dress</h1><!-- End .product-title -->
+                                    <h1 class="product-title">{{product.name}}</h1><!-- End .product-title -->
 
                                     <div class="ratings-container">
                                         <div class="ratings">
@@ -636,23 +637,23 @@
                                     </div><!-- End .rating-container -->
 
                                     <div class="product-price">
-                                        $84.00
+                                        {{product.price}}
                                     </div><!-- End .product-price -->
 
                                     <div class="product-content">
-                                        <p>Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus libero, faucibus adipiscing. Sed lectus. </p>
+                                        <p>{{product.description}}</p>
                                     </div><!-- End .product-content -->
 
                                     <div class="details-filter-row details-row-size">
                                         <label>Color:</label>
 
                                         <div class="product-nav product-nav-thumbs">
-                                            <a href="#" class="active">
+                                            {% comment %} <a href="#" class="active">
                                                 <img src="static/images/products/single/1-thumb.jpg" alt="product desc">
                                             </a>
                                             <a href="#">
                                                 <img src="static/images/products/single/2-thumb.jpg" alt="product desc">
-                                            </a>
+                                            </a> {% endcomment %}
                                         </div><!-- End .product-nav -->
                                     </div><!-- End .details-filter-row -->
 
@@ -679,7 +680,7 @@
                                     </div><!-- End .details-filter-row -->
 
                                     <div class="product-details-action">
-                                        <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                                        <a href="{% url 'cart:cart' product.id %}" class="btn-product btn-cart"><span>add to cart</span></a>
 
                                         <div class="details-action-wrapper">
                                             <a href="#" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>

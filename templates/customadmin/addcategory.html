@@ -275,7 +275,7 @@
 
 	
      <div class="container-fluid">
-     <form class="form-horizontal" method='POST' action="/savecategory/" >
+     <form class="form-horizontal" method='POST' action="{% url 'category:savecategory' %}" >
         {% csrf_token%}
      <fieldset>
      

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Category</title>
+</head>
+<body>
+    <h1>Edit Category</h1>
+    <form method="post" action="{% url 'category:edit_savecategory' %}">
+        {% csrf_token %}
+        <input type="hidden" name="category_id" value="{{category_id }}">
+        <label for="category_name">Category Name:</label>
+        <input type="text" id="category_name" name="category_name" value="{{ category_name }}">
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>

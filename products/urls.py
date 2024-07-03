@@ -6,11 +6,14 @@ app_name = "products"
 
 urlpatterns = [
     path('products/',views.products,name='products'),
-    path('saveproduct/',views.saveproducts,name='saveproduct'),
+    path('saveproducts/',views.saveproducts,name='saveproducts'),
 
     path('addproduct/',views.addproduct,name='addproduct'),
-    path('addvarient/',views.addvarient,name='addvarient'),
-    # path('edit_category/<int:category_id>/', views.edit_category, name='edit.category'),
-    # path('delete_category/<int:category_id>/', views.delete_category, name='delete.category'),
+    path('product_delete/<int:prod_id>/', views.product_delete, name='product_delete'),
+    path('product_editpage/<int:prod_id>/',views.product_editpage,name='product_editpage'),
+    path('product_editsave/',views.product_editsave,name='product_editsave'),
+    
+    
+    
     
 ] 

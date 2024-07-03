@@ -7,8 +7,8 @@ app_name = "logintohome"
 urlpatterns = [
     
     path('', views.homee,name='homee'),
-    path('signup/',views.signupp,name='signup'),
-    path('login/',views.loginn,name='loginn'),
+    path('signupp/',views.signupp,name='signupp'),
+    path('loginn/',views.loginn,name='loginn'),
     # path('userlogout/',views.userlogout,name='userlogout'),
     path("otpverification/<str:id>/", views.otp_varification, name="otpverification"),
     path('otp/<int:id>/', views.otp, name='otp'), 

@@ -311,8 +311,10 @@
 						<th>description</th>
 						<th>price</th>
 						<th>image</th>
-						<th>actions</th>
-						<th></th>
+						<th>S</th>
+						<th>M</th>
+						<th>L</th>
+						<th>ACTIONS</th>
 
 						
 						
@@ -328,225 +330,39 @@
                         <td>{{prod.name}}</td>
 						<td>{{prod.category.category_name}}</td>
 						<td>{{prod.description}}</td>
-                        <td>{{prod.price}}</td>`
-                        <td>{{prod.image1}}</td>
-						<td>  <img src="{{prod.image1.url}}" alt="image" style="width:50px;height:50px"></td>
-						<td>{{i.price}}</td>
+                        <td>{{prod.price}}</td>
+						
+						<td>
+
+
+							
+								{% if prod.image1 %}
+									<img src="{{ prod.image1.url }}" alt="Product Image" width="100px" height="100px"/>
+								{% else %}
+									No image
+								{% endif %}
+							
+                            
+
+						</td>
+						<td>{{prod.small}}</td>
+						<td>{{prod.medium}}</td>
+						<td>{{prod.large}}</td>
                         <td>
 							
-                            <a href="/editproduct/{{i.id}}"><i class="material-icons"  title="Edit">&#xE254;</i></a>
-                           
-							</div>
+                        <a href="{% url 'products:product_editpage' prod.id %}" class="btn btn-primary btn-sm">Edit</a>
+                        <form method="post" action="{% url 'products:product_delete' prod.id %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    
+                            
 						</td>
-						<td>
-							{% if not i.is_listed %}
-                            <a href="/listproduct/{{i.id}}/" class=" btn btn-success"  data-toggle="modal">list</a>
-							{% else %}
-                            <a href="/unlistproduct/{{i.id}}/" class="btn btn-danger " data-toggle="modal">unlist</a>
-                             {% endif %}
-                        </td>
-						<td>
-							
-							{% comment %} <div id="addvariant{{i.id}}" class="modal fade">
-								<div class="modal-dialog">
-									<div class="modal-content">
-										<form method='POST' action='/addvariant/{{i.id}}/'>
-											{% csrf_token %}
-											
-											<div class="modal-header">						
-												<h4 class="modal-title">Add variant for {{i.name}}</h4>
-												<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-											</div>
-											<div class="modal-body">					
-												<div class="form-group">
-													<label>Size</label>
-													<select id="size" name="size">
-														<option value="s">small</option>
-														<option value="m">medium</option>
-														<option value="l">large</option>
-													  </select>
-												</div>
-												<div class="form-group">
-													<label>Quantity of the variant</label>
-													<input type="number" class="form-control" name='qnty' required>
-												</div>
-											</div>
-										
-										   <div class="modal-footer">
-												<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-												<button type="submit" class="btn btn-success" value="Add">submit</button>
-											</div>
-
-										</form>
-									
-									</div>
-								</div>
-							{% comment %} </div> {% endcomment %} 
-							<!-- Button to open the modal -->
-							
-							<button id="openModalBtn{{prod.id}}" type="button" class="btn btn-primary open-modal-btn" data-id="{{prod.id}}" data-toggle="modal" data-target="#myModal">
-								Add Variant
-							  </button>
-							  
-							  
-  
-
-                        </td>
 						
 
-							{% comment %} <a href="" class="btn btn-primary" style="color: white !important;" type="button" data-toggle="modal" data-target="#variantModal{{i.id}}">
-								Variant Report
-							</a>
 
 
-							<div class="modal fade " id="variantModal{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="variantModalLabel{{i.id}}" aria-hidden="true">
-								<div class="modal-dialog modal-lg" role="document">
-									<div class="modal-content">
-										<div class="modal-header bg-success">
-											<h5 class="modal-title bg-success" id="variantModalLabel{{i.id}}">Variant Report for {{i.name}}</h5>
-											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											</button>
-										</div>
-										<div class="modal-body ">
-											<!-- Variant cards -->
-											<div class="row">
-											{% for j in variants %}
-											{% if j.product_id.id == i.id %}
-												<div class="col-12 mb-3">
-													<div class="card border-primary custom-card">
-														<div class="card-body">
-															
-															{% if j.size == 's'%}
-															<h5 class="card-title">size  : small     <br>   quantity :  {{j.quantity}}  </h5>
-															{% elif j.size == 'm' %}
-															<h5 class="card-title">size  : Medium    <br>   quantity :   {{j.quantity}} </h5>
-															{% elif j.size == 'l' %}
-															<h5 class="card-title">size  : large     <br>   quantity :   {{j.quantity}}  </h5>
-												            {% endif %}
-														</div>
-														<a href="" class="btn "  type="button" data-toggle="modal" data-target="#editvariant{{j.id}}">
-															Edit variant
-														</a>
-
-														<div id="editvariant{{j.id}}" class="modal fade">
-															<div class="modal-dialog">
-																<div class="modal-content">
-																	<form method='POST' action='/editvariantstock/{{j.id}}/'>
-																		{% csrf_token %}
-																		<div class="modal-header">	
-																			{% if j.size == 's'%}
-																			<h4 class="modal-title">Edit  variant for  small size of product</h4>
-																			{% elif j.size == 'm' %}
-																			<h4 class="modal-title">Edit  variant for  medium size  of product</h4>
-																			{% elif j.size == 'l' %}
-																			<h4 class="modal-title">Edit  variant for  large size  of product</h4>
-																			{% endif %}					
-																			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-																		</div>
-																		<div class="modal-body">					
-																			
-																			<div class="form-group">
-																				<label>Quantity of the variant</label>
-																				<input type="number" class="form-control" value="{{j.quantity}}" name='qnty' required>
-																			</div>
-																		</div>
-																	
-																	   <div class="modal-footer">
-																			<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-																			<button type="submit" class="btn btn-success" value="Add">submit</button>
-																		</div>
-							
-																	</form>
-																
-																</div>
-															</div>
-														</div>
-													</div>
-													
-												</div>
-												{% endif %}
-												{% endfor %}
-												
-											</div>
-										
-											
-										</div>
-
-
-
-
-
-									</div>
-								</div>
-							</div>
-							 {% endcomment %}
-
-							 {% comment %} <button id="openVariantReportBtn">Open Variant Report</button> {% endcomment %}
-
-<!-- Variant Report Modal structure -->
-{% comment %} <div id="variantReportModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <h2>Variant Report</h2>
-    <form>
-      <table>
-        <thead>
-          <tr>
-            <th>Product Name</th>
-            <th>Small Qty</th>
-            <th>Medium Qty</th>
-            <th>Large Qty</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td></td>
-            <td><input type="number" name="shirtSmallQty" min="0" value="5"></td>
-            <td><input type="number" name="shirtMediumQty" min="0" value="6"></td>
-            <td><input type="number" name="shirtLargeQty" min="0" value="6"></td>
-          </tr>
-          
-          <!-- Add more rows as needed for additional products -->
-        </tbody>
-      </table>
-      <button type="submit">Update Quantities</button>
-    </form>
-  </div>
-</div> {% endcomment %}
-<td>
-<button id="openVariantReportBtn" type="button" data-toggle="modal" data-target="#myModal2">Open Variant Report</button>
-
-<!-- Variant Report Modal structure -->
-<div id="myModal2" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <h2>Variant Report</h2>
-    <form>
-      <table>
-        <thead>
-          <tr>
-            <th>Product Name</th>
-            <th>Small Qty</th>
-            <th>Medium Qty</th>
-            <th>Large Qty</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{{prod.name}}</td>
-            <td><input type="number" name="shirtSmallQty" min="0" value="876543215"></td>
-            <td><input type="number" name="shirtMediumQty" min="0" value="634567890"></td>
-            <td><input type="number" name="shirtLargeQty" min="0" value="6"></td>
-          </tr>
-          
-          <!-- Add more rows as needed for additional products -->
-        </tbody>
-      </table>
-      <button type="submit">Update Quantities</button>
-    </form>
-  </div>
-</div>
+					
 
 
 					  </td>
@@ -555,7 +371,7 @@
                 </tbody>
             </table>
 			<a href="/adminhome/" class="btn btn-danger"><i class="material-icons"></i> <span>back to admin home</span></a>	
-			<a href="{% url 'myapp:addproduct' %}" class="btn btn-success"><i class="material-icons"></i> <span>Add product</span></a>	
+			<a href="{% url 'products:addproduct' %}" class="btn btn-success"><i class="material-icons"></i> <span>Add product</span></a>	
 			
         </div>
     </div>
@@ -572,7 +388,8 @@
 				  </button>
 				</div>
 				<div class="modal-body">
-				  <form action="{% url 'myapp:addvarient' %}"method="POST">
+					<form action='' method="POST">
+				  {% comment %} <form action="{% url 'products:addvarient' %}"method="POST"> {% endcomment %}
 					{% csrf_token %}
 					<table class="table">
 					  <thead>
@@ -584,17 +401,17 @@
 					  <tbody>
 						<tr>
 						  <td>Small</td>
-						  <td><input type="number" name="smallQuantity" min="1" value="123456789"></td>
+						  <td><input type="number" name="small_quantity" min="1" value="123456789"></td>
 						</tr>
 						<input type="text" name="id" id="product_id_input" value="">
 		
 						<tr>
 						  <td>Large</td>
-						  <td><input type="number" name="largeQuantity" min="1" value="5"></td>
+						  <td><input type="number" name="large_quantity" min="1" value="5"></td>
 						</tr>
 						<tr>
 						  <td>Medium</td>
-						  <td><input type="number" name="mediumQuantity" min="1" value="20"></td>
+						  <td><input type="number" name="medium_quantity" min="1" value="20"></td>
 						</tr>
 					  </tbody>
 					</table>
@@ -609,10 +426,10 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 	$(document).ready(function(){
-		// Activate tooltip
+		
 		$('[data-toggle="tooltip"]').tooltip();
 		
-		// Select/Deselect checkboxes
+		
 		var checkbox = $('table tbody input[type="checkbox"]');
 		$("#selectAll").click(function(){
 			if(this.checked){
@@ -635,19 +452,19 @@
 </script>
 
 <script>
-	// Wait for the document to be fully loaded
+	
 	document.addEventListener("DOMContentLoaded", function() {
-	  // Select all buttons with class 'open-modal-btn'
+	  
 	  var modalButtons = document.querySelectorAll('.open-modal-btn');
   
-	  // Iterate over each button
+	  
 	  modalButtons.forEach(function(button) {
-		// Add click event listener to each button
+		
 		button.addEventListener('click', function() {
-		  // Get the product ID from the button's data-id attribute
+		  
 		  var productId = this.getAttribute('data-id');
   
-		  // Set the value of the hidden input field in the modal form
+		  
 		  document.getElementById('product_id_input').value = productId;
 		});
 	  });
@@ -655,7 +472,7 @@
   </script>
   
 
-<!-- Modal functionality -->
+
 
 
 </html>

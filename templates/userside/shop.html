@@ -658,8 +658,8 @@
                                         <div class="product product-7 text-center">
                                             <figure class="product-media">
                                                 <span class="product-label label-new">New</span>
-                                                <a href="/productdetails/">
-                                                    <img src="static/images/products/product-4.jpg" alt="Product image" class="product-image">
+                                                <a href="{% url 'productdetail:productdetails' prod.id %}">
+                                                    <img src="{{ prod.image1.url }}" alt="{{ prod.name }}" class="product-image">
                                                 </a>
 
                                                 <div class="product-action-vertical">
@@ -689,16 +689,9 @@
                                                 </div><!-- End .rating-container -->
 
                                                 <div class="product-nav product-nav-thumbs">
-                                                    <a href="#" class="active">
-                                                        <img src="static/images/products/product-4-thumb.jpg" alt="product desc">
-                                                    </a>
-                                                    <a href="#">
-                                                        <img src="static/images/products/product-4-2-thumb.jpg" alt="product desc">
-                                                    </a>
-
-                                                    <a href="#">
-                                                        <img src="static/images/products/product-4-3-thumb.jpg" alt="product desc">
-                                                    </a>
+                                                    {% comment %} <a href="/productdetails/{{ prod.id }}/">
+                                                        <img src="{{ prod.image1.url }}" alt="{{ prod.name }}" class="product-image">
+                                                    </a> {% endcomment %}
                                                 </div><!-- End .product-nav -->
                                             </div><!-- End .product-body -->
                                         </div><!-- End .product -->

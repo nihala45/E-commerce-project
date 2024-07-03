@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Add Category - Admin Panel</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<style>
+    body {
+        font-family: 'Varela Round', sans-serif;
+        font-size: 13px;
+    }
+    .form-wrapper {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .form-wrapper legend {
+        margin-bottom: 20px;
+        font-size: 24px;
+        text-align: center;
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-group label {
+        font-weight: bold;
+    }
+    .form-control {
+        border-radius: 2px;
+        box-shadow: none;
+        border-color: #ddd;
+    }
+    .btn-primary {
+        background-color: #337ab7;
+        border-color: #2e6da4;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="form-wrapper">
+        <form method="POST" action="{% url 'products:product_editsave' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset>
+                <legend>Edit Products</legend>
+                <input type="hidden" name="product_id" value="{{product.id}}">
+                <!-- Category Name -->
+                <div class="form-group">
+                    <label for="category_name">product Name:</label>
+                    <input type="text" id="productname" name="productname" class="form-control" value="{{ product.name }}" required>
+                </div>
+                
+                <!-- Description -->
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <input id="descri" name="descri" class="form-control" value="{{product.description}}" rows="3"></input>
+                </div>
+                
+                <!-- Category -->
+                <div class="form-group">
+                    <label for="category">Category:</label>
+                    <select id="cat" name="cat" class="form-control" required>
+                        <option value="" selected disabled>Select Category</option>
+                        {% for i in catyy %}
+                        <option value="{{i.id}}">{{i.category_name}}</option>
+                         {%endfor%}
+                        
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="price">Price:</label>
+                    <input type="number" id="pri" name="pri" class="form-control" min="0" step="0.01"  value={{product.price}} required>
+                </div>
+                
+                <!-- Images -->
+                <div class="form-group">
+                    <label for="image1">Current Image 1:</label>
+                    {% if product.image1 %}
+                    <img src="{{ product.image1.url }}" alt="Current Image 1" style="max-width: 100px; max-height: 100px;">
+                    {% else %}
+                    No Image Uploaded
+                    {% endif %}
+                    <input type="file" id="new_image1" name="new_image1" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="image2">Current Image 2:</label>
+                    {% if product.image2 %}
+                    <img src="{{ product.image2.url }}" alt="Current Image 2" style="max-width: 100px; max-height: 100px;">
+                    {% else %}
+                    No Image Uploaded
+                    {% endif %}
+                    <input type="file" id="new_image2" name="new_image2" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="image3">Current Image 3:</label>
+                    {% if product.image3 %}
+                    <img src="{{ product.image3.url }}" alt="Current Image 3" style="max-width: 100px; max-height: 100px;">
+                    {% else %}
+                    No Image Uploaded
+                    {% endif %}
+                    <input type="file" id="new_image3" name="new_image3" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="image4">Current Image 4:</label>
+                    {% if product.image4 %}
+                    <img src="{{ product.image4.url }}" alt="Current Image 4" style="max-width: 100px; max-height: 100px;">
+                    {% else %}
+                    No Image Uploaded
+                    {% endif %}
+                    <input type="file" id="new_image4" name="new_image4" class="form-control">
+                </div>
+
+                <!-- Sizes -->
+                <div class="form-group">
+                    <label for="small_quantity">Small Quantity:</label>
+                    <input type="number" id="smallquantity" name="smallquantity" class="form-control" min="0" required value={{product.small}}>
+                </div>
+                <div class="form-group">
+                    <label for="medium_quantity">Medium Quantity:</label>
+                    <input type="number" id="mediumquantity" name="mediumquantity" class="form-control" min="0" required value={{product.medium}}>
+                </div>
+                <div class="form-group">
+                    <label for="large_quantity">Large Quantity:</label>
+                    <input type="number" id="largequantity" name="largequantity" class="form-control" min="0" required value={{product.large}}>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+                <!-- Submit Button -->
+                
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</body>
+</html>

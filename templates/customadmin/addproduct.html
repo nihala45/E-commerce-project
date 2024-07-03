@@ -4,513 +4,125 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>product management by admin</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<title>Add Category - Admin Panel</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+<style>
+    body {
+        font-family: 'Varela Round', sans-serif;
+        font-size: 13px;
+    }
+    .form-wrapper {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .form-wrapper legend {
+        margin-bottom: 20px;
+        font-size: 24px;
+        text-align: center;
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-group label {
+        font-weight: bold;
+    }
+    .form-control {
+        border-radius: 2px;
+        box-shadow: none;
+        border-color: #ddd;
+    }
+    .btn-primary {
+        background-color: #337ab7;
+        border-color: #2e6da4;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="form-wrapper">
+        <form method="POST" action="{% url 'products:saveproducts' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset>
+                <legend>Add New Products</legend>
+                <!-- Category Name -->
+                <div class="form-group">
+                    <label for="category_name">product Name:</label>
+                    <input type="text" id="product_name" name="product_name" class="form-control" required>
+                </div>
+                
+                <!-- Description -->
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" class="form-control" rows="3"></textarea>
+                </div>
+                
+                <!-- Category -->
+                <div class="form-group">
+                    <label for="category">Category:</label>
+                    <select id="category" name="category" class="form-control" required>
+                        <option value="" selected disabled>Select Category</option>
+                        {% for i in cat %}
+                        <option value="{{i.id}}">{{i.category_name}}</option>
+                         {%endfor%}
+                        
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="price">Price:</label>
+                    <input type="number" id="price" name="price" class="form-control" min="0" step="0.01" required>
+                </div>
+                
+                <!-- Images -->
+                <div class="form-group">
+                    <label for="image1">Image 1:</label>
+                    <input type="file" id="img1" name="img1" class="form-control-file">
+                </div>
+                <div class="form-group">
+                    <label for="image2">Image 2:</label>
+                    <input type="file" id="img2" name="img2" class="form-control-file">
+                </div>
+                <div class="form-group">
+                    <label for="image3">Image 3:</label>
+                    <input type="file" id="img3" name="img3" class="form-control-file">
+                </div>
+%                <div class="form-group">
+                    <label for="image3">Image 4:</label>
+                    <input type="file" id="image4" name="img4" class="form-control-file">
+                </div>
+
+                <!-- Sizes -->
+                <div class="form-group">
+                    <label for="small_quantity">Small Quantity:</label>
+                    <input type="number" id="small_quantity" name="small_quantity" class="form-control" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="medium_quantity">Medium Quantity:</label>
+                    <input type="number" id="medium_quantity" name="medium_quantity" class="form-control" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="large_quantity">Large Quantity:</label>
+                    <input type="number" id="large_quantity" name="large_quantity" class="form-control" min="0" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+                <!-- Submit Button -->
+                
+            </fieldset>
+        </form>
+    </div>
+</div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<style>
-	body {
-        /* color: #566787;
-		background: #f5f5f5; */
-		font-family: 'Varela Round', sans-serif;
-		font-size: 13px;
-	}
-	.table-wrapper {
-        background: #fff;
-        padding: 20px 25px;
-        margin: 30px 0;
-		border-radius: 3px;
-        box-shadow: 0 1px 1px rgba(0,0,0,.05);
-    }
-	.table-title {        
-		padding-bottom: 15px;
-		background: #03070d;
-		color: #fff;
-		padding: 16px 30px;
-		margin: -20px -25px 10px;
-		border-radius: 3px 3px 0 0;
-    }
-    .table-title h2 {
-		margin: 5px 0 0;
-		font-size: 24px;
-	}
-	.table-title .btn-group {
-		float: right;
-	}
-	.table-title .btn {
-		color: #fff;
-		float: right;
-		font-size: 13px;
-		border: none;
-		min-width: 50px;
-		border-radius: 2px;
-		border: none;
-		outline: none !important;
-		margin-left: 10px;
-	}
-	.table-title .btn i {
-		float: left;
-		font-size: 21px;
-		margin-right: 5px;
-	}
-	.table-title .btn span {
-		float: left;
-		margin-top: 2px;
-	}
-    table.table tr th, table.table tr td {
-        border-color: #e9e9e9;
-		padding: 12px 15px;
-		vertical-align: middle;
-    }
-	table.table tr th:first-child {
-		width: 60px;
-	}
-	table.table tr th:last-child {
-		width: 100px;
-	}
-    table.table-striped tbody tr:nth-of-type(odd) {
-    	background-color: #fcfcfc;
-	}
-	table.table-striped.table-hover tbody tr:hover {
-		background: #f5f5f5;
-	}
-    table.table th i {
-        font-size: 13px;
-        margin: 0 5px;
-        cursor: pointer;
-    }	
-    table.table td:last-child i {
-		opacity: 0.9;
-		font-size: 22px;
-        margin: 0 5px;
-    }
-	table.table td a {
-		font-weight: bold;
-		color: #566787;
-		display: inline-block;
-		text-decoration: none;
-		outline: none !important;
-	}
-	table.table td a:hover {
-		color: #2196F3;
-	}
-	table.table td a.edit {
-        color: #FFC107;
-    }
-    table.table td a.delete {
-        color: #F44336;
-    }
-    table.table td i {
-        font-size: 19px;
-    }
-	table.table .avatar {
-		border-radius: 50%;
-		vertical-align: middle;
-		margin-right: 10px;
-	}
-    .pagination {
-        float: right;
-        margin: 0 0 5px;
-    }
-    .pagination li a {
-        border: none;
-        font-size: 13px;
-        min-width: 30px;
-        min-height: 30px;
-        color: #999;
-        margin: 0 2px;
-        line-height: 30px;
-        border-radius: 2px !important;
-        text-align: center;
-        padding: 0 6px;
-    }
-    .pagination li a:hover {
-        color: #666;
-    }	
-    .pagination li.active a, .pagination li.active a.page-link {
-        background: #03A9F4;
-    }
-    .pagination li.active a:hover {        
-        background: #0397d6;
-    }
-	.pagination li.disabled i {
-        color: #ccc;
-    }
-    .pagination li i {
-        font-size: 16px;
-        padding-top: 6px
-    }
-    .hint-text {
-        float: left;
-        margin-top: 10px;
-        font-size: 13px;
-    }    
-	/* Custom checkbox */
-	.custom-checkbox {
-		position: relative;
-	}
-	.custom-checkbox input[type="checkbox"] {    
-		opacity: 0;
-		position: absolute;
-		margin: 5px 0 0 3px;
-		z-index: 9;
-	}
-	.custom-checkbox label:before{
-		width: 18px;
-		height: 18px;
-	}
-	.custom-checkbox label:before {
-		content: '';
-		margin-right: 10px;
-		display: inline-block;
-		vertical-align: text-top;
-		background: white;
-		border: 1px solid #bbb;
-		border-radius: 2px;
-		box-sizing: border-box;
-		z-index: 2;
-	}
-	.custom-checkbox input[type="checkbox"]:checked + label:after {
-		content: '';
-		position: absolute;
-		left: 6px;
-		top: 3px;
-		width: 6px;
-		height: 11px;
-		border: solid #000;
-		border-width: 0 3px 3px 0;
-		transform: inherit;
-		z-index: 3;
-		transform: rotateZ(45deg);
-	}
-	.custom-checkbox input[type="checkbox"]:checked + label:before {
-		border-color: #03A9F4;
-		background: #03A9F4;
-	}
-	.custom-checkbox input[type="checkbox"]:checked + label:after {
-		border-color: #fff;
-	}
-	.custom-checkbox input[type="checkbox"]:disabled + label:before {
-		color: #b8b8b8;
-		cursor: auto;
-		box-shadow: none;
-		background: #ddd;
-	}
-	/* Modal styles */
-	.modal .modal-dialog {
-		max-width: 400px;
-	}
-	.modal .modal-header, .modal .modal-body, .modal .modal-footer {
-		padding: 20px 30px;
-	}
-	.modal .modal-content {
-		border-radius: 3px;
-	}
-	.modal .modal-footer {
-		background: #ecf0f1;
-		border-radius: 0 0 3px 3px;
-	}
-    .modal .modal-title {
-        display: inline-block;
-    }
-	.modal .form-control {
-		border-radius: 2px;
-		box-shadow: none;
-		border-color: #dddddd;
-	}
-	.modal textarea.form-control {
-		resize: vertical;
-	}
-	.modal .btn {
-		border-radius: 2px;
-		min-width: 100px;
-	}	
-	.modal form label {
-		font-weight: normal;
-	}
-	.hai
-	{
-		background-color: rgb(6, 59, 6)!important
-	}
-	.text1
-	{   
-		color: white;
-		font-size: 30px;
-	
-	}
-	.butto1
-	{
-		background: rgb(55, 134, 203);
-		border-radius: 5px;
-		padding: 7px;
-		
-	}
-</style>
-  
-  <body>
 
-
-	<!-- navbar -->
-	 <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark hai "  arial-label="Furni navigation bar">
-    
-                            <div class="container-fluid  text-center">
-                                <h1 class="m-auto text1">Shop</h1>
-							</div>
-							
-	 </nav>
-     {% if messages %}
-     <div class="alert alert-success mt-3">
-     {% for message in messages %}
-     {{ message }}
-     {% endfor %}
-     </div>
-     {% endif %}
-
-	
-     <div class="container-fluid">
-     <form class="form-horizontal" method='POST' action="{%url 'saveproduct' %}" enctype="multipart/form-data">
-        {% csrf_token%}
-     <fieldset>
-     
-     <!-- Form Name -->
-     <legend class="text-center"> ADD  PRODUCTS</legend>
-     
-    
-     
-     
-     <!-- Text input-->
-     <div class="form-group">
-       <label class="col-md-4 control-label" for="product_name">PRODUCT NAME</label>  
-       <div class="col-md-4">
-       <input id="product_name" name="productname" placeholder="PRODUCT NAME" class="form-control input-md" required type="text">
-         
-       </div>
-     </div>
-     
-   
-     
-     <!-- Select Basic -->
-     <div class="form-group">
-       <label class="col-md-4 control-label" for="product_categorie">PRODUCT CATEGORY</label>
-       <div class="col-md-4">
-         <select id="product_categorie" name="productcategory" class="form-control">
-            {% for cat in categories %}
-            <option value={{ cat.id }}>{{ cat.category_name }}</option>
-            {% endfor %}
-         </select>
-       </div>
-     </div>
-    
-     
-  
-     <!-- Textarea -->
-     <div class="form-group">
-       <label class="col-md-4 control-label" for="product_description">PRODUCT DESCRIPTION</label>
-       <div class="col-md-4">                     
-         <textarea class="form-control" id="desc" name="productdescription"></textarea>
-       </div>
-     </div>
-
-     {% comment %} price {% endcomment %}
-     <div class="form-group">
-        <label class="col-md-4 control-label" for="product_name">PRODUCT PRICE</label>  
-        <div class="col-md-4">
-        <input id="product_price" name="productprice" placeholder="PRODUCT PRICE" class="form-control input-md" required type="number">
-          
-        </div>
-      </div>
-    
-
-         
-      <!-- File adding --> 
-
-      <div class="container-fluid">
-        <div class="row">
-            {% comment %} img 2 {% endcomment %}
-            <div class="col-md-3 text-center">
-                    <div class="mb-4 d-flex justify-content-center">
-                        <img id="selectedImage" src="https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"
-                        alt="example placeholder" style="width: 200px;" />
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <div class="btn btn-primary btn-rounded">
-                            <label class="form-label text-white m-1" for="customFile1">Choose file</label>
-                            <input type="file" name="img1"class="form-control d-none" id="image1" onchange="displaySelectedImage(event, 'selectedImage')" required />
-                            <input type="hidden" name="croppedImageData" id="croppedImageData" />
-                        </div>
-                    </div>
-                </div>
-
-
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
-                <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                        let cropper;
-
-                            function destroyCropper() {
-                                if (cropper) {
-                                    cropper.destroy();
-                                    cropper = null;
-                                }
-        }
-                        const input = document.getElementById('image1');
-                        const image = document.getElementById('selectedImage');
-
-                
-                        input.addEventListener('change', function (e) {
-                            const file = e.target.files[0];
-                            const reader = new FileReader();
-                
-                            reader.onload = function (event) {
-                                destroyCropper(); // Destroy existing Cropper instance
-                                image.src = event.target.result;
-                                cropper = new Cropper(image, {
-                                    aspectRatio: 1, // Set the aspect ratio for cropping as needed
-                                    viewMode: 2, // Set the view mode (e.g., 0, 1, 2, 3)
-                                    // Other options can be added as needed
-                                });
-                            };
-                
-                            reader.readAsDataURL(file);
-                        });
-                
-                        const addButton = document.getElementById('singlebutton');
-                        addButton.addEventListener('click', function (e) {
-                            e.preventDefault(); 
-                
-                            if (cropper) {
-                                const canvas = cropper.getCroppedCanvas();
-                                const croppedImageData = canvas.toDataURL(); // Get cropped image data as base64 string
-                                document.getElementById('croppedImageData').value = croppedImageData;
-                
-                                // Submit the form
-                                const form = document.querySelector('form');
-                                if (form) {
-                                    form.submit();
-                                }
-                            } else {
-                                console.error('Cropper not initialized or no image selected.');
-                            }
-                        });
-                    });
-                </script>
-                {% comment %} img 1 {% endcomment %}
-                <div class="col-md-3 text-center">
-                    <div class="mb-4 d-flex justify-content-center">
-                        <img id="selectedImage1" src="https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"
-                        alt="example placeholder" style="width: 200px;" />
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <div class="btn btn-primary btn-rounded">
-                            <label class="form-label text-white m-1" for="customFile1">Choose file</label>
-                            <input type="file" name='img2'class="form-control d-none" id="image2" onchange="displaySelectedImage(event, 'selectedImage1')" />
-                        </div>
-                    </div>
-                </div>
-                {% comment %} img 3 {% endcomment %}
-                <div class="col-md-3 text-center">
-                    <div class="mb-4 d-flex justify-content-center">
-                        <img id="selectedImage2" src="https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"
-                        alt="example placeholder" style="width: 200px;" />
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <div class="btn btn-primary btn-rounded">
-                            <label class="form-label text-white m-1" for="customFile1">Choose file</label>
-                            <input type="file" name='img3'class="form-control d-none" id="customFile1" onchange="displaySelectedImage(event, 'selectedImage2')" />
-                        </div>
-                    </div>
-                </div>
-                {% comment %} img 4 {% endcomment %}
-                <div class="col-md-3 text-center">
-                    <div class="mb-4 d-flex justify-content-center">
-                        <img id="selectedImage3" src="https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"
-                        alt="example placeholder" style="width: 200px;" />
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <div class="btn btn-primary btn-rounded">
-                            <label class="form-label text-white m-1" for="customFile1">Choose file</label>
-                            <input type="file" name='img4'class="form-control d-none" id="customFile1" onchange="displaySelectedImage(event, 'selectedImage3')" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> 
-    </div>  
-     <!-- Button -->
-     <br><br>
-     <div class="container-fluidbg-black text-center ">
-       <div class=" ">
-         <button id="singlebutton" type="submit" name="singlebutton" class="btn btn-lg btn-primary p-5">add</button>
-       </div>
-     </fieldset>
-    </form>
-    <div>
-     <script>
-     function displaySelectedImage(event, elementId) {
-        const selectedImage = document.getElementById(elementId);
-        const fileInput = event.target;
-    
-        if (fileInput.files && fileInput.files[0]) {
-            const reader = new FileReader();
-    
-            reader.onload = function(e) {
-                selectedImage.src = e.target.result;
-            };
-    
-            reader.readAsDataURL(fileInput.files[0]);
-        }
-    }
-    function displaySelectedImage2(event, elementId) {
-        const selectedImage1 = document.getElementById(elementId);
-        const fileInput = event.target;
-    
-        if (fileInput.files && fileInput.files[0]) {
-            const reader = new FileReader();
-    
-            reader.onload = function(e) {
-                selectedImage1.src = e.target.result;
-            };
-    
-            reader.readAsDataURL(fileInput.files[0]);
-        }
-    }
-    function displaySelectedImage2(event, elementId) {
-        const selectedImage2 = document.getElementById(elementId);
-        const fileInput = event.target;
-    
-        if (fileInput.files && fileInput.files[0]) {
-            const reader = new FileReader();
-    
-            reader.onload = function(e) {
-                selectedImage2.src = e.target.result;
-            };
-    
-            reader.readAsDataURL(fileInput.files[0]);
-        }
-    }
-    function displaySelectedImage3(event, elementId) {
-        const selectedImage3 = document.getElementById(elementId);
-        const fileInput = event.target;
-    
-        if (fileInput.files && fileInput.files[0]) {
-            const reader = new FileReader();
-    
-            reader.onload = function(e) {
-                selectedImage3.src = e.target.result;
-            };
-    
-            reader.readAsDataURL(fileInput.files[0]);
-        }
-    }
-</script>
-     
-   
 </body>
 </html>

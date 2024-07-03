@@ -19,6 +19,7 @@ def signupp(request):
         phone = request.POST['register-phone']
         password = request.POST['register-password']
         confirm_password = request.POST['register-confirm-password']
+        print('USERNAMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE',username)
         
         already = CustomUser.objects.filter(email=email)
         if len(phone) != 10:
@@ -39,8 +40,8 @@ def signupp(request):
         user2.save()
         
         
-        return redirect('otp', id=user2.id)
-    
+        return redirect('logintohome:otp', id=user2.id)
+        
 
 def loginn(request):
    
@@ -56,7 +57,7 @@ def loginn(request):
                 request.session['phone'] = user.phone 
                 request.session['username'] = user.username
                 print("Session variables set successfully:", request.session.items())
-                return redirect('homee')
+                return redirect('logintohome:homee')
             else:
                 print("2222222222222222")
                 messages.error(request, "Your account is blocked. Please contact support.")
@@ -82,7 +83,7 @@ def otp_varification(request,id):
     if request.method=='POST':
         user2 = CustomUser.objects.get(id=id)
         p=user2.otp_fld
-        print(p,'phjgfytgdgfhjp')
+        print(p,'Hellooooo nihalasss')
         entered_otp=request.POST.get("otp")
         p=int(p)
         entered_otp=int(entered_otp)

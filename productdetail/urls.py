@@ -1,10 +1,10 @@
 from django.urls import path
 from.import views
 from django.contrib.auth.views import LoginView
+from products.models import newproducts
 
-app_name = "productdetails"
+app_name = "productdetail"
 
 urlpatterns = [
-    path('productdetails/',views.productdetails,name='productdetails'),
-    
+    path('productdetails/<int:id>/', views.productdetails, name='productdetails'),
 ]

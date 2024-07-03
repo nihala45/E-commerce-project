@@ -28,6 +28,7 @@ def adminloginn(request):
 
 
 def dashboard(request):
+    print("huhjnijnjnjnjnj")
     return render(request,'customadmin/dashboard.html')
 
 def logout_view(request):

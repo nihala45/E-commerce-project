@@ -301,12 +301,12 @@
 						<td>{{i.email}}</td>
                         <td>{{i.phone}}</td>
 						
-						<!-- Inside your table body -->
+						
 <td>
     {% if not i.is_blocked %}
-        <a href="{% url 'block_user' i.id %}" class="btn p" data-toggle="modal">Block</a>
+        <a href="{% url 'usermanagement:block_user' i.id %}" class="btn p" data-toggle="modal">Block</a>
     {% else %}
-        <a href="{% url 'unblock_user' i.id %}" class="btn o" data-toggle="modal">Unblock</a>
+        <a href="{% url 'usermanagement:unblock_user' i.id %}" class="btn o" data-toggle="modal">Unblock</a>
     {% endif %}
 </td>
 
