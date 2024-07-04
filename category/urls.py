@@ -6,7 +6,7 @@ app_name = "category"
 
 urlpatterns = [
     path('categorymanagement/',views.categorymanagement,name='categorymanagement'),
-    path('/',views.categorymanagement,name='categorymanagement'),
+    path('', views.categorymanagement, name='categorymanagement'),
     path('savecategory/',views.savecategory,name='savecategory'),
     
     path('addcategory/',views.addcategory,name='addcategory'),

@@ -53,6 +53,7 @@ def loginn(request):
             user = CustomUser.objects.get(email=email, password=password)
             print(user,"88888888888888888")
             if user and not user.is_blocked:
+                
                 request.session['email']=email
                 request.session['phone'] = user.phone 
                 request.session['username'] = user.username
