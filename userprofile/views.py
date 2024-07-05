@@ -23,22 +23,18 @@ def userdashboard(request):
         'email': email,
         'phone': phone,
     }
-    # all_address=UserAddress.objects.get(address_Email=email)
-    # if all_address:
-    #     address_context = {
-    #         'all_address': all_address,
-    #         'address_name': all_address.address_name,
-    #         'address_Phone': all_address.address_Phone,
-    #         'Address': all_address.Address,
-    #         'landmark': all_address.landmark,
-    #         'city': all_address.city,
-    #         'district': all_address.district,
-    #         'state': all_address.state,
-    #         'pin': all_address.pin,
-    #     }
-    #     context.update(address_context)
+    
+    m=CustomUser.objects.get(email=email)
+    print(vars(m),'HELLLOOOOOOOOOOOO')
+    address=UserAddress.objects.filter(user=m)
+    print(vars(address),'HIIIIIIIIIIIII')
+    address_context = {
+            'addresses': address
+        }
+    context.update(address_context)
     
     # print("Session variables retrieved in userdashboard view:", email, phone, username,"ttttttttttttttttttttttttttttttttttttt",all_address,all_address.landmark)
+    
     return render(request, 'userside/userdashboard.html',context)
 
 
@@ -81,36 +77,43 @@ def save_edit(request):
         return redirect('userprofile:userdashboard')
 
 
-# def save_address(request):
-#     if request.method == 'POST':
-#         address_name = request.POST['address-username']
-#         address_Email = request.POST['address-email']
-#         address_Phone = request.POST['address-phone']
-#         Address = request.POST['detaild-address']
-#         landmark = request.POST['address-landmark']
-#         city = request.POST['address-city']
-#         district = request.POST['address-district']
-#         state = request.POST['address-state']
-#         pin = request.POST['address-pin']
+def add_user_address(request):
+    print('SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS')
+    if request.method == 'POST':
+        address_name = request.POST.get('address-username')
+        address_Email = request.POST.get('address-email')
+        address_Phone = request.POST.get('address-phone')
+        Address = request.POST.get('detaild-address')
+        landmark = request.POST.get('address-landmark')
+        city = request.POST.get('address-city')
+        district = request.POST.get('address-district')
+        state = request.POST.get('address-state')
+        pin = request.POST.get('address-pin')
+        user_Email=request.session['email']
+        user=CustomUser.objects.get(email=user_Email)
         
-        
-#         user_address = UserAddress(
-#             address_name=address_name,
-#             address_Email=address_Email,
-#             address_Phone=address_Phone,
-#             Address=Address,
-#             landmark=landmark,
-#             city=city,
-#             district=district,
-#             state=state,
-#             pin=pin
-#         )
-#         user_address.save()
-#         print(address_name)
-
-#         return redirect('userprofile:userdashboard')
+        User_Address = UserAddress.objects.create(
+            user=user,  
+            address_name=address_name,
+            address_Email=address_Email,
+            address_Phone=address_Phone,
+            Address=Address,
+            landmark=landmark,
+            city=city,
+            district=district,
+            state=state,
+            pin=pin
+        )
+        User_Address.save()
+        return redirect('userprofile:userdashboard')
+    print(vars(User_Address),'MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM')
     
-
+def remove_address(request,address_id):
+    address1=UserAddress.objects.get(id=address_id)
+    address1.delete()
+    return redirect('userprofile:userdashboard')    
+    
+    
 def signout(request):
     request.session.flush()
     return redirect('logintohome:homee')

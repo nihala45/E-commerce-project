@@ -13,3 +13,7 @@ class  MyCart(models.Model):
     product = models.ForeignKey('products.newproducts', on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
     size = models.CharField(max_length=1, choices=SIZE_CHOICES)
+    
+    @property
+    def total_amount(self):
+        return self.quantity * self.product.price

@@ -54,7 +54,7 @@
                             </ul>
                             <div class="tab-content" id="tab-content-5">
                                 <div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
-             <form id="address-form"  method="post">
+             <form id="address-form" action="{% url 'userprofile:add_user_address' %}" method="post">
             {% csrf_token %}
             
             <div class="form-group">
@@ -767,37 +767,49 @@
 								    <div class="tab-pane fade" id="tab-address" role="tabpanel" aria-labelledby="tab-address-link">
 								    	
 
-								    	<div class="row">
-								    		<div class="col-lg-6">
-								    			<div class="card card-dashboard">
-								    				<div class="card-body">
-								    					<h3 class="card-title">Billing Address</h3><!-- End .card-title -->
-                                                        <p style='margin-left:10px; margin-top:10px;'>Name:{{address_name}} </p> 
-                                                        <p style='margin-left:10px; margin-top:10px;'>Email: {{email}}</p> 
-                                                        <p style='margin-left:10px; margin-top:10px;'>Phone:{{address_Phone}} </p> 
-                                                        <p style='margin-left:10px; margin-top:10px;'>Address:{{Address}}</p> <!-- Replace with actual user phone number -->
-                                                        <p style='margin-left:10px; margin-top:10px;'>landmark:{{landmark}}</p> <!-- Replace with actual user phone number -->
-                                                        <p style='margin-left:10px; margin-top:10px;'>city:{{city}}</p> <!-- Replace with actual user phone number -->
-                                                        <p style='margin-left:10px; margin-top:10px;'>district:{{district}}</p> <!-- Replace with actual user phone number -->
-                                                        <p style='margin-left:10px; margin-top:10px;'>state: {{state}}</p> <!-- Replace with actual user phone number -->
-                                                        <p style='margin-left:10px; margin-top:10px;'>pin: {{pin}}</p> <!-- Replace with actual user phone number --> 
-                                                        <p style='margin-left:10px; margin-top:10px;'></p>
-														
-														
-								    				</div><!-- End .card-body -->
-								    			</div><!-- End .card-dashboard -->
-								    		</div><!-- End .col-lg-6 -->
-
-								    		<div class="col-lg-6">
-								    			<div >
-								    				<div class="small-div" style="width: 200px; height: 50px; background-color: #DCDCDC; border: 10px solid white; margin-left:100px; margin-top:20px;">
+                                        <div class="row">
+                                            {% for address in addresses %}
+                                            <div class="col-lg-6">
+                                                <div class="card card-dashboard">
+                                                    <div class="card-body">
+                                                        <h3 class="card-title">Billing Address</h3>
+                                                        <p style='margin-left:10px; margin-top:10px;'>Name: {{ address.address_name }}</p>
+                                                        <p style='margin-left:10px; margin-top:10px;'>Email: {{ address.address_Email }}</p>
+                                                        <p style='margin-left:10px; margin-top:10px;'>Phone: {{ address.address_Phone }}</p>
+                                                        <p style='margin-left:10px; margin-top:10px;'>Address: {{ address.Address }}</p>
+                                                        <p style='margin-left:10px; margin-top:10px;'>Landmark: {{ address.landmark }}</p>
+                                                        <p style='margin-left:10px; margin-top:10px;'>City: {{ address.city }}</p>
+                                                        <p style='margin-left:10px; margin-top:10px;'>District: {{ address.district }}</p>
+                                                        <p style='margin-left:10px; margin-top:10px;'>State: {{ address.state }}</p>
+                                                        <p style='margin-left:10px; margin-top:10px;'>Pin: {{ address.pin }}</p>
+                                                        
+                                                        <!-- Edit Button -->
+                                                        {% comment %} <a href="{% url 'edit_address' address.id %}" class="btn btn-primary">Edit</a> {% endcomment %}
+                                                        
+                                                        <!-- Remove Button (you can use a form for this) -->
+                                                        <form method="post" action="{% url 'userprofile:remove_address' address.id %}">
+                                                            {% csrf_token %}
+                                                            <button type="submit" class="btn btn-danger">Remove</button>
+                                                        </form>
+                                                    </div><!-- End .card-body -->
+                                                </div><!-- End .card-dashboard -->
+                                            </div><!-- End .col-lg-6 -->
+                                            {% endfor %}
+                                        </div><!-- End .row -->
+                                        
+                                        
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div>
+                                                    <div class="small-div" style="width: 200px; height: 50px; background-color: #DCDCDC; border: 10px solid white; margin-left:100px; margin-top:20px;">
                                                         <a style="text-decoration: none; color: black; display: inline-block; width: 100%; height: 100%;">
-                                                        <p style='margin-left:40px' data-toggle="modal" data-target="#addaddress-modal" >Add new address</p>
+                                                            <p style='margin-left:40px' data-toggle="modal" data-target="#addaddress-modal">Add new address</p>
                                                         </a>
                                                     </div>
-								    			</div><!-- End .card-dashboard -->
-								    		</div><!-- End .col-lg-6 -->
-								    	</div><!-- End .row -->
+                                                </div>
+                                            </div><!-- End .col-lg-6 -->
+                                        </div><!-- End .row -->
+                                        
 								    </div><!-- .End .tab-pane -->
 
 								    <div class="tab-pane fade" id="tab-account" role="tabpanel" aria-labelledby="tab-account-link">
