@@ -36,6 +36,101 @@
 </head>
 
 <body>
+      <!-- EDIT ADDRESS -->
+    <div class="modal fade" id="editaddress-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="icon-close"></i></span>
+                    </button>
+    
+                    <div class="form-box">
+                        <div class="form-tab">
+                            <ul class="nav nav-pills nav-fill nav-border-anim" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin" role="tab" aria-controls="signin" aria-selected="true">EDIT ADDRESS</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="tab-content-5">
+                                <div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
+                                    <form id="edit-address-form" action="" method="post">
+                                        {% csrf_token %}
+    
+                                        <div class="form-group">
+                                            <label for="edit-email">Email address *</label>
+                                            <input type="text" class="form-control" id="edit-email" name="edit-email" value="{{address2.address_name}}">
+                                            <p class="error-message" style="color:red;" id="email-error"></p>
+                                        </div><!-- End .form-group -->
+    
+                                        <div class="form-group">
+                                            <label for="edit-username">Username *</label>
+                                            <input type="text" class="form-control" id="edit-username" name="edit-username" value="{{ address.address_name }}">
+                                            <p class="error-message" style="color:red;" id="username-error"></p>
+                                        </div><!-- End .form-group -->
+    
+                                        <div class="form-group">
+                                            <label for="edit-phone">Phone *</label>
+                                            <input type="tel" class="form-control" id="edit-phone" name="edit-phone" value="">
+                                            <p class="error-message" style="color:red;" id="phone-error"></p>
+                                        </div><!-- End .form-group -->
+    
+                                        <div class="form-group">
+                                            <label for="edit-address">Address *</label>
+                                            <input type="text" class="form-control" id="edit-address" name="edit-address" value="">
+                                            <p class="error-message" style="color:red;" id="address-error"></p>
+                                        </div><!-- End .form-group -->
+    
+                                        <div class="form-group">
+                                            <label for="edit-landmark">Landmark</label>
+                                            <input type="text" class="form-control" id="edit-landmark" name="edit-landmark" value="">
+                                        </div><!-- End .form-group -->
+    
+                                        <div class="form-group">
+                                            <label for="edit-city">City *</label>
+                                            <input type="text" class="form-control" id="edit-city" name="edit-city" value="">
+                                            <p class="error-message" style="color:red;" id="city-error"></p>
+                                        </div><!-- End .form-group -->
+    
+                                        <div class="form-group">
+                                            <label for="edit-district">District *</label>
+                                            <input type="text" class="form-control" id="edit-district" name="edit-district" value="{{ address2.district }}">
+                                            <p class="error-message" style="color:red;" id="district-error"></p>
+                                        </div><!-- End .form-group -->
+    
+                                        <div class="form-group">
+                                            <label for="edit-state">State *</label>
+                                            <input type="text" class="form-control" id="edit-state" name="edit-state" value="{{ address2.state }}">
+                                            <p class="error-message" style="color:red;" id="state-error"></p>
+                                        </div><!-- End .form-group -->
+    
+                                        <div class="form-group">
+                                            <label for="edit-pin">PIN *</label>
+                                            <input type="text" class="form-control" id="edit-pin" name="edit-pin" value="{{ address2.pin }}">
+                                            <p class="error-message" style="color:red;" id="pin-error"></p>
+                                        </div><!-- End .form-group -->
+    
+                                        <div class="form-footer">
+                                            <button type="submit" class="btn btn-outline-primary-2" style="color: blue; border-color: blue; background-color: white;">
+                                                <span>Save Address</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+                                        </div><!-- End .form-footer -->
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- End .form-box -->
+                </div><!-- End .modal-body -->
+            </div><!-- End .modal-content -->
+        </div><!-- End .modal-dialog -->
+    </div><!-- End .modal -->
+
+
+
+
+
+         <!--ADDRESS MODAL--> 
     <div class="modal fade" id="addaddress-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -587,7 +682,10 @@
                                     <label for="q" class="sr-only">Search</label>
                                     <input type="search" class="form-control" name="q" id="q" placeholder="Search in..." required>
                                 </div><!-- End .header-search-wrapper -->
+
                             </form>
+
+                            
                         </div><!-- End .header-search -->
                         <div class="dropdown compare-dropdown">
                             <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static" title="Compare Products" aria-label="Compare Products">
@@ -708,7 +806,7 @@
 								        <a class="nav-link" id="tab-orders-link" data-toggle="tab" href="#tab-orders" role="tab" aria-controls="tab-orders" aria-selected="false">Orders</a>
 								    </li>
 								    <li class="nav-item">
-								        <a class="nav-link" id="tab-downloads-link" data-toggle="tab" href="#tab-downloads" role="tab" aria-controls="tab-downloads" aria-selected="false">Downloads</a>
+								        <a class="nav-link" id="tab-downloads-link" data-toggle="tab" href="#tab-downloads" role="tab" aria-controls="tab-downloads" aria-selected="false">Change Password</a>
 								    </li>
 								    <li class="nav-item">
 								        <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address" role="tab" aria-controls="tab-address" aria-selected="false">Adresses</a>
@@ -759,10 +857,34 @@
 								    	<a href="category.html" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>
 								    </div><!-- .End .tab-pane -->
 
-								    <div class="tab-pane fade" id="tab-downloads"  role="tabpanel" aria-labelledby="tab-downloads-link">
-								    	<p>No downloads kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkavmmmmmmmmmmmmmmmmmmmmmailable yet.</p>
-								    	<a href="category.html" class="btn btn-outline-primary-2"><span>GO SHOP</span><i class="icon-long-arrow-right"></i></a>
-								    </div><!-- .End .tab-pane -->
+								    <div class="tab-pane fade" id="tab-downloads" role="tabpanel" aria-labelledby="tab-downloads-link">
+                                        <form action="" method="post">
+                                            {% csrf_token %}
+                                            {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+                                        <p class="text-danger" id="error-show" ></p>
+                                            <div class="form-group">
+                                                <label for="current_password">Current Password *</label>
+                                                <input type="password" class="form-control" id="current_password" name="current_password" required>
+                                            </div><!-- End .form-group -->
+                                            <div class="form-group">
+                                                <label for="new_password">New Password *</label>
+                                                <input type="password" class="form-control" id="new_password" name="new_password" required>
+                                            </div><!-- End .form-group -->
+                                            <div class="form-group">
+                                                <label for="confirm_password">Confirm Password *</label>
+                                                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                                            </div><!-- End .form-group -->
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-primary" onClick="validatePassword(event)">Change Password</button>
+                                            </div><!-- End .form-group -->
+                                        </form>
+                                    </div>
 
 								    <div class="tab-pane fade" id="tab-address" role="tabpanel" aria-labelledby="tab-address-link">
 								    	
@@ -784,13 +906,14 @@
                                                         <p style='margin-left:10px; margin-top:10px;'>Pin: {{ address.pin }}</p>
                                                         
                                                         <!-- Edit Button -->
-                                                        {% comment %} <a href="{% url 'edit_address' address.id %}" class="btn btn-primary">Edit</a> {% endcomment %}
-                                                        
+                                                        <button href="" data-toggle="modal" data-target="#editaddress-modal" onClick="openEditaddressModal({{address.id}},event)">Edit</button>
+
+                                                        <button type='submit' class="btn btn-danger">Remove</button>
                                                         <!-- Remove Button (you can use a form for this) -->
-                                                        <form method="post" action="{% url 'userprofile:remove_address' address.id %}">
+                                                        {% comment %} <form method="post" action="{% url 'userprofile:remove_address' address.id %}">
                                                             {% csrf_token %}
                                                             <button type="submit" class="btn btn-danger">Remove</button>
-                                                        </form>
+                                                        </form> {% endcomment %}
                                                     </div><!-- End .card-body -->
                                                 </div><!-- End .card-dashboard -->
                                             </div><!-- End .col-lg-6 -->
@@ -1224,6 +1347,7 @@
 <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
 <script src="{% static 'js/superfish.min.js' %}"></script>
 <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Main JS File -->
 <script src="{% static 'js/main.js' %}"></script>
 
@@ -1312,6 +1436,179 @@
         }
     });
     </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('edit-address-form');
+        
+            form.addEventListener('submit', function (event) {
+                // Prevent form submission
+                event.preventDefault();
+        
+                // Clear previous error messages
+                document.querySelectorAll('.error-message').forEach(function (el) {
+                    el.textContent = '';
+                });
+        
+                // Validate fields
+                let hasError = false;
+        
+                // Email validation
+                const email = document.getElementById('edit-email').value;
+                if (!validateEmail(email)) {
+                    document.getElementById('email-error').textContent = 'Please enter a valid email address.';
+                    hasError = true;
+                }
+        
+                // Username validation
+                const username = document.getElementById('edit-username').value;
+                if (!username || username.includes(' ')) {
+                    document.getElementById('username-error').textContent = 'Username is required and should not contain spaces.';
+                    hasError = true;
+                }
+        
+                // Phone validation
+                const phone = document.getElementById('edit-phone').value;
+                if (phone.length !== 10 || !/^\d+$/.test(phone)) {
+                    document.getElementById('phone-error').textContent = 'Please enter a valid 10-digit phone number.';
+                    hasError = true;
+                }
+        
+                // Address validation
+                const address = document.getElementById('edit-address').value;
+                if (!address) {
+                    document.getElementById('address-error').textContent = 'Address is required.';
+                    hasError = true;
+                }
+        
+                // City validation
+                const city = document.getElementById('edit-city').value;
+                if (!city || city.includes(' ')) {
+                    document.getElementById('city-error').textContent = 'City is required and should not contain spaces.';
+                    hasError = true;
+                }
+        
+                // District validation
+                const district = document.getElementById('edit-district').value;
+                if (!district || district.includes(' ')) {
+                    document.getElementById('district-error').textContent = 'District is required and should not contain spaces.';
+                    hasError = true;
+                }
+        
+                // State validation
+                const state = document.getElementById('edit-state').value;
+                if (!state || state.includes(' ')) {
+                    document.getElementById('state-error').textContent = 'State is required and should not contain spaces.';
+                    hasError = true;
+                }
+        
+                // PIN validation
+                const pin = document.getElementById('edit-pin').value;
+                if (pin.length !== 6 || !/^\d+$/.test(pin)) {
+                    document.getElementById('pin-error').textContent = 'Please enter a 6-digit PIN.';
+                    hasError = true;
+                }
+        
+                // If no errors, submit the form
+                if (!hasError) {
+                    form.submit();
+                }
+            });
+        
+            // Email validation function
+            function validateEmail(email) {
+                const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+                return re.test(String(email).toLowerCase());
+            }
+        });
+        </script>
+        <script>
+           function openEditaddressModal(addressId,event){
+                
+                event.preventDefault()
+
+             
+
+         
+           }
+        </script>
+        <script>
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            function validatePassword(event){
+                event.preventDefault()
+                let current=document.getElementById('current_password').value
+                let password=document.getElementById('new_password').value
+                let confirm = document.getElementById('confirm_password').value
+                
+                if(password != confirm){
+                    console.log("nnjnjnj")
+                    document.getElementById('error-show').textContent='Enter same password'
+                }else if(password.length!=8){
+                    document.getElementById('error-show').textContent='Password must be eight digit'
+                }else{
+
+                                                                                                                                                   
+
+                const csrftoken = getCookie('csrftoken');
+
+                let formData = new URLSearchParams();
+                    formData.append('current', current);
+                    formData.append('password', password);
+                    formData.append('confirm', confirm);
+
+
+                 fetch('{% url 'userprofile:change_password' %}',{
+                    method:'POST',
+                    headers:{
+                        'Content-Type':'application/x-www-form-urlencoded',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body:formData.toString()
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.status==='success'){
+
+                        Swal.fire({
+                            title: "Your password changed successfully",
+                           
+                            icon: "success",
+                            
+                            confirmButtonColor: "#3085d6",
+                            
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                             location.reload()
+                            }
+                          });
+
+
+
+                    }else{
+                        document.getElementById('error-show').textContent=data.message
+
+                    }
+
+                })
+            } 
+                return false
+                
+            }
+        </script>
 </body>
 
 <!-- molla/dashboard.html  22 Nov 2019 10:03:13 GMT -->

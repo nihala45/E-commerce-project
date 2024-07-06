@@ -288,8 +288,8 @@
                     <div class="col-sm-6">
 						<h2>Manage  products</h2>
 					</div>
-					  <div class=" col-6">
-				          <form method="POST" action="/searchforproduct/"class="form-inline col-6 my-2 my-lg-0">
+					  <div class="col-6">
+				          <form method="POST" action="{% url 'products:search_for_product' %}"class="form-inline col-6 my-2 my-lg-0">
 							{% csrf_token %}
 							<input class="form-control mr-sm-2" type="search" placeholder="Search" name='query'>
 							<button class="butto1" type="submit">Search</button>
@@ -297,6 +297,17 @@
 						</div>
 					</div>
 				    
+					{% if products %}
+    <h3>Search Results for "{{ query }}"</h3>
+    <ul>
+        {% for product in products %}
+            <li>{{ product.name }}</li>
+            <!-- Display other product details as needed -->
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No products found for "{{ query }}".</p>
+{% endif %}
 
                 </div>
             </div>

@@ -142,7 +142,15 @@ def product_editsave(request):
             
             
         
+
+def search_for_product(request):
+    if request.method == 'POST':
+        query = request.POST.get('query')
         
+        products = newproducts.objects.filter(name__icontains=query)
+    
+        return render(request, 'products.html', products)
+    
         
         
         

@@ -12,6 +12,10 @@ urlpatterns = [
     
     # path('save_address/',views.save_address,name='save_address'),
     path('userdashboard/', views.userdashboard, name='userdashboard'), 
-    path('remove_address/<int:address_id>',views.remove_address,name='remove_address')
+    path('remove_address/<int:address_id>',views.remove_address,name='remove_address'),
+    path('edit_address/<int:address_id>',views.edit_address,name='edit_address'),
+    path('change_password',views.change_password,name='change_password'),
+    
+    
     
 ] 

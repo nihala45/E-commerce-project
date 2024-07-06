@@ -3,7 +3,8 @@ from logintohome.models import CustomUser
 from django.contrib import messages
 from userprofile.models import UserAddress
 from products.models import newproducts
-
+from django.contrib import messages
+from django.http import JsonResponse
 
 
 
@@ -25,15 +26,13 @@ def userdashboard(request):
     }
     
     m=CustomUser.objects.get(email=email)
-    print(vars(m),'HELLLOOOOOOOOOOOO')
     address=UserAddress.objects.filter(user=m)
-    print(vars(address),'HIIIIIIIIIIIII')
     address_context = {
             'addresses': address
         }
     context.update(address_context)
     
-    # print("Session variables retrieved in userdashboard view:", email, phone, username,"ttttttttttttttttttttttttttttttttttttt",all_address,all_address.landmark)
+    
     
     return render(request, 'userside/userdashboard.html',context)
 
@@ -48,7 +47,7 @@ def editprofile(request):
         'phone':phone,
         
     }
-    print("Session variables retrieved in EDIT PROFILE:",  phone, username)
+
     return render(request, 'userside/editprofile.html', m)
 
 def save_edit(request):
@@ -59,7 +58,7 @@ def save_edit(request):
         user1=request.session.get('email')
         
         obj= CustomUser.objects.get(email=user1)
-        print(obj,"iiiii")
+       
         print(obj.email,".............",obj.username)
         
         obj.username = new_username
@@ -73,12 +72,12 @@ def save_edit(request):
         print(new_phone,new_username,'obj_username,obj_phone')
         request.session['username'] = new_username
         request.session['phone'] = new_phone
+        obj.save()
         
         return redirect('userprofile:userdashboard')
 
 
 def add_user_address(request):
-    print('SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS')
     if request.method == 'POST':
         address_name = request.POST.get('address-username')
         address_Email = request.POST.get('address-email')
@@ -106,14 +105,49 @@ def add_user_address(request):
         )
         User_Address.save()
         return redirect('userprofile:userdashboard')
-    print(vars(User_Address),'MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM')
+    
     
 def remove_address(request,address_id):
     address1=UserAddress.objects.get(id=address_id)
     address1.delete()
     return redirect('userprofile:userdashboard')    
     
-    
+def edit_address(request,address_id):
+    print("HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
+    address2=UserAddress.objects.get(id=address_id)
+    print(address2,'LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
+    return render(request,'userside/userdashboard.html',address2)
+
+
+def change_password(request):
+    print("helloo")
+    if request.method == 'POST':
+        current_password = request.POST.get('current')
+        new_password = request.POST.get('password')
+        
+        user_email = request.session.get('email')
+        
+        user = CustomUser.objects.get(email=user_email)
+        print(user_email,"ggggg",user)
+        if(user.password != current_password):
+            print("bkdvsnbjkads,bv")
+            return JsonResponse({'status': 'wrong', 'message': 'Password is incorrect  maandaaa'})
+        else:
+            user.password = new_password
+            user.save()
+            return JsonResponse({'status':'success','message':'Password changed successfully'})
+            
+        
+    #     if user.password != current_password:
+    #          messages.error(request, 'This is the incorrect password. Please enter again')
+    #     elif new_password != confirm_password:
+    #         messages.error(request, 'Confirm password does not match the new password')
+    #     elif user.password == current_password and new_password == confirm_password:
+           
+        
+    #    
+    #     return redirect('userprofile:userdashboard')
+        
 def signout(request):
     request.session.flush()
     return redirect('logintohome:homee')

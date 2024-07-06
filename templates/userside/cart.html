@@ -585,7 +585,7 @@
 	                <div class="container">
 	                	<div class="row">
 	                		<div class="col-lg-9">
-	                			<table>
+	                			<table class="col-12">
                                     <thead>
                                         <tr>
                                             <th>Product</th>
@@ -614,11 +614,15 @@
                                             </td>
                                             <td class="price-col">{{ i.product.price }}</td>
                                             <td class="quantity-col">
-                                                <div class="cart-product-quantity">
-                                                    <input type="number" class="form-control" value="{{ i.quantity }}" min="1" max="10" step="1" data-decimals="0" required>
-                                                </div><!-- End .cart-product-quantity -->
+                                                <div class="row">
+                                                    <button type="button" class="border-secondary" style="border: none;" onclick="updateQuantity({{i.product_id}},-1)">-</button>
+                                                    <input type="text" class="col-3" id="quantity" name='quantity' value="{{ i.quantity }}" disabled required />
+                                                    <button type="button" class="border-secondary" style="border: none;" onclick="updateQuantity({{i.product_id}},1)">+</button>
+                                                </div>
                                             </td>
-                                            <td class="total-col">{{ i.total_amount }}</td>
+                                            
+                                            <td class="total-col" id="total-price-{{ i.id }}">{{ i.total_amount }}</td>
+
                                             <td class="remove-col"><button class="btn-remove"><i class="icon-close"></i></button></td>
                                         </tr>
                                         {% endfor %}
@@ -631,9 +635,7 @@
 			            			<div class="cart-discount">
 			            				<form action="#">
 			            					<div class="input-group">
-				        						<input type="text" class="form-control" required placeholder="coupon code">
 				        						<div class="input-group-append">
-													<button class="btn btn-outline-primary-2" type="submit"><i class="icon-long-arrow-right"></i></button>
 												</div><!-- .End .input-group-append -->
 			        						</div><!-- End .input-group -->
 			            				</form>
@@ -650,7 +652,7 @@
 	                					<tbody>
 	                						<tr class="summary-subtotal">
 	                							<td>Subtotal:</td>
-	                							<td>$160.00</td>
+	                							<td>{{sub_total}}</td>
 	                						</tr><!-- End .summary-subtotal -->
 	                						<tr class="summary-shipping">
 	                							<td>Shipping:</td>
@@ -694,7 +696,7 @@
 
 	                						<tr class="summary-total">
 	                							<td>Total:</td>
-	                							<td>$160.00</td>
+	                							<td>{{sub_total}}</td>
 	                						</tr><!-- End .summary-total -->
 	                					</tbody>
 	                				</table><!-- End .table table-summary -->
@@ -1083,6 +1085,41 @@
     <script src="static/js/bootstrap-input-spinner.js"></script>
     <!-- Main JS File -->
     <script src="static/js/main.js"></script>
+
+<script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    function updateQuantity(prod_id,count){
+        console.log('hiiiiii',prod_id)
+        const data =new URLSearchParams()
+        data.append('product_id',prod_id)
+        data.append('count',count)
+
+
+        const csrftoken = getCookie('csrftoken');
+        fetch('{% url 'cartapp:quantity_upadate' %}',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/x-www-form-urlencoded',
+                'X-CSRFToken':csrftoken
+            },
+            body:data.toString()
+        })
+    }
+</script>
 </body>
 
 

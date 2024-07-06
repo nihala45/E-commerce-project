@@ -34,12 +34,38 @@ def add_to_cart(request):
     # return redirect('product_list')
 
 def cart_view(request):
-    user = request.session['email']
-    user_id=CustomUser.objects.get(email=user)
-    print(vars(user_id),'ghajfkitghihihhNIHALAHSIRIRNRRNNRNRNRNRNRNRRNRRRRRRRRRRRRRRRRRRRRRRRRR')
+    user = request.session.get('email')
+    if not user:
+        return redirect('login')  # Redirect to login page if user is not authenticated
+
+    user_id = CustomUser.objects.get(email=user)
+    print(vars(user_id), 'User Details')
+    
     cart_items = MyCart.objects.filter(user_id=user_id.id)
     
-    return render(request, 'userside/cart.html', {'cart_items': cart_items})
+    sub_total = 0
+    for item in cart_items:
+        sub_total += item.product.price * item.quantity
+
+    context = {
+        'cart_items': cart_items,
+        'sub_total': sub_total
+    }
+    return render(request, 'userside/cart.html',context)
 
 def proceed(request):
     return render(request,'userside/checkout.html')
+
+def quantity_upadate(request):
+    print('loooooooooooooooooooooooooooo')
+    if request.method=='POST':
+        print(request.POST,"saf")
+
+#         email=request.session['email']
+#         customer=CustomUser.objects.get(email=email)
+        
+#         cart=MyCart.objects.get(user_id=customer.id)
+#         cart.quantity=new_quantity
+#         cart.save()
+#         return render(requestZZZZZZZZZZZZZZZZZZZZZZZZZZZZZz)
+            

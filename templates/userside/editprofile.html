@@ -53,7 +53,7 @@
 <body>
     <div class="container">
         <h1>Edit Profile</h1>
-        <form method="post" action="{% url 'save_edit' %}">
+        <form method="post" action="{% url 'userprofile:save_edit' %}">
             {% csrf_token %}
             <div class="form-group">
                 
