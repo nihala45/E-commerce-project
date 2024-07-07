@@ -588,10 +588,11 @@
 	                			<table class="col-12">
                                     <thead>
                                         <tr>
-                                            <th>Product</th>
-                                            <th>Price</th>
-                                            <th>Quantity</th>
-                                            <th>Total</th>
+                                            <th class="col-6">Product</th>
+                                            <th class="col-2" > Price</th>
+                                            <th class="col-3">Quantity</th>
+                                            <th class="col-1">Size</th>
+                                            <th class="col-1"> Total</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -612,16 +613,17 @@
                                                     </h3><!-- End .product-title -->
                                                 </div><!-- End .product -->
                                             </td>
-                                            <td class="price-col">{{ i.product.price }}</td>
+                                            <td class="price-col">₹{{ i.product.price }}</td>
                                             <td class="quantity-col">
                                                 <div class="row">
-                                                    <button type="button" class="border-secondary" style="border: none;" onclick="updateQuantity({{i.product_id}},-1)">-</button>
+                                                    <button type="button" class="border-secondary" style="border: none;" onclick="updateQuantity({{i.product_id}},-1,'{{i.size}}')">-</button>
                                                     <input type="text" class="col-3" id="quantity" name='quantity' value="{{ i.quantity }}" disabled required />
-                                                    <button type="button" class="border-secondary" style="border: none;" onclick="updateQuantity({{i.product_id}},1)">+</button>
+                                                    <button type="button" class="border-secondary" style="border: none;" onclick="updateQuantity({{i.product_id}},1,'{{i.size}}')">+</button>
                                                 </div>
                                             </td>
+                                            <td>{{i.size}}</td>
                                             
-                                            <td class="total-col" id="total-price-{{ i.id }}">{{ i.total_amount }}</td>
+                                            <td class="total-col" id="total-price-{{ i.id }}">₹{{ i.total_amount }}</td>
 
                                             <td class="remove-col"><button class="btn-remove"><i class="icon-close"></i></button></td>
                                         </tr>
@@ -649,59 +651,60 @@
 	                				<h3 class="summary-title">Cart Total</h3><!-- End .summary-title -->
 
 	                				<table class="table table-summary">
-	                					<tbody>
-	                						<tr class="summary-subtotal">
-	                							<td>Subtotal:</td>
-	                							<td>{{sub_total}}</td>
-	                						</tr><!-- End .summary-subtotal -->
-	                						<tr class="summary-shipping">
-	                							<td>Shipping:</td>
-	                							<td>&nbsp;</td>
-	                						</tr>
+                                        <tbody>
+                                            <tr class="summary-subtotal">
+                                                <td>Subtotal:</td>
+                                                <td>₹{{ sub_total }}</td>
+                                            </tr><!-- End .summary-subtotal -->
+                                            <tr class="summary-shipping">
+                                                <td>Shipping:</td>
+                                                <td>&nbsp;</td>
+                                            </tr>
+                                            <tr class="summary-shipping-row">
+                                                <td>
+                                                    <div class="custom-control custom-radio">
+                                                        <input type="radio" id="free-shipping" name="shipping" class="custom-control-input">
+                                                        <label class="custom-control-label" for="free-shipping">Free Shipping</label>
+                                                    </div><!-- End .custom-control -->
+                                                </td>
+                                                <td>$0.00</td>
+                                            </tr><!-- End .summary-shipping-row -->
+                                            <tr class="summary-shipping-row">
+                                                <td>
+                                                    <div class="custom-control custom-radio">
+                                                        <input type="radio" id="standart-shipping" name="shipping" class="custom-control-input">
+                                                        <label class="custom-control-label" for="standart-shipping">Standard:</label>
+                                                    </div><!-- End .custom-control -->
+                                                </td>
+                                                <td>$10.00</td>
+                                            </tr><!-- End .summary-shipping-row -->
+                                            <tr class="summary-shipping-row">
+                                                <td>
+                                                    <div class="custom-control custom-radio">
+                                                        <input type="radio" id="express-shipping" name="shipping" class="custom-control-input">
+                                                        <label class="custom-control-label" for="express-shipping">Express:</label>
+                                                    </div><!-- End .custom-control -->
+                                                </td>
+                                                <td>$20.00</td>
+                                            </tr><!-- End .summary-shipping-row -->
+                                            <tr class="summary-shipping-estimate">
+                                                <td>Estimate for Your Country<br> <a href="dashboard.html">Change address</a></td>
+                                                <td>&nbsp;</td>
+                                            </tr><!-- End .summary-shipping-estimate -->
+                                            <tr class="summary-total">
+                                                <td>Total:</td>
+                                                <td>{{ sub_total }}</td>
+                                            </tr><!-- End .summary-total -->
+                                            <tr class="summary-checkout">
+                                                <td colspan="2" class="text-center">
+                                                    <a href="{% url 'cartapp:proceed_to_checkout' %}" class="btn btn-primary">Proceed to Checkout</a>
+                                                </td>
+                                            </tr><!-- End .summary-checkout -->
+                                        </tbody>
+                                    </table><!-- End .table table-summary -->
+                                    
 
-	                						<tr class="summary-shipping-row">
-	                							<td>
-													<div class="custom-control custom-radio">
-														<input type="radio" id="free-shipping" name="shipping" class="custom-control-input">
-														<label class="custom-control-label" for="free-shipping">Free Shipping</label>
-													</div><!-- End .custom-control -->
-	                							</td>
-	                							<td>$0.00</td>
-	                						</tr><!-- End .summary-shipping-row -->
-
-	                						<tr class="summary-shipping-row">
-	                							<td>
-	                								<div class="custom-control custom-radio">
-														<input type="radio" id="standart-shipping" name="shipping" class="custom-control-input">
-														<label class="custom-control-label" for="standart-shipping">Standart:</label>
-													</div><!-- End .custom-control -->
-	                							</td>
-	                							<td>$10.00</td>
-	                						</tr><!-- End .summary-shipping-row -->
-
-	                						<tr class="summary-shipping-row">
-	                							<td>
-	                								<div class="custom-control custom-radio">
-														<input type="radio" id="express-shipping" name="shipping" class="custom-control-input">
-														<label class="custom-control-label" for="express-shipping">Express:</label>
-													</div><!-- End .custom-control -->
-	                							</td>
-	                							<td>$20.00</td>
-	                						</tr><!-- End .summary-shipping-row -->
-
-	                						<tr class="summary-shipping-estimate">
-	                							<td>Estimate for Your Country<br> <a href="dashboard.html">Change address</a></td>
-	                							<td>&nbsp;</td>
-	                						</tr><!-- End .summary-shipping-estimate -->
-
-	                						<tr class="summary-total">
-	                							<td>Total:</td>
-	                							<td>{{sub_total}}</td>
-	                						</tr><!-- End .summary-total -->
-	                					</tbody>
-	                				</table><!-- End .table table-summary -->
-
-	                				{% comment %} <a href="{% url 'proceed' %}" class="btn btn-outline-primary-2 btn-order btn-block" >PROCEED TO CHECKOUT</a> {% endcomment %}
+	                				
 	                			</div><!-- End .summary -->%
 
 		            			<a href="category.html" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i></a>
@@ -1102,11 +1105,12 @@
         }
         return cookieValue;
     }
-    function updateQuantity(prod_id,count){
+    function updateQuantity(prod_id,count,size){
         console.log('hiiiiii',prod_id)
         const data =new URLSearchParams()
         data.append('product_id',prod_id)
         data.append('count',count)
+        data.append('size',size)
 
 
         const csrftoken = getCookie('csrftoken');
@@ -1117,6 +1121,15 @@
                 'X-CSRFToken':csrftoken
             },
             body:data.toString()
+        })
+        .then(response=>response.json())
+        .then(data=>{
+           if(data.status=='success'){
+            console.log(data)
+            location.reload()
+           }
+                
+        
         })
     }
 </script>
