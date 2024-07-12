@@ -13,6 +13,10 @@ urlpatterns = [
     path("otpverification/<str:id>/", views.otp_varification, name="otpverification"),
     path('otp/<int:id>/', views.otp, name='otp'), 
     path('shop/',views.shop,name='shop'),
+    path('shop_to_home/',views.shop_to_home,name='shop_to_home'),
+    
+    
+    
     
     
 ] 

@@ -69,7 +69,11 @@
                     <select id="cat" name="cat" class="form-control" required>
                         <option value="" selected disabled>Select Category</option>
                         {% for i in catyy %}
-                        <option value="{{i.id}}">{{i.category_name}}</option>
+                        {%if i.id == product.category_id%}
+                        <option value="{{i.id}}" selected>{{i.category_name}}</option>
+                        {%else%}
+                        <option value="{{i.id}}" >{{i.category_name}}</option>
+                        {%endif%}
                          {%endfor%}
                         
                     </select>

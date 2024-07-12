@@ -5,6 +5,9 @@ from userprofile.models import UserAddress
 from products.models import newproducts
 from django.contrib import messages
 from django.http import JsonResponse
+from cartapp.models import Orders
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
 
 
 
@@ -25,16 +28,19 @@ def userdashboard(request):
         'phone': phone,
     }
     
-    m=CustomUser.objects.get(email=email)
-    address=UserAddress.objects.filter(user=m)
+    user = get_object_or_404(CustomUser, email=email)
+    print(user.id,'helllllllllllloooooooooooooooooooooooo')
+    address = UserAddress.objects.filter(user=user.id)
+        
+    ordered_items = Orders.objects.filter(user=user.id).order_by('-id')
+    
     address_context = {
-            'addresses': address
-        }
+        'addresses': address,
+        'ordered_items': ordered_items
+    }
     context.update(address_context)
     
-    
-    
-    return render(request, 'userside/userdashboard.html',context)
+    return render(request, 'userside/userdashboard.html', context)
 
 
 
@@ -151,3 +157,21 @@ def change_password(request):
 def signout(request):
     request.session.flush()
     return redirect('logintohome:homee')
+
+# def order_details(request):
+#     user_email=request.session['email']
+#     user=CustomUser.objects.get(email=user_email)
+#     print(user,'HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIHELPPPP')
+#     ordered_items=Orders.objects.get(user_id=user.id)
+#     return redirect('userprofile:userdashboard',ordered_items)
+
+def view_details(request, ord_id):
+    ordered_item = get_object_or_404(Orders, id=ord_id)
+    
+    return render(request, "userside/view.html", {'ordered_item': ordered_item})
+def cancelOrder(request,or_id):
+    ord=Orders.objects.get(id=or_id)
+    ord.status="Cancelled"
+    ord.save()
+    return redirect(reverse('userprofile:view_details', args=[or_id]))
+    

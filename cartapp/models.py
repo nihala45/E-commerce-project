@@ -1,6 +1,8 @@
 from django.db import models
 from logintohome.models import CustomUser
 from products.models import newproducts
+from userprofile.models import UserAddress
+
 
 # # Create your models here.
 class  MyCart(models.Model):
@@ -17,3 +19,19 @@ class  MyCart(models.Model):
     @property
     def total_amount(self):
         return self.quantity * self.product.price
+    
+    
+class Orders(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    ordered_date = models.DateField()
+    # delivered_date = models.DateField(null=True)
+    payment_method = models.CharField(max_length=100)
+    status = models.CharField(max_length=100, default="Pending")
+    # return_status = models.CharField(max_length=100, null=True, blank=True)
+    address = models.ForeignKey(UserAddress, on_delete=models.CASCADE)
+    # discount_amt = models.DecimalField(max_digits=30, decimal_places=1, default=0)
+    product = models.ForeignKey(newproducts, on_delete=models.CASCADE)
+    product_qty = models.PositiveIntegerField()  
+    product_price=models.IntegerField()
+    product_size=models.CharField(max_length=10)
+                                

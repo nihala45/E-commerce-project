@@ -98,7 +98,7 @@
                         <nav class="main-nav">
                             <ul class="menu sf-arrows">
                                 <li class="megamenu-container active">
-                                    <a href="index.html" class="sf-with-ul">Home</a>
+                                    <a href="{% url 'logintohome:shop_to_home' %}" class="sf-with-ul">Home</a>
 
                                     <div class="megamenu demo">
                                         <div class="menu-col">
@@ -282,7 +282,7 @@
                                     </div><!-- End .megamenu -->
                                 </li>
                                 <li>
-                                    <a href="category.html" class="sf-with-ul">Shop</a>
+                                    <a href="{% url 'logintohome:shop' %}" class="sf-with-ul">Shop</a>
 
                                     <div class="megamenu megamenu-md">
                                         <div class="row no-gutters">
@@ -555,7 +555,7 @@
                                 </div><!-- End .dropdown-cart-total -->
 
                                 <div class="dropdown-cart-action">
-                                    <a href="cart.html" class="btn btn-primary">View Cart</a>
+                                    <a href="{% url 'cartapp:show_cart' %}" class="btn btn-primary">View Cart</a>
                                     <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
                                 </div><!-- End .dropdown-cart-total -->
                             </div><!-- End .dropdown-menu -->
@@ -596,35 +596,35 @@
                                 <div class="product-gallery product-gallery-vertical">
                                     <div class="row">
                                         <figure class="product-main-image">
-                                            <a href="index.html" class="logo">
-                                                <img src="{{ product.image1.url }}" alt="Molla Logo" width="105" height="25">
+                                            <a href="{{ product.image1.url }}" data-lightbox="product-zoom-gallery" data-title="{{ product.name }}">
+                                                <img id="product-zoom" src="{{ product.image1.url }}" alt="{{ product.name }}" width="400" height="400">
                                             </a>
                                             <a href="#" id="btn-product-gallery" class="btn-product-gallery">
                                                 <i class="icon-arrows"></i>
                                             </a>
                                         </figure><!-- End .product-main-image -->
-
+                            
                                         <div id="product-zoom-gallery" class="product-image-gallery">
-                                            <a href="index.html" class="logo">
-                                                <img src="{{ product.image1.url }}" alt="Molla Logo" width="105" height="25">
+                                            <a href="{{ product.image1.url }}" data-image="{{ product.image1.url }}" data-zoom-image="{{ product.image1.url }}">
+                                                <img src="{{ product.image1.url }}" alt="Product Image">
                                             </a>
-
-                                            <a href="index.html" class="logo">
-                                                <img src="{{ product.image2.url }}" alt="Molla Logo" width="105" height="25">
+                            
+                                            <a href="{{ product.image2.url }}" data-image="{{ product.image2.url }}" data-zoom-image="{{ product.image2.url }}">
+                                                <img src="{{ product.image2.url }}" alt="Product Image">
                                             </a>
-
-                                            <a href="index.html" class="logo">
-                                                <img src="{{ product.image3.url }}" alt="Molla Logo" width="105" height="25">
+                            
+                                            <a href="{{ product.image3.url }}" data-image="{{ product.image3.url }}" data-zoom-image="{{ product.image3.url }}">
+                                                <img src="{{ product.image3.url }}" alt="Product Image">
                                             </a>
-
-                                            <a href="index.html" class="logo">
-                                                <img src="{{ product.image4.url }}" alt="Molla Logo" width="105" height="25">
+                            
+                                            <a href="{{ product.image4.url }}" data-image="{{ product.image4.url }}" data-zoom-image="{{ product.image4.url }}">
+                                                <img src="{{ product.image4.url }}" alt="Product Image">
                                             </a>
                                         </div><!-- End .product-image-gallery -->
                                     </div><!-- End .row -->
                                 </div><!-- End .product-gallery -->
                             </div><!-- End .col-md-6 -->
-
+                            
                             <div class="col-md-6">
                                 <div class="product-details">
                                     <h1 class="product-title">{{product.name}}</h1><!-- End .product-title -->
@@ -656,34 +656,44 @@
                                             </a> {% endcomment %}
                                         </div><!-- End .product-nav -->
                                     </div><!-- End .details-filter-row -->
+{% comment %} <h4>{{product.small}},fadscadvs</h4> {% endcomment %}{% if product.small == '0' and product.medium == '0' and product.large == '0' %}
+    <div class="product-details-action">
+        <button type="button" class="btn-product btn-cart" disabled><span>Out of stock</span></button>
+    </div><!-- End .product-details-action -->
+{% else %}
+    <form id="add-to-cart-form" action="{% url 'cartapp:add_to_cart' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="product_id" value="{{ product.id }}">
 
-                                    <form action="{% url 'cartapp:add_to_cart' %}" method="post">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="product_id" value="{{ product.id }}">
-        
-                                        <div class="details-filter-row details-row-size">
-                                            <label for="size">Size:</label>
-                                            <div class="select-custom">
-                                                <select name="size" id="size" class="form-control">
-                                                    <option value="s">Small</option>
-                                                    <option value="m">Medium</option>
-                                                    <option value="l">Large</option>
-                                                </select>
-                                            </div>
-                                            <a href="#" class="size-guide"><i class="icon-th-list"></i>size guide</a>
-                                        </div><!-- End .details-filter-row -->
-        
-                                        <div class="details-filter-row details-row-size">
-                                            <label for="qty">Qty:</label>
-                                            <div class="product-details-quantity">
-                                                <input type="number" name="quantity" id="qty" class="form-control" value="1" min="1" max="10" step="1" required>
-                                            </div><!-- End .product-details-quantity -->
-                                        </div><!-- End .details-filter-row -->
-        
-                                        <div class="product-details-action">
-                                            <button type="submit" class="btn-product btn-cart"><span>add to cart</span></button>
-                                        </div><!-- End .product-details-action -->
-                                    </form>
+        <div class="details-filter-row details-row-size">
+            <label for="size">Size:</label>
+            <div class="select-custom">
+                <select name="size" id="size" class="form-control">
+                    {% if product.small == '0' %}
+                        <option value="s" disabled>Small</option>
+                    {% else %}
+                        <option value="s">Small</option>
+                    {% endif %}
+                    {% if product.medium == '0' %}
+                        <option value="m" disabled>Medium</option>
+                    {% else %}
+                        <option value="m">Medium</option>
+                    {% endif %}
+                    {% if product.large == '0' %}
+                        <option value="l" disabled>Large</option>
+                    {% else %}
+                        <option value="l">Large</option>
+                    {% endif %}
+                </select>
+            </div>
+        </div>
+
+        <div class="product-details-action">
+            <button type="submit" id="add-to-cart-btn" class="btn-product btn-cart"><span>Add to Cart</span></button>
+        </div><!-- End .product-details-action -->
+    </form>
+{% endif %}
+
                                     <div class="product-details-footer">
                                         <div class="product-cat">
                                             <span>Category:</span>
@@ -1444,18 +1454,19 @@
     </div><!-- End .modal -->
 
     <!-- Plugins JS File -->
-    <script src="static/js/jquery.min.js"></script>
-    <script src="static/js/bootstrap.bundle.min.js"></script>
-    <script src="static/js/jquery.hoverIntent.min.js"></script>
-    <script src="static/js/jquery.waypoints.min.js"></script>
-    <script src="static/js/superfish.min.js"></script>
-    <script src="static/js/owl.carousel.min.js"></script>
-    <script src="static/js/bootstrap-input-spinner.js"></script>
-    <script src="static/js/jquery.elevateZoom.min.js"></script>
-    <script src="static/js/bootstrap-input-spinner.js"></script>
-    <script src="static/js/jquery.magnific-popup.min.js"></script>
+  
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/jquery.hoverIntent.min.js' %}"></script>
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/superfish.min.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-input-spinner.js' %}"></script>
+    <script src="{% static 'js/jquery.elevateZoom.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-input-spinner.js' %}"></script>
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
     <!-- Main JS File -->
-    <script src="static/js/main.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
 </body>
 
 

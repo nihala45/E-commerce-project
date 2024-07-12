@@ -5,7 +5,7 @@ from .models import CustomUser
 from products.models import newproducts
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-
+from category.models import categories
 
 
 # Create your views here.
@@ -19,7 +19,6 @@ def signupp(request):
         phone = request.POST['register-phone']
         password = request.POST['register-password']
         confirm_password = request.POST['register-confirm-password']
-        print('USERNAMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE',username)
         
         already = CustomUser.objects.filter(email=email)
         if len(phone) != 10:
@@ -48,16 +47,13 @@ def loginn(request):
     if request.method == 'POST':
         email = request.POST.get('singin-email')
         password = request.POST.get('singin-password')
-        print(email,"9999999999999999999999")
         try:
             user = CustomUser.objects.get(email=email, password=password)
-            print(user,"88888888888888888")
             if user and not user.is_blocked:
                 
                 request.session['email']=email
                 request.session['phone'] = user.phone 
                 request.session['username'] = user.username
-                print("Session variables set successfully:", request.session.items())
                 return redirect('logintohome:homee')
             else:
                 print("2222222222222222")
@@ -71,7 +67,7 @@ def loginn(request):
 
 def homee(request):
     if 'email' in request.session:
-        print("9888888888888888888888888888888888899999")
+        
         user = request.session['email']
         return render(request,'userside/home.html',{'user12':user})
     return render(request,'userside/home.html')
@@ -84,7 +80,6 @@ def otp_varification(request,id):
     if request.method=='POST':
         user2 = CustomUser.objects.get(id=id)
         p=user2.otp_fld
-        print(p,'Hellooooo nihalasss')
         entered_otp=request.POST.get("otp")
         p=int(p)
         entered_otp=int(entered_otp)
@@ -108,5 +103,9 @@ def otp_varification(request,id):
 def shop(request):
     print("jjjjjjjjjjjjjjjjjjjjj")
     products1=newproducts.objects.all()
-    print(products1,"99999999999999999999999999999999999999999999999999999999999999999999999999")
-    return render(request,'userside/shop.html',{'products':products1})
+    category1=categories.objects.all()
+    return render(request,'userside/shop.html',{'products': products1, 'category': category1})
+
+def shop_to_home(request):
+    return redirect('logintohome:homee')
+

@@ -4,9 +4,10 @@ from logintohome.models import CustomUser
 from  cartapp.models import MyCart
 from django.http import JsonResponse
 from userprofile.models import UserAddress
+from django.contrib import messages
 # Create your views here.
-
-
+from datetime import date
+from cartapp.models import Orders
 def add_to_cart(request):
     if request.method == 'POST':
         product_id = request.POST.get('product_id')
@@ -66,10 +67,42 @@ def quantity_upadate(request):
         prod_id=request.POST.get('product_id') 
         count = int(request.POST.get('count'))
         prduct_size=request.POST.get('size')
+    products=newproducts.objects.get(id=prod_id)
+    product_quantity=0
+    if prduct_size == 's':
+         product_quantity=int(products.small)
+    elif prduct_size =='m':
+         product_quantity=int(products.medium)
+    else:
+         product_quantity=int(products.large)
+         
+    print(product_quantity,"gdghfahjnbwd")
+    
+        
+
     cart_product=MyCart.objects.get(user_id=user_id.id,product_id=prod_id,size=prduct_size)
-    cart_product.quantity+=count 
-    cart_product.save()
-    return JsonResponse({'status':'success'})
+    if count==1:
+        print("plus onee",product_quantity)
+        if (cart_product.quantity + count) > product_quantity:
+            print("out of stock")
+            return JsonResponse({'status':'out'})
+        else:
+            print("increasing")
+            cart_product.quantity+=count 
+            cart_product.save()
+            return JsonResponse({'status':'success'})
+    else:
+        if cart_product.quantity==1:
+            return JsonResponse({'status':'zero'})   
+        else:
+            cart_product.quantity+=count
+            cart_product.save()
+            return JsonResponse({'status':'success'})
+        
+            
+    
+    
+    
 
 
 def proceed_to_checkout(request):
@@ -89,4 +122,71 @@ def proceed_to_checkout(request):
     return render(request, 'userside/checkout.html', context)
 
 def place_order(request):
-    print(request.POST,"i love you da")
+    user_email = request.session['email']
+    user = CustomUser.objects.get(email=user_email)
+    cartItems=MyCart.objects.filter(user_id=user.id)   
+    
+    if request.method=='POST':
+        address_id=request.POST.get('selected_address')
+        payment_method=request.POST.get('payment_method')
+        ordered_date = date.today()
+        cart_items = MyCart.objects.filter(user_id=user.id)
+        address=UserAddress.objects.get(id=address_id)
+        
+        for item in cart_items:
+            print(address_id,item.product.id,item.quantity,"kkkkk",)
+            order_detail=Orders(
+                user=user,
+                address=address,
+                ordered_date=ordered_date,
+                payment_method=payment_method,
+                product=item.product,
+                status='Placed',
+                product_qty=item.quantity,
+                product_price=item.product.price * item.quantity,
+                product_size=item.size
+                ).save()
+            pro = newproducts.objects.get(id=item.product_id)
+            if item.size == 's':
+                pro.small = int(pro.small) - item.quantity
+            elif item.size == 'm':
+                pro.medium = int(pro.medium) - item.quantity
+            else:
+                pro.large = int(pro.large) - item.quantity
+            
+            pro.save()
+                
+                
+                
+                
+                
+                
+            
+            print(order_detail,"hiii")
+        
+        cart_items.delete()
+    return render(request,'userside/success.html')
+        
+
+        
+
+def continue_shopping(request):
+    return redirect('logintohome:shop')
+
+
+    
+    
+def show_cart(request):
+    user_email = request.session.get('email')
+    if user_email:
+        user = CustomUser.objects.get(email=user_email)
+        cart_items = MyCart.objects.filter(user_id=user.id)
+        context = {
+            'cart_items': cart_items
+        }
+        return render(request, 'userside/cart.html', context)
+    
+def Remove_cart_product(request,it_id):
+    cart_product = MyCart.objects.get(id=it_id)
+    cart_product.delete()
+    return redirect('cartapp:show_cart')

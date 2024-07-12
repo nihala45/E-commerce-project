@@ -3,20 +3,24 @@ from django.contrib import messages
 from category.models import categories
 import re
 from products.models import newproducts
-
+from django.contrib.auth.decorators import login_required
 from logintohome.models import CustomUser 
+from django.core.serializers import serialize
+from django.http import JsonResponse
 
-# Create your views here.
+@login_required(login_url='adminside:adminlogin')
 def categorymanagement(request):
-    categoryy = categories.objects.all()
-    print(categoryy,"ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg")
-    return render(request, 'customadmin/category.html', {'cat': categoryy})
+    category = categories.objects.all()
+    categories_json = serialize('json', category)  # Serialize QuerySet to JSON
+    categories_list = list(category.values())     # Convert QuerySet to list of dictionaries
+    return render(request, 'customadmin/category.html', {'category': categories_list})
 
+@login_required(login_url='adminside:adminlogin')
 def addcategory(request):
     return render(request, 'customadmin/addcategory.html')
 
+@login_required(login_url='adminside:adminlogin')
 def savecategory(request):
-    
     if request.method == 'POST':
         name = request.POST['category']
         print('CATEGORYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY')
@@ -40,15 +44,8 @@ def savecategory(request):
 
     return render(request, 'customadmin/addcategory.html')
 
-        
-def edit_category(request, category_id):
-    category = categories.objects.get(id=category_id)
-    context = {
-        'category_name': category.category_name,
-        'category_id': category.id, 
-    }
-    return render(request, 'customadmin/editcategory.html', context)
 
+@login_required(login_url='adminside:adminlogin')
 def edit_savecategory(request):
     if request.method == 'POST':
         category_id = request.POST.get('category_id')
@@ -60,6 +57,8 @@ def edit_savecategory(request):
             return redirect('category:categorymanagement')  
 
     return redirect('category:edit_category', category_id=category_id)
+
+
 
 def delete_category(request, category_id):
     category = get_object_or_404(categories, id=category_id)

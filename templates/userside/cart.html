@@ -97,7 +97,7 @@
                         <nav class="main-nav">
                             <ul class="menu sf-arrows">
                                 <li class="megamenu-container active">
-                                    <a href="index.html" class="sf-with-ul">Home</a>
+                                    <a href="{% url 'logintohome:shop_to_home' %}" class="sf-with-ul">Home</a>
 
                                     <div class="megamenu demo">
                                         <div class="menu-col">
@@ -281,7 +281,7 @@
                                     </div><!-- End .megamenu -->
                                 </li>
                                 <li>
-                                    <a href="category.html" class="sf-with-ul">Shop</a>
+                                    <a href="{% url 'logintohome:shop' %}" class="sf-with-ul">Shop</a>
 
                                     <div class="megamenu megamenu-md">
                                         <div class="row no-gutters">
@@ -554,7 +554,7 @@
                                 </div><!-- End .dropdown-cart-total -->
 
                                 <div class="dropdown-cart-action">
-                                    <a href="cart.html" class="btn btn-primary">View Cart</a>
+                                    <a href="{% url 'cartapp:show_cart' %}" class="btn btn-primary">View Cart</a>
                                     <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
                                 </div><!-- End .dropdown-cart-total -->
                             </div><!-- End .dropdown-menu -->
@@ -625,7 +625,15 @@
                                             
                                             <td class="total-col" id="total-price-{{ i.id }}">₹{{ i.total_amount }}</td>
 
-                                            <td class="remove-col"><button class="btn-remove"><i class="icon-close"></i></button></td>
+                                            <td class="remove-col">
+                                                <form action="{% url 'cartapp:Remove_cart_product' i.id %}" method="POST">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn-remove">
+                                                        <i class="icon-close"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                            
                                         </tr>
                                         {% endfor %}
                                     </tbody>
@@ -1085,6 +1093,7 @@
     <script src="static/js/jquery.waypoints.min.js"></script>
     <script src="static/js/superfish.min.js"></script>
     <script src="static/js/owl.carousel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="static/js/bootstrap-input-spinner.js"></script>
     <!-- Main JS File -->
     <script src="static/js/main.js"></script>
@@ -1127,6 +1136,11 @@
            if(data.status=='success'){
             console.log(data)
             location.reload()
+           }else if(data.status=='out'){
+            Swal.fire("Product is out of stock");
+
+           }else{
+            Swal.fire('can not decrease anymore')
            }
                 
         

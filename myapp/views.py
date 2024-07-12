@@ -17,7 +17,10 @@ import re
 
 #from .models import CustomUser
 from django.contrib.auth.decorators import login_required
-
+from logintohome.models import CustomUser
+from userprofile.models import UserAddress
+from products.models import newproducts
+from cartapp.models import MyCart
 
 
 # USER SIDE

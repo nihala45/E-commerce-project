@@ -114,10 +114,15 @@
                     <a href="{%url 'usermanagement:usermanagement' %}" class="nav_link"> <i title="Users" class='bx bx-user nav_icon'></i> <span class="nav_name">Users</span> </a>
                     <a href="{%url 'products:products'%}" class="nav_link"> <i title="Products"  class='bx bx-message-square-detail nav_icon'></i> <span class="nav_name">Products</span> </a>
                     <a href="{%url 'category:categorymanagement'%}" class="nav_link"> <i title="Categories" class='bx bx-bookmark nav_icon'></i> <span class="nav_name">Categories</span> </a> 
+                    <a href="{% url 'ordermanagement:order_management' %}" class="nav_link">
+                        <i title="Order" class='bx bx-cart nav_icon'></i>
+                        <span class="nav_name">Order</span>
+                    </a>
+
                    
 
 
-                    <a href="#logout" class="edit" data-toggle="modal"><button class="btn btn-success"><span>Logout</span></button></a>
+                    <a href="{% url 'adminside:logout_view' %}" class="edit"><span>Logout</span></a>
             </nav>
         </div>
         <!--Container Main start-->
