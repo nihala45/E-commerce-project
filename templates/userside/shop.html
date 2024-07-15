@@ -2,9 +2,6 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
-
-<!-- molla/category.html  22 Nov 2019 10:02:48 GMT -->
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,28 +10,29 @@
     <meta name="keywords" content="HTML5 Template">
     <meta name="description" content="Molla - Bootstrap eCommerce Template">
     <meta name="author" content="p-themes">
+    
     <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="static/images/icons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="static/images/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="static/images/icons/favicon-16x16.png">
-    <link rel="manifest" href="static/images/icons/site.html">
-    <link rel="mask-icon" href="static/images/icons/safari-pinned-tab.svg" color="#666666">
-    <link rel="shortcut icon" href="static/images/icons/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/icons/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/icons/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/icons/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'images/icons/site.html' %}">
+    <link rel="mask-icon" href="{% static 'images/icons/safari-pinned-tab.svg' %}" color="#666666">
+    <link rel="shortcut icon" href="{% static 'images/icons/favicon.ico' %}">
     <meta name="apple-mobile-web-app-title" content="Molla">
     <meta name="application-name" content="Molla">
     <meta name="msapplication-TileColor" content="#cc9966">
-    <meta name="msapplication-config" content="static/images/icons/browserconfig.xml">
+    <meta name="msapplication-config" content="{% static 'images/icons/browserconfig.xml' %}">
     <meta name="theme-color" content="#ffffff">
+    
     <!-- Plugins CSS File -->
-    <link rel="stylesheet" href="static/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-
+    <link rel="stylesheet" href="{% static 'css/plugins/owl-carousel/owl.carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'css/plugins/magnific-popup/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/plugins/nouislider/nouislider.css' %}">
+    
     <!-- Main CSS File -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-  
-    <link rel="stylesheet" href="static/css/plugins/owl-carousel/owl.carousel.css">
-    <link rel="stylesheet" href="static/css/plugins/magnific-popup/magnific-popup.css">
-    <link rel="stylesheet" href="static/css/plugins/nouislider/nouislider.css">
+
     <style>
         .product {
             display: flex;
@@ -129,7 +127,7 @@
                         <nav class="main-nav">
                             <ul class="menu sf-arrows">
                                 <li class="megamenu-container active">
-                                    <a href="{% url 'logintohome:shop_to_home' %}" class="sf-with-ul">Home</a>
+                                    <a href="" class="sf-with-ul">Home</a>
 
                                     <div class="megamenu demo">
                                         <div class="menu-col">
@@ -313,7 +311,7 @@
                                     </div><!-- End .megamenu -->
                                 </li>
                                 <li>
-                                    <a href="" class="sf-with-ul">Shop</a>
+                                    <a href="{% url 'logintohome:shop' %}" class="sf-with-ul">Shop</a>
 
                                     <div class="megamenu megamenu-md">
                                         <div class="row no-gutters">
@@ -498,10 +496,10 @@
 
                     <div class="header-right">
                         <div class="header-search">
-                            <a href="#" class="search-toggle" role="button" title="Search"><i class="icon-search"></i></a>
-                            <form action="#" method="get">
+                            <a href="" class="search-toggle" role="button" title="Search"><i class="icon-search"></i></a>
+                            <form action="{% url 'logintohome:filterProduct' %}" method="get">
                                 <div class="header-search-wrapper">
-                                    <label for="q" class="sr-only">Search</label>
+                                    <label for="" class="sr-only">Search</label>
                                     <input type="search" class="form-control" name="q" id="q" placeholder="Search in..." required>
                                 </div><!-- End .header-search-wrapper -->
                             </form>
@@ -625,13 +623,24 @@
 
                 				<div class="toolbox-right">
                 					<div class="toolbox-sort">
-                						<label for="sortby">Sort by:</label>
+                						
                 						<div class="select-custom">
-											<select name="sortby" id="sortby" class="form-control">
-												<option value="popularity" selected="selected">Most Popular</option>
-												<option value="rating">Most Rated</option>
-												<option value="date">Date</option>
-											</select>
+											<form method="GET" action="{% url 'logintohome:filterProduct' %}">
+                                                <div class="toolbox-sort">
+                                                    <label for="sortby"></label>
+                                                    <div class="select-custom">
+                                                        <select name="sortby" id="sortby" class="form-control" onchange="this.form.submit()">
+                                                            <option value="" selected="selected" disabled>Select</option>
+                                                            <option value="new_arrival">New Arrival</option>
+                                                            <option value="Low_to_High">Low to High</option>
+                                                            <option value="High_to_Low">High to Low</option>
+                                                            <option value="a_to_z">A-Z</option>
+                                                            <option value="z_to_a">Z-A</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!-- Add your other filters here -->
+                                            </form>
 										</div>
                 					</div><!-- End .toolbox-sort -->
                 					<div class="toolbox-layout">
@@ -705,17 +714,17 @@
                             
                                     <div class="product-body">
                                         <div class="product-cat">
-                                            <a href="/usermanagement/">Women</a>
+                                            <a href="/usermanagement/">{{prod.category.category_name}}</a>
                                         </div><!-- End .product-cat -->
                                         <h3 class="product-title"><a href="/productdetails/{{prod.id}}">{{prod.name}}</a></h3><!-- End .product-title -->
                                         <div class="product-price">
-                                            {{prod.price}}
+                                            ₹ {{prod.price}}
                                         </div><!-- End .product-price -->
                                         <div class="ratings-container">
                                             <div class="ratings">
                                                 <div class="ratings-val" style="width: 20%;"></div><!-- End .ratings-val -->
                                             </div><!-- End .ratings -->
-                                            <span class="ratings-text">( 2 Reviews )</span>
+                                            {% comment %} <span class="ratings-text">( 2 Reviews )</span> {% endcomment %}
                                         </div><!-- End .rating-container -->
                             
                                         <div class="product-nav product-nav-thumbs">
@@ -764,23 +773,33 @@
 									        Category
 									    </a>
 									</h3><!-- End .widget-title -->
-                                    {% for i in  category%}
+                                    {% comment %} {% if products %} {% endcomment %}
+
 									<div class="collapse show" id="widget-1">
 										<div class="widget-body">
 											<div class="filter-items filter-items-count">
 												<div class="filter-item">
-													<div class="custom-control custom-checkbox">
-														<input type="checkbox" class="custom-control-input" id="cat-1">
-														<label class="custom-control-label" for="cat-1">{{i.category_name}}</label>
-													</div><!-- End .custom-checkbox -->
+                                                    <form action="{% url 'logintohome:filterProduct' %}" method="POST" id="filterForm">
+                                                        {% for i in category %}
+                                                        {% csrf_token%}
+                                                        <div class="custom-control custom-checkbox"> 
+                                                            <input type="checkbox" name="categories" value="{{ i.id }}" class="custom-control-input category-checkbox" id="cat-{{ i.id }}">
+                                                            <label class="custom-control-label" for="cat-{{ i.id }}">{{ i.category_name }}</label>
+                                                        </div><!-- End .custom-checkbox -->
+                                                        {% endfor %}
+                                                        <button type="submit" class="btn btn-default border"><span class="text-danger">Filter</span></button>
+                                                    </form>
 													
-												</div><!-- End .filter-item -->
+												</div><!-- End .filter-item --> 
 
 											
 											</div><!-- End .filter-items -->
 										</div><!-- End .widget-body -->
 									</div><!-- End .collapse -->
-                                    {% endfor %}
+                                   
+                                    {% comment %} {% else %} {% endcomment %}
+            {% comment %} <p>No products found.</p> {% endcomment %}
+        {% comment %} {% endif %} {% endcomment %}
         						</div><!-- End .widget -->
 
         						<div class="widget widget-collapsible">
@@ -793,12 +812,7 @@
 									<div class="collapse show" id="widget-2">
 										<div class="widget-body">
 											<div class="filter-items">
-												<div class="filter-item">
-													<div class="custom-control custom-checkbox">
-														<input type="checkbox" class="custom-control-input" id="size-1">
-														<label class="custom-control-label" for="size-1">XS</label>
-													</div><!-- End .custom-checkbox -->
-												</div><!-- End .filter-item -->
+												
 
 												<div class="filter-item">
 													<div class="custom-control custom-checkbox">
@@ -1317,20 +1331,62 @@
     </div><!-- End .modal -->
 
     <!-- Plugins JS File -->
-    <script src="static/js/jquery.min.js"></script>
-    <script src="static/js/bootstrap.bundle.min.js"></script>
-    <script src="static/js/jquery.hoverIntent.min.js"></script>
-    <script src="static/js/jquery.waypoints.min.js"></script>
-    <script src="static/js/superfish.min.js"></script>
-    <script src="static/js/owl.carousel.min.js"></script>
-    <script src="static/js/wNumb.js"></script>
-    <script src="static/js/bootstrap-input-spinner.js"></script>
-    <script src="static/js/jquery.magnific-popup.min.js"></script>
-    <script src="static/js/nouislider.min.js"></script>
-    <!-- Main JS File -->
-    <script src="static/js/main.js"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/jquery.hoverIntent.min.js' %}"></script>
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/superfish.min.js' %}"></script>
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/wNumb.js' %}"></script>
+    <script src="{% static 'js/bootstrap-input-spinner.js' %}"></script>
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'js/nouislider.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+    {% comment %} <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        
+        function productFilter(e) {
+            e.preventDefault();
+            
+            const csrftoken = getCookie('csrftoken');
+            // Access form elements and their values
+            let form = document.getElementById('filterForm');
+    
+            // Example: Accessing checkbox values
+            let checkboxes = form.querySelectorAll('input[name="categories"]:checked');
+            let selectedCategories = Array.from(checkboxes).map(cb => cb.value);
+            let formData = new URLSearchParams();
+            formData.append('selectedCategories', selectedCategories);
+            
+            // Log the selected categories
+            console.log('Selected Categories:', selectedCategories);
+            fetch("{% url 'logintohome:filterProduct' %}",{
+                method:"POST",
+                headers:{
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrftoken
+                },
+                body: formData.toString()
+            })
+        }
+    </script> {% endcomment %}
 </body>
 
+    
 
-<!-- molla/category.html  22 Nov 2019 10:02:52 GMT -->
+
 </html>

@@ -8,7 +8,7 @@ from logintohome.models import CustomUser
 class UserAddress(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     address_name = models.CharField(max_length=100)
-    address_Email = models.EmailField(unique=True)
+    address_Email = models.EmailField()
     address_Phone = models.CharField(max_length=100)
     Address = models.CharField(max_length=100)
     landmark =models.CharField(max_length=100)

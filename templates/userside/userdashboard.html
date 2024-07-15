@@ -37,24 +37,61 @@
 
 <body>
       <!-- EDIT ADDRESS -->
-    <div class="modal fade" id="editaddress-modal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal fade" id="editaddress-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"><i class="icon-close"></i></span>
                     </button>
-    
+                    
                     <div class="form-box">
                         <div class="form-tab">
                             <ul class="nav nav-pills nav-fill nav-border-anim" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin" role="tab" aria-controls="signin" aria-selected="true">EDIT ADDRESS</a>
+                                    <a class="nav-link active" id="editaddress-tab" data-toggle="tab" href="#editaddress" role="tab" aria-controls="editaddress" aria-selected="true">Edit Address</a>
                                 </li>
                             </ul>
                             <div class="tab-content" id="tab-content-5">
-                                <div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
-                                  
+                                <div class="tab-pane fade show active" id="editaddress" role="tabpanel" aria-labelledby="editaddress-tab">
+                                    <form action="" method="POST" class="form-horizontal">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="username">Username</label>
+                                            <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phone">Phone</label>
+                                            <input type="tel" class="form-control" id="phone" name="phone" value="{{ user.phone }}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="address">Address</label>
+                                            <input type="text" class="form-control" id="address" name="address" value="{{ user.address }}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="city">City</label>
+                                            <input type="text" class="form-control" id="city" name="city" value="{{ user.city }}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="district">District</label>
+                                            <input type="text" class="form-control" id="district" name="district" value="{{ user.district }}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="state">State</label>
+                                            <input type="text" class="form-control" id="state" name="state" value="{{ user.state }}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="pincode">PIN Code</label>
+                                            <input type="text" class="form-control" id="pincode" name="pincode" value="{{ user.pincode }}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -63,6 +100,7 @@
             </div><!-- End .modal-content -->
         </div><!-- End .modal-dialog -->
     </div><!-- End .modal -->
+    
 
 
 
@@ -87,59 +125,73 @@
                             </ul>
                             <div class="tab-content" id="tab-content-5">
                                 <div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
-                                    <form id="address-form" action="{% url 'userprofile:add_user_address' %}" method="post">
-                                        {% csrf_token %}
+                                    <form id="address-form" onSubmit="addAddress(event)">
                                         
                                         <div class="form-group">
                                             <label for="address-email">Email address *</label>
-                                            <input type="text" class="form-control" id="address-email" name="address-email">
+                                            <input type="email" class="form-control" id="address-email" name="address-email">
                                             <p class="error-message" style="color:red;" id="email-error"></p>
                                         </div><!-- End .form-group -->
                                     
                                         <div class="form-group">
-                                            <label for="address-username">Username *</label>
-                                            <input type="text" class="form-control" id="address-username" name="address-username">
+                                            
+                                            <p id="error-name" class="text-danger"></p>
+
+                                            <label for="address-username">Name *</label>
+                                            <input type="text" class="form-control" id="address-name" name="address-name">
                                             <p class="error-message" style="color:red;" id="username-error"></p>
                                         </div><!-- End .form-group -->
                                     
                                         <div class="form-group">
+                                            <p id="error-phone" class="text-danger"></p>
                                             <label for="address-phone">Phone *</label>
-                                            <input type="tel" class="form-control" id="address-phone" name="address-phone">
+                                            <input type="number" class="form-control" id="address-phone" name="address-phone">
                                             <p class="error-message" style="color:red;" id="phone-error"></p>
                                         </div><!-- End .form-group -->
                                     
                                         <div class="form-group">
+                                            <p id="error-address" class="text-danger"></p>
                                             <label for="detaild-address">Address *</label>
                                             <input type="text" class="form-control" id="detaild-address" name="detaild-address">
                                             <p class="error-message" style="color:red;" id="address-error"></p>
                                         </div><!-- End .form-group -->
                                     
                                         <div class="form-group">
+                                            <p id="error-landmark" class="text-danger"></p>
+
                                             <label for="address-landmark">Landmark</label>
                                             <input type="text" class="form-control" id="address-landmark" name="address-landmark">
                                         </div><!-- End .form-group -->
                                     
                                         <div class="form-group">
+                                            <p id="error-city" class="text-danger"></p>
+
                                             <label for="address-city">City *</label>
                                             <input type="text" class="form-control" id="address-city" name="address-city">
                                             <p class="error-message" style="color:red;" id="city-error"></p>
                                         </div><!-- End .form-group -->
                                     
                                         <div class="form-group">
+                                            <p id="error-district" class="text-danger"></p>
+
                                             <label for="address-district">District *</label>
                                             <input type="text" class="form-control" id="address-district" name="address-district">
                                             <p class="error-message" style="color:red;" id="district-error"></p>
                                         </div><!-- End .form-group -->
                                     
                                         <div class="form-group">
+                                            <p id="error-state" class="text-danger"></p>
+
                                             <label for="address-state">State *</label>
                                             <input type="text" class="form-control" id="address-state" name="address-state">
                                             <p class="error-message" style="color:red;" id="state-error"></p>
                                         </div><!-- End .form-group -->
                                     
                                         <div class="form-group">
+                                            <p id="error-pin" class="text-danger"></p>
+
                                             <label for="address-pin">PIN *</label>
-                                            <input type="text" class="form-control" id="address-pin" name="address-pin">
+                                            <input type="number" class="form-control" id="address-pin" name="address-pin">
                                             <p class="error-message" style="color:red;" id="pin-error"></p>
                                         </div><!-- End .form-group -->
                                     
@@ -223,7 +275,7 @@
                                     <li><a href="wishlist.html"><i class="icon-heart-o"></i>Wishlist <span>(3)</span></a></li>
                                     <li><a href="about.html">About Us</a></li>
                                     <li><a href="contact.html">Contact Us</a></li>
-                                    <li><a href="#signin-modal" data-toggle="modal"><i class="icon-user"></i>Login</a></li>
+                                    {% comment %} <li><a href="#signin-modal" data-toggle="modal"><i class="icon-user"></i>Login</a></li> {% endcomment %}
                                 </ul>
                             </li>
                         </ul><!-- End .top-menu -->
@@ -737,31 +789,30 @@
 	                <div class="container">
 	                	<div class="row">
 	                		<aside class="col-md-4 col-lg-3">
-	                			<ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
-								    <li class="nav-item">
-								        <a class="nav-link active" id="tab-dashboard-link" data-toggle="tab" href="#tab-dashboard" role="tab" aria-controls="tab-dashboard" aria-selected="true">Dashboard</a>
-								    </li>
-								    <li class="nav-item">
-								        <a class="nav-link" id="tab-orders-link" data-toggle="tab" href="#tab-orders" role="tab" aria-controls="tab-orders" aria-selected="false">Orders</a>
-								    </li>
-								    <li class="nav-item">
-								        <a class="nav-link" id="tab-downloads-link" data-toggle="tab" href="#tab-downloads" role="tab" aria-controls="tab-downloads" aria-selected="false">Change Password</a>
-								    </li>
-								    <li class="nav-item">
-								        <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address" role="tab" aria-controls="tab-address" aria-selected="false">Adresses</a>
-								    </li>
-								    <li class="nav-item">
-								        <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account" role="tab" aria-controls="tab-account" aria-selected="false">Account Details</a>
-								    </li>
-								    <li class="nav-item">
-								        <a class="nav-link" href="{%url 'userprofile:signout' %}">Sign Out</a>
-								    </li>
-								</ul>
-	                		</aside><!-- End .col-lg-3 -->
-
+                                <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="tab-dashboard-link" data-toggle="tab" href="#tab-dashboard" role="tab" aria-controls="tab-dashboard">Dashboard</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tab-orders-link" data-toggle="tab" href="#tab-orders" role="tab" aria-controls="tab-orders">Orders</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tab-downloads-link" data-toggle="tab" href="#tab-downloads" role="tab" aria-controls="tab-downloads">Change Password</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address" role="tab" aria-controls="tab-address">Addresses</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account" role="tab" aria-controls="tab-account">Account Details</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'userprofile:signout' %}">Sign Out</a>
+                                    </li>
+                                </ul>
+                            </aside><!-- End .col-lg-3 -->
 	                		<div class="col-md-8 col-lg-9">
                                     <div class="tab-content">
-                                        <div class="tab-pane fade" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
+                                        <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
 {% comment %} 
                                         <div class="custom-div" style="width: 400px; height: 280px; background-color: #DCDCDC; border: 10px solid white;">
                                             <h2 style='margin-left:10px; margin-top:10px;' >User Details</h2>
@@ -1320,96 +1371,128 @@
 <script src="{% static 'js/main.js' %}"></script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        console.log("Script loaded successfully");
-        
-        const form = document.getElementById('address-form');
+    function addAddress(e){
+       console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
+        document.getElementById('error-name').textContent = '';
+        document.getElementById('error-phone').textContent = '';
+        document.getElementById('error-address').textContent = '';
+        document.getElementById('error-landmark').textContent = '';
+        document.getElementById('error-city').textContent = '';
+        document.getElementById('error-district').textContent = '';
+        document.getElementById('error-state').textContent = '';
+        document.getElementById('error-pin').textContent = '';
+
+
+       
+        e.preventDefault()
+        let Email=document.getElementById('address-email').value
+        let name=document.getElementById('address-name').value
+        let phone=document.getElementById('address-phone').value
+        let Address=document.getElementById('detaild-address').value
+        let Landmark=document.getElementById('address-landmark').value
+        let city=document.getElementById('address-city').value
+        let District=document.getElementById('address-district').value
+        let state=document.getElementById('address-state').value
+        let pin=document.getElementById('address-pin').value
+
+
     
-        form.addEventListener('submit', function (event) {
-            console.log("Form submission prevented");
-            // Prevent form submission
-            event.preventDefault();
-    
-            // Clear previous error messages
-            document.querySelectorAll('.error-message').forEach(function (el) {
-                el.textContent = '';
-            });
-    
-            // Validate fields
-            let hasError = false;
-    
-            // Email validation
-            const email = document.getElementById('address-email').value;
-            if (!validateEmail(email)) {
-                document.getElementById('email-error').textContent = 'Please enter a valid email address.';
-                hasError = true;
-            }
-    
-            // Username validation
-            const username = document.getElementById('address-username').value;
-            if (!username || username.includes(' ')) {
-                document.getElementById('username-error').textContent = 'Username is required and should not contain spaces.';
-                hasError = true;
-            }
-    
-            // Phone validation
-            const phone = document.getElementById('address-phone').value;
-            if (phone.length !== 10 || !/^\d{10}$/.test(phone)) {
-                document.getElementById('phone-error').textContent = 'Please enter a valid 10-digit phone number.';
-                hasError = true;
-            }
-    
-            // Address validation
-            const address = document.getElementById('detaild-address').value;
-            if (!address) {
-                document.getElementById('address-error').textContent = 'Address is required.';
-                hasError = true;
-            }
-    
-            // City validation
-            const city = document.getElementById('address-city').value;
-            if (!city || city.includes(' ')) {
-                document.getElementById('city-error').textContent = 'City is required and should not contain spaces.';
-                hasError = true;
-            }
-    
-            // District validation
-            const district = document.getElementById('address-district').value;
-            if (!district || district.includes(' ')) {
-                document.getElementById('district-error').textContent = 'District is required and should not contain spaces.';
-                hasError = true;
-            }
-    
-            // State validation
-            const state = document.getElementById('address-state').value;
-            if (!state || state.includes(' ')) {
-                document.getElementById('state-error').textContent = 'State is required and should not contain spaces.';
-                hasError = true;
-            }
-    
-            // PIN validation
-            const pin = document.getElementById('address-pin').value;
-            if (pin.length !== 6 || !/^\d{6}$/.test(pin)) {
-                document.getElementById('pin-error').textContent = 'Please enter a valid 6-digit PIN.';
-                hasError = true;
-            }
-    
-            // If no errors, submit the form
-            if (!hasError) {
-                form.submit();
-            }
-        });
-    
-        // Email validation function
-        function validateEmail(email) {
-            const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-            return re.test(String(email).toLowerCase());
+
+
+        let zeroCount = (phone.match(/0/g) || []).length;
+
+
+        const csrftoken = getCookie('csrftoken');
+        if(name.trim() === '' || /^\s/.test(name)||phone.length != 10 || zeroCount > 5||Address.trim() =='' || /^\s/.test(Address)||Landmark.trim() =='' || /^\s/.test(Landmark)||city.trim() =='' || /^\s/.test(city)||District.trim() =='' || /^\s/.test(District)||state.trim() =='' || /^\s/.test(state)||pin.trim() =='' || /^\s/.test(pin)||pin.trim() === '' || !/^\d{6}$/.test(pin)){
+            console.log("ngnggngn")
+        if (name.trim() === '' || /^\s/.test(name)) {
+                document.getElementById('error-name').textContent = 'Name cannot be empty or start with a space.';
         }
-    });
+        if (phone.length != 10 || zeroCount > 5) {
+            console.log("ngnggngnRRRRRR")
+
+            document.getElementById('error-phone').textContent = 'Please enter a valid 10-digit phone number.';
+        }
+        if (Address.trim() =='' || /^\s/.test(Address)) {
+            console.log("FFFFngnggngnRRRRRR")
+
+            document.getElementById('error-address').textContent = 'Address cannot be empty or start with a space.';
+            valid = false;
+        
+                
+        }
+        if (Landmark.trim() =='' || /^\s/.test(Landmark)) {
+            console.log("FFFFngnggngnRRRRRR")
+
+            document.getElementById('error-landmark').textContent = 'landmark cannot be empty or start with a space.';
+            valid = false;
+        
+                
+        }
+        if (city.trim() =='' || /^\s/.test(city)) {
+            console.log("FFFFngnggngnRRRRRR")
+
+            document.getElementById('error-city').textContent = 'city cannot be empty or start with a space.';
+            valid = false;
+        
+                
+        }
+        if (District.trim() =='' || /^\s/.test(District)) {
+            console.log("FFFFngnggngnRRRRRR")
+
+            document.getElementById('error-district').textContent = 'District cannot be empty or start with a space.';
+            valid = false;
+        
+                
+        }
+        if (state.trim() =='' || /^\s/.test(state)) {
+            console.log("FFFFngnggngnRRRRRR")
+
+            document.getElementById('error-state').textContent = 'state cannot be empty or start with a space.';
+            valid = false;
+        
+                
+        }
+        if (pin.trim() === '' || !/^\d{6}$/.test(pin)) {
+            document.getElementById('error-pin').textContent = 'PIN must be 6 digits long.';
+            valid = false;
+        }
+
+        }else{
+            console.log("ngnggnGGSAFCXZSgnRRRRRR")
+
+            console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkk")
+        let formData = new URLSearchParams();
+            formData.append('Email',Email);
+            formData.append('name',name);
+            formData.append('phone',phone);
+            formData.append('Address',Address);
+            formData.append('Landmark',Landmark);
+            formData.append('city',city);
+            formData.append('District',District);
+            formData.append('state',state);
+
+            formData.append('pin',pin);
+            
+            fetch("{% url 'userprofile:add_user_address' %}",{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrftoken
+                },
+                body: formData.toString()
+            }).then(response => response.json())
+            .then(data=>{
+                location.reload()
+            })
+
+        }
+
+    }
 </script>
 
        
-        <script>
+ <script>
             function getCookie(name) {
                 let cookieValue = null;
                 if (document.cookie && document.cookie !== '') {
@@ -1430,12 +1513,15 @@
                 let current=document.getElementById('current_password').value
                 let password=document.getElementById('new_password').value
                 let confirm = document.getElementById('confirm_password').value
+                let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,}$/;
+
                 
                 if(password != confirm){
                     console.log("nnjnjnj")
                     document.getElementById('error-show').textContent='Enter same password'
-                }else if(password.length!=8){
-                    document.getElementById('error-show').textContent='Password must be eight digit'
+                }else if (!passwordRegex.test(password)) {
+                    document.getElementById('error-show').textContent = 'Password must include at least one uppercase letter, one lowercase letter, one number, one symbol, and be more than 8 characters long.';
+                    
                 }else{
 
                                                                                                                                                    

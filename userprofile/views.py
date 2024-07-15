@@ -53,8 +53,8 @@ def editprofile(request):
         'phone':phone,
         
     }
-
     return render(request, 'userside/editprofile.html', m)
+
 
 def save_edit(request):
     print('NEW USERNAME AND NEW PHONE')
@@ -68,7 +68,7 @@ def save_edit(request):
         print(obj.email,".............",obj.username)
         
         obj.username = new_username
-        if len(new_phone) == 10 and new_phone.isdigit():
+        if len(new_phone) == 10 and new_phone.isdigit() and new_phone.count('0') <= 5:
             obj.phone = new_phone
         else:
             print("Invalid phone number:", new_phone)
@@ -85,18 +85,19 @@ def save_edit(request):
 
 def add_user_address(request):
     if request.method == 'POST':
-        address_name = request.POST.get('address-username')
-        address_Email = request.POST.get('address-email')
-        address_Phone = request.POST.get('address-phone')
-        Address = request.POST.get('detaild-address')
-        landmark = request.POST.get('address-landmark')
-        city = request.POST.get('address-city')
-        district = request.POST.get('address-district')
-        state = request.POST.get('address-state')
-        pin = request.POST.get('address-pin')
+        print("hadfsjcmnczxmvdm3456789")
+        address_name = request.POST.get('Email')
+        address_Email = request.POST.get('name')
+        address_Phone = request.POST.get('phone')
+        Address = request.POST.get('Address')
+        landmark = request.POST.get('Landmark')
+        city = request.POST.get('city')
+        district = request.POST.get('District')
+        state = request.POST.get('state')
+        pin = request.POST.get('pin')
         user_Email=request.session['email']
         user=CustomUser.objects.get(email=user_Email)
-        
+        print("gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg33333 ")
         User_Address = UserAddress.objects.create(
             user=user,  
             address_name=address_name,
@@ -110,7 +111,7 @@ def add_user_address(request):
             pin=pin
         )
         User_Address.save()
-        return redirect('userprofile:userdashboard')
+        return JsonResponse({'status':'success'})
     
     
 def remove_address(request,address_id):
@@ -137,7 +138,7 @@ def change_password(request):
         print(user_email,"ggggg",user)
         if(user.password != current_password):
             print("bkdvsnbjkads,bv")
-            return JsonResponse({'status': 'wrong', 'message': 'Password is incorrect  maandaaa'})
+            return JsonResponse({'status': 'wrong', 'message': 'Password is incorrect'})
         else:
             user.password = new_password
             user.save()

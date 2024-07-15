@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'products',
     'usermanagement',
     'userprofile',
-    'ordermanagement'
+    'ordermanagement',
 ]
 
 MIDDLEWARE = [

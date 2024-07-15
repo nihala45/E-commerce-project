@@ -6,47 +6,48 @@ from products.models import newproducts
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from category.models import categories
+from django.http import JsonResponse
+from django.urls import reverse
+
 
 
 # Create your views here.
 
 
-def signupp(request):
-    print("valapraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+def Signup(request):
+    
     if request.method == 'POST':
-        username = request.POST['register-username']
-        email = request.POST['register-email']
-        phone = request.POST['register-phone']
-        password = request.POST['register-password']
-        confirm_password = request.POST['register-confirm-password']
+        username = request.POST['user_username']
+        email = request.POST['user_email']
+        phone = request.POST['user_phone']
+        password = request.POST['user_password']
+        confirm_password = request.POST['user_confirm']
         
-        already = CustomUser.objects.filter(email=email)
-        if len(phone) != 10:
-            messages.error(request, "Please enter a valid 10-digit phone number.")
-            return redirect('logintohome:homee')  
-        elif password != confirm_password:
-            messages.error(request, "Passwords are not same . Please try Again.")
-            return redirect('logintohome:homee')  
-        elif already:
-            messages.error(request, "There is already a Account with this Email")
-            return redirect('logintohome:homee')  
-        user2 = CustomUser(
-            username=username,
-            email=email,
-            password=password,
-            phone=phone,
-        )
-        user2.save()
+        already = CustomUser.objects.filter(email=email) 
+        print(already,"alreadfajfbams,bvnmas")
+        if already:
+            return JsonResponse({'status':'already','message':'There is already a Account with this Email'})   
+        else:
+            user2 = CustomUser(
+                username=username,
+                email=email,
+                password=password,
+                phone=phone,
+            )
+            user2.save()
         
         
-        return redirect('logintohome:otp', id=user2.id)
+        redirect_url = reverse('logintohome:otp', args=[user2.id])
+        return JsonResponse({'status':'success','redirect_url': redirect_url})   
+        
+        #return redirect('logintohome:otp', id=user2.id)
         
 
 def loginn(request):
-   
+    print('HELLLLOOOOOOOOOOOOOOOO')
     if request.method == 'POST':
-        email = request.POST.get('singin-email')
-        password = request.POST.get('singin-password')
+        email = request.POST.get('user_email')
+        password = request.POST.get('user_password')
         try:
             user = CustomUser.objects.get(email=email, password=password)
             if user and not user.is_blocked:
@@ -54,13 +55,20 @@ def loginn(request):
                 request.session['email']=email
                 request.session['phone'] = user.phone 
                 request.session['username'] = user.username
-                return redirect('logintohome:homee')
+                return JsonResponse({'status':'success'})
+                
+                # return redirect('logintohome:homee')
+
+                
             else:
                 print("2222222222222222")
-                messages.error(request, "Your account is blocked. Please contact support.")
+                return JsonResponse({'status':'block','message':'Your account is blocked. Please contact support.'})
+                
+                
         except CustomUser.DoesNotExist:
             print("3333333333333333")
-            messages.error(request, "Incorrect email address or password. Please try again.")
+            return JsonResponse({'status':'wrong','message':'Incorrect email address or password. Please try again.'})
+
     print("444444444444444")
     return redirect('logintohome:homee')
 
@@ -101,11 +109,91 @@ def otp_varification(request,id):
 
 
 def shop(request):
-    print("jjjjjjjjjjjjjjjjjjjjj")
-    products1=newproducts.objects.all()
-    category1=categories.objects.all()
-    return render(request,'userside/shop.html',{'products': products1, 'category': category1})
+    
+    
+    category1 = categories.objects.all()
+    products = newproducts.objects.all()
+    print(products,"herekfmdddssssssssssssssss")
+
+    return render(request, 'userside/shop.html', {'products': products, 'category': category1})
+
+
+# def filterProduct(request):
+#     if request.method == 'POST':
+#         selected_categories = request.POST.getlist('categories')
+#     else:
+#         selected_categories = None  
+#         products = newproducts.objects.all()  
+   
+#     for i in selected_categories:
+#         pro = newproducts.objects.filter(category_id=i)
+#         print(pro)
+#         products=products.union(pro)
+#     category1 = categories.objects.all()
+#     if request.method=='GET':
+#         search_item=request.GET.get('q')
+#         print(search_item,'hellloooo kooiiqqqqqqqqqqqqqqqqqqqqqqqqa')
+#         s=newproducts.objects.filter(name_icontains=search_item)
+#         products=products.union(s)
+#     return render(request, 'userside/shop.html', {'products': products, 'category': category1})
+   
+def filterProduct(request):
+    category1 = categories.objects.all()
+    products=newproducts.objects.none()
+    
+    # category filtering
+    
+    if request.method =='POST':
+        selected_categories=request.POST.getlist('categories')
+        for i in selected_categories:
+            pro=newproducts.objects.filter(category_id=i)
+            products=products.union(pro)
+            
+    # search filter 
+            
+    elif request.method =='GET':
+        print("ddddddddddddddddddddddddddddddddddddddddddddddddddddddddDDDDDDDDDDDDDDDDDDDDDDDDDDD")
+        s=''
+        s=request.GET.get('sortby')
+        if s:
+            print(s,"hhhhhhhhhhhhhhhhhhhvvvvvvvvvvvvvvvvvvvvvvvvvhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
+            if s == 'Low_to_High':
+                price_low_high = newproducts.objects.all().order_by('price')
+                products=products.union(price_low_high)
+            elif s=='High_to_Low':
+                price_high_low=newproducts.objects.all().order_by('-price')
+                products=products.union(price_high_low)
+            elif s=='a_to_z':
+                product_az=newproducts.objects.all().order_by('name')
+                products=products.union(product_az)
+            elif s=='z_to_a':
+                product_za=newproducts.objects.all().order_by('-name')
+                products=products.union(product_za)
+            elif s=='new_arrival':
+                products_new = newproducts.objects.all().order_by('-id')[:2]
+                
+                products=products.union(products_new)
+                
+            
+        else:
+            search_item=request.GET.get('q')
+            search_pro=newproducts.objects.filter(name__icontains=search_item)
+            products=products.union(search_pro)
+        
+        
+        
+        # search_item=request.GET.get('q')
+        # search_pro=newproducts.objects.filter(name__icontains=search_item)
+        # products=products.union(search_pro)
+        
+        
+    else:
+        products_all= newproducts.objects.all() 
+        products=products.union(products_all)
+    return render(request, 'userside/shop.html', {'products': products, 'category': category1})
+
 
 def shop_to_home(request):
     return redirect('logintohome:homee')
+
 
