@@ -8,38 +8,42 @@ from django.contrib import messages
 # Create your views here.
 from datetime import date
 from cartapp.models import Orders
+from django.contrib.auth.decorators import login_required
+
+
+# 
 def add_to_cart(request):
+    print('helllooo$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
+    
     if request.method == 'POST':
         product_id = request.POST.get('product_id')
         quantity = int(request.POST.get('quantity', 1))
         size = request.POST.get('size')
 
-        # if size not in ['s', 'm', 'l']:
-        #     return redirect('product_detail', product_id=product_id)  # Handle invalid size
+        print(f'Product ID: {product_id}, Quantity: {quantity}, Size: {size}')
 
-        user = request.session['email']
-        user_id=CustomUser.objects.get(email=user)
+        user_email = request.session['email']
+        user = CustomUser.objects.get(email=user_email)
         product = get_object_or_404(newproducts, id=product_id)
 
-        
-        cart_item, created = MyCart.objects.get_or_create(
-            user=user_id,
-            product=product,
-            size=size,
-            defaults={'quantity': quantity}
-        )
-        if not created:
-            cart_item.quantity += quantity
-            cart_item.save()
+        print("User and product fetched successfully.")
 
-        return redirect('cartapp:cart_view')
+        try:
+            cart_item = MyCart.objects.get(user=user, product=product, size=size)
+            print(f'Existing cart item: {cart_item}')
+            return JsonResponse({'status': 'already'})
+        except MyCart.DoesNotExist:
+            MyCart.objects.create(user=user, product=product, size=size, quantity=quantity)
+            print('New cart item created.')
+            return JsonResponse({'status': 'success'})
 
-    # return redirect('product_list')
+    return JsonResponse({'status': 'invalid request'}, status=400)
+
 
 def cart_view(request):
     user = request.session.get('email')
     if not user:
-        return redirect('login')  # Redirect to login page if user is not authenticated
+        return redirect('login') 
 
     user_id = CustomUser.objects.get(email=user)
     print(vars(user_id), 'User Details')
@@ -56,8 +60,12 @@ def cart_view(request):
     }
     return render(request, 'userside/cart.html',context)
 
+
+
 def proceed(request):
     return render(request,'userside/checkout.html')
+
+
 
 def quantity_upadate(request):
     user_email=request.session['email']
@@ -82,7 +90,7 @@ def quantity_upadate(request):
 
     cart_product=MyCart.objects.get(user_id=user_id.id,product_id=prod_id,size=prduct_size)
     if count==1:
-        print("plus onee",product_quantity)
+        
         if (cart_product.quantity + count) > product_quantity:
             print("out of stock")
             return JsonResponse({'status':'out'})
@@ -105,21 +113,26 @@ def quantity_upadate(request):
     
 
 
-def proceed_to_checkout(request):
+def proceed_to_checkout(request): 
     user_email = request.session.get('email')
     user = CustomUser.objects.get(email=user_email)
     cart_items = MyCart.objects.filter(user_id=user.id)
-    addresses=UserAddress.objects.filter(user_id=user.id)
-    sub_total = 0
-    for item in cart_items:
-        sub_total += item.product.price * item.quantity
+    if cart_items.count() == 0:
+        return redirect('cartapp:show_cart')
+    else:
+        addresses = UserAddress.objects.filter(user_id=user.id)
+        sub_total = 0
+        for item in cart_items:
+            sub_total += item.product.price * item.quantity
     
-    context = {
-        'cart_items': cart_items,
-        'sub_total': sub_total,
-        'addresses':addresses
-    }
-    return render(request, 'userside/checkout.html', context)
+        context = {
+            'cart_items': cart_items,
+            'sub_total': sub_total,
+            'addresses':addresses
+        }
+        return render(request, 'userside/checkout.html', context)
+        
+
 
 def place_order(request):
     user_email = request.session['email']
@@ -166,7 +179,9 @@ def place_order(request):
         
         cart_items.delete()
     return render(request,'userside/success.html')
-        
+
+    
+
 
         
 
@@ -180,11 +195,16 @@ def show_cart(request):
     user_email = request.session.get('email')
     if user_email:
         user = CustomUser.objects.get(email=user_email)
-        cart_items = MyCart.objects.filter(user_id=user.id)
+        cart_items = MyCart.objects.filter(user_id=user.id).order_by('product_id')
+        sub_total = 0
+        for item in cart_items:
+            sub_total += item.product.price * item.quantity
         context = {
-            'cart_items': cart_items
+            'cart_items': cart_items,
+            'sub_total': sub_total
         }
         return render(request, 'userside/cart.html', context)
+    
     
 def Remove_cart_product(request,it_id):
     cart_product = MyCart.objects.get(id=it_id)

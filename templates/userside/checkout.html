@@ -37,6 +37,118 @@
 </head>
 
 <body>
+
+           <!--ADDRESS MODAL--> 
+           <div class="modal fade" id="addaddress-modal1" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><i class="icon-close"></i></span>
+                        </button>
+    
+                        <div class="form-box">
+                            <div class="form-tab">
+                                <ul class="nav nav-pills nav-fill nav-border-anim" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin" role="tab" aria-controls="signin" aria-selected="true">ADD ADDRESS</a>
+                                    </li>
+                                    
+                                </ul>
+                                <div class="tab-content" id="tab-content-5">
+                                    <div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
+                                        <form id="address-form" onSubmit="addAddress(event)">
+                                            
+                                            <div class="form-group">
+                                                <label for="address-email">Email address *</label>
+                                                <input type="email" class="form-control" id="address-email" name="address-email">
+                                                <p class="error-message" style="color:red;" id="email-error"></p>
+                                            </div><!-- End .form-group -->
+                                        
+                                            <div class="form-group">
+                                                
+                                                <p id="error-name" class="text-danger"></p>
+    
+                                                <label for="address-username">Name *</label>
+                                                <input type="text" class="form-control" id="address-name" name="address-name">
+                                                <p class="error-message" style="color:red;" id="username-error"></p>
+                                            </div><!-- End .form-group -->
+                                        
+                                            <div class="form-group">
+                                                <p id="error-phone" class="text-danger"></p>
+                                                <label for="address-phone">Phone *</label>
+                                                <input type="number" class="form-control" id="address-phone" name="address-phone">
+                                                <p class="error-message" style="color:red;" id="phone-error"></p>
+                                            </div><!-- End .form-group -->
+                                        
+                                            <div class="form-group">
+                                                <p id="error-address" class="text-danger"></p>
+                                                <label for="detaild-address">Address *</label>
+                                                <input type="text" class="form-control" id="detaild-address" name="detaild-address">
+                                                <p class="error-message" style="color:red;" id="address-error"></p>
+                                            </div><!-- End .form-group -->
+                                        
+                                            <div class="form-group">
+                                                <p id="error-landmark" class="text-danger"></p>
+    
+                                                <label for="address-landmark">Landmark</label>
+                                                <input type="text" class="form-control" id="address-landmark" name="address-landmark">
+                                            </div><!-- End .form-group -->
+                                        
+                                            <div class="form-group">
+                                                <p id="error-city" class="text-danger"></p>
+    
+                                                <label for="address-city">City *</label>
+                                                <input type="text" class="form-control" id="address-city" name="address-city">
+                                                <p class="error-message" style="color:red;" id="city-error"></p>
+                                            </div><!-- End .form-group -->
+                                        
+                                            <div class="form-group">
+                                                <p id="error-district" class="text-danger"></p>
+    
+                                                <label for="address-district">District *</label>
+                                                <input type="text" class="form-control" id="address-district" name="address-district">
+                                                <p class="error-message" style="color:red;" id="district-error"></p>
+                                            </div><!-- End .form-group -->
+                                        
+                                            <div class="form-group">
+                                                <p id="error-state" class="text-danger"></p>
+    
+                                                <label for="address-state">State *</label>
+                                                <input type="text" class="form-control" id="address-state" name="address-state">
+                                                <p class="error-message" style="color:red;" id="state-error"></p>
+                                            </div><!-- End .form-group -->
+                                        
+                                            <div class="form-group">
+                                                <p id="error-pin" class="text-danger"></p>
+    
+                                                <label for="address-pin">PIN *</label>
+                                                <input type="number" class="form-control" id="address-pin" name="address-pin">
+                                                <p class="error-message" style="color:red;" id="pin-error"></p>
+                                            </div><!-- End .form-group -->
+                                        
+                                            <div class="form-footer">
+                                                <button type="submit" class="btn btn-outline-primary-2" style="color: blue; border-color: blue; background-color: white;">
+                                                    <span>Save Address</span>
+                                                    <i class="icon-long-arrow-right"></i>
+                                                </button>
+                                            </div><!-- End .form-footer -->
+                                        </form>
+                                        
+        </div>
+                                        <div class="form-choice">
+                                            
+                                            
+                                        </div><!-- End .form-choice -->
+                                  
+                                </div><!-- End .tab-content -->
+                            </div><!-- End .form-tab -->
+                        </div><!-- End .form-box -->
+                    </div><!-- End .modal-body -->
+                </div><!-- End .modal-content -->
+            </div><!-- End .modal-dialog -->
+        </div><!-- End .modal -->
+  
     <div class="page-wrapper">
         <header class="header">
             <div class="header-top">
@@ -70,14 +182,7 @@
                     <div class="header-right">
                         <ul class="top-menu">
                             <li>
-                                <a href="#">Links</a>
-                                <ul>
-                                    <li><a href="tel:#"><i class="icon-phone"></i>Call: +0123 456 789</a></li>
-                                    <li><a href="wishlist.html"><i class="icon-heart-o"></i>Wishlist <span>(3)</span></a></li>
-                                    <li><a href="about.html">About Us</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
-                                    <li><a href="#signin-modal" data-toggle="modal"><i class="icon-user"></i>Login</a></li>
-                                </ul>
+                             
                             </li>
                         </ul><!-- End .top-menu -->
                     </div><!-- End .header-right -->
@@ -99,7 +204,7 @@
                         <nav class="main-nav">
                             <ul class="menu sf-arrows">
                                 <li class="megamenu-container active">
-                                    <a href="index.html" class="sf-with-ul">Home</a>
+                                    <a href="{% url 'logintohome:shop_to_home' %}" class="sf-with-ul">Home</a>
 
                                     <div class="megamenu demo">
                                         <div class="menu-col">
@@ -283,7 +388,7 @@
                                     </div><!-- End .megamenu -->
                                 </li>
                                 <li>
-                                    <a href="category.html" class="sf-with-ul">Shop</a>
+                                    <a href="{% url 'logintohome:shop' %}" class="sf-with-ul">Shop</a>
 
                                     <div class="megamenu megamenu-md">
                                         <div class="row no-gutters">
@@ -340,128 +445,8 @@
                                         </div><!-- End .row -->
                                     </div><!-- End .megamenu megamenu-md -->
                                 </li>
-                                <li>
-                                    <a href="product.html" class="sf-with-ul">Product</a>
-
-                                    <div class="megamenu megamenu-sm">
-                                        <div class="row no-gutters">
-                                            <div class="col-md-6">
-                                                <div class="menu-col">
-                                                    <div class="menu-title">Product Details</div><!-- End .menu-title -->
-                                                    <ul>
-                                                        <li><a href="product.html">Default</a></li>
-                                                        <li><a href="product-centered.html">Centered</a></li>
-                                                        <li><a href="product-extended.html"><span>Extended Info<span class="tip tip-new">New</span></span></a></li>
-                                                        <li><a href="product-gallery.html">Gallery</a></li>
-                                                        <li><a href="product-sticky.html">Sticky Info</a></li>
-                                                        <li><a href="product-sidebar.html">Boxed With Sidebar</a></li>
-                                                        <li><a href="product-fullwidth.html">Full Width</a></li>
-                                                        <li><a href="product-masonry.html">Masonry Sticky Info</a></li>
-                                                    </ul>
-                                                </div><!-- End .menu-col -->
-                                            </div><!-- End .col-md-6 -->
-
-                                            <div class="col-md-6">
-                                                <div class="banner banner-overlay">
-                                                    <a href="category.html">
-                                                        <img src="static/images/menu/banner-2.jpg" alt="Banner">
-
-                                                        <div class="banner-content banner-content-bottom">
-                                                            <div class="banner-title text-white">New Trends<br><span><strong>spring 2019</strong></span></div><!-- End .banner-title -->
-                                                        </div><!-- End .banner-content -->
-                                                    </a>
-                                                </div><!-- End .banner -->
-                                            </div><!-- End .col-md-6 -->
-                                        </div><!-- End .row -->
-                                    </div><!-- End .megamenu megamenu-sm -->
-                                </li>
-                                <li>
-                                    <a href="#" class="sf-with-ul">Pages</a>
-
-                                    <ul>
-                                        <li>
-                                            <a href="about.html" class="sf-with-ul">About</a>
-
-                                            <ul>
-                                                <li><a href="about.html">About 01</a></li>
-                                                <li><a href="about-2.html">About 02</a></li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            <a href="contact.html" class="sf-with-ul">Contact</a>
-
-                                            <ul>
-                                                <li><a href="contact.html">Contact 01</a></li>
-                                                <li><a href="contact-2.html">Contact 02</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="login.html">Login</a></li>
-                                        <li><a href="faq.html">FAQs</a></li>
-                                        <li><a href="404.html">Error 404</a></li>
-                                        <li><a href="coming-soon.html">Coming Soon</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="blog.html" class="sf-with-ul">Blog</a>
-
-                                    <ul>
-                                        <li><a href="blog.html">Classic</a></li>
-                                        <li><a href="blog-listing.html">Listing</a></li>
-                                        <li>
-                                            <a href="#">Grid</a>
-                                            <ul>
-                                                <li><a href="blog-grid-2cols.html">Grid 2 columns</a></li>
-                                                <li><a href="blog-grid-3cols.html">Grid 3 columns</a></li>
-                                                <li><a href="blog-grid-4cols.html">Grid 4 columns</a></li>
-                                                <li><a href="blog-grid-sidebar.html">Grid sidebar</a></li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            <a href="#">Masonry</a>
-                                            <ul>
-                                                <li><a href="blog-masonry-2cols.html">Masonry 2 columns</a></li>
-                                                <li><a href="blog-masonry-3cols.html">Masonry 3 columns</a></li>
-                                                <li><a href="blog-masonry-4cols.html">Masonry 4 columns</a></li>
-                                                <li><a href="blog-masonry-sidebar.html">Masonry sidebar</a></li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            <a href="#">Mask</a>
-                                            <ul>
-                                                <li><a href="blog-mask-grid.html">Blog mask grid</a></li>
-                                                <li><a href="blog-mask-masonry.html">Blog mask masonry</a></li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            <a href="#">Single Post</a>
-                                            <ul>
-                                                <li><a href="single.html">Default with sidebar</a></li>
-                                                <li><a href="single-fullwidth.html">Fullwidth no sidebar</a></li>
-                                                <li><a href="single-fullwidth-sidebar.html">Fullwidth with sidebar</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="elements-list.html" class="sf-with-ul">Elements</a>
-
-                                    <ul>
-                                        <li><a href="elements-products.html">Products</a></li>
-                                        <li><a href="elements-typography.html">Typography</a></li>
-                                        <li><a href="elements-titles.html">Titles</a></li>
-                                        <li><a href="elements-banners.html">Banners</a></li>
-                                        <li><a href="elements-product-category.html">Product Category</a></li>
-                                        <li><a href="elements-video-banners.html">Video Banners</a></li>
-                                        <li><a href="elements-buttons.html">Buttons</a></li>
-                                        <li><a href="elements-accordions.html">Accordions</a></li>
-                                        <li><a href="elements-tabs.html">Tabs</a></li>
-                                        <li><a href="elements-testimonials.html">Testimonials</a></li>
-                                        <li><a href="elements-blog-posts.html">Blog Posts</a></li>
-                                        <li><a href="elements-portfolio.html">Portfolio</a></li>
-                                        <li><a href="elements-cta.html">Call to Action</a></li>
-                                        <li><a href="elements-icon-boxes.html">Icon Boxes</a></li>
-                                    </ul>
-                                </li>
+                               
+                               
                             </ul><!-- End .menu -->
                         </nav><!-- End .main-nav -->
                     </div><!-- End .header-left -->
@@ -510,14 +495,7 @@
                                 <div class="dropdown-cart-products">
                                     <div class="product">
                                         <div class="product-cart-details">
-                                            <h4 class="product-title">
-                                                <a href="product.html">Beige knitted elastic runner shoes</a>
-                                            </h4>
-
-                                            <span class="cart-product-info">
-                                                <span class="cart-product-qty">1</span>
-                                                x $84.00
-                                            </span>
+                                          
                                         </div><!-- End .product-cart-details -->
 
                                         <figure class="product-image-container">
@@ -621,8 +599,14 @@
                                             </div>
                                         </div>
                                         {% endfor %}
+                                        <div class="small-div" style="width: 200px; height: 50px; background-color: #DCDCDC; border: 10px solid white; margin-left:100px; margin-top:20px;">
+                                            <a style="text-decoration: none; color: black; display: inline-block; width: 100%; height: 100%;">
+                                                <p style='margin-left:40px' data-toggle="modal" data-target="#addaddress-modal1">Add new address</p>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
+                                
                                 <aside class="col-lg-3">
                                     <div class="summary">
                                         <h3 class="summary-title">Your Order</h3>
@@ -634,14 +618,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td><a href="#">Beige knitted elastic runner shoes</a></td>
-                                                    <td>$84.00</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><a href="#">Blue utility pinafore denimdress</a></td>
-                                                    <td>$76.00</td>
-                                                </tr>
+                                               
                                                 <tr class="summary-subtotal">
                                                     <td>Subtotal:</td>
                                                     <td>{{ sub_total }}</td>
@@ -695,14 +672,22 @@
                                                 </div>
                                             </div>
                                         </div>
-                                            <button type="submit" class="btn btn-outline-primary-2 btn-order btn-block" href="{% url 'cartapp:place_order' %}">
-                                                <span class="btn-text">Place Order</span>
-                                                <span class="btn-hover-text">Proceed to Checkout</span>
-                                            </button>
+                                        {% if addresses %}
+                                        <button type="submit" class="btn btn-outline-primary-2 btn-order btn-block" href="{% url 'cartapp:place_order' %}">
+                                            <span class="btn-text">Place Order</span>
+                                            <span class="btn-hover-text">Proceed to Checkout</span>
+                                        </button>
+                                    {% else %}
+                                        <p>Please add a new address to place order</p>
+                                    {% endif %}
                                     </div>
                                 </aside>
                           ++  </div>
                         </form>
+                        
+
+
+                        
                         
 	                </div><!-- End .container -->
                 </div><!-- End .checkout -->
@@ -880,7 +865,6 @@
                                     <li><a href="contact-2.html">Contact 02</a></li>
                                 </ul>
                             </li>
-                            <li><a href="login.html">Login</a></li>
                             <li><a href="faq.html">FAQs</a></li>
                             <li><a href="404.html">Error 404</a></li>
                             <li><a href="coming-soon.html">Coming Soon</a></li>
@@ -1081,6 +1065,153 @@
     <script src="static/js/owl.carousel.min.js"></script>
     <!-- Main JS File -->
     <script src="static/js/main.js"></script>
+    
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/jquery.hoverIntent.min.js' %}"></script>
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/superfish.min.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Main JS File -->
+<script src="{% static 'js/main.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        function addAddress(e){
+           console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
+            document.getElementById('error-name').textContent = '';
+            document.getElementById('error-phone').textContent = '';
+            document.getElementById('error-address').textContent = '';
+            document.getElementById('error-landmark').textContent = '';
+            document.getElementById('error-city').textContent = '';
+            document.getElementById('error-district').textContent = '';
+            document.getElementById('error-state').textContent = '';
+            document.getElementById('error-pin').textContent = '';
+    
+    
+           
+            e.preventDefault()
+            let Email=document.getElementById('address-email').value
+            let name=document.getElementById('address-name').value
+            let phone=document.getElementById('address-phone').value
+            let Address=document.getElementById('detaild-address').value
+            let Landmark=document.getElementById('address-landmark').value
+            let city=document.getElementById('address-city').value
+            let District=document.getElementById('address-district').value
+            let state=document.getElementById('address-state').value
+            let pin=document.getElementById('address-pin').value
+    
+    
+        
+    
+    
+            let zeroCount = (phone.match(/0/g) || []).length;
+    
+    
+            const csrftoken = getCookie('csrftoken');
+            if(name.trim() === '' || /^\s/.test(name)||phone.length != 10 || zeroCount > 5||Address.trim() =='' || /^\s/.test(Address)||Landmark.trim() =='' || /^\s/.test(Landmark)||city.trim() =='' || /^\s/.test(city)||District.trim() =='' || /^\s/.test(District)||state.trim() =='' || /^\s/.test(state)||pin.trim() =='' || /^\s/.test(pin)||pin.trim() === '' || !/^\d{6}$/.test(pin)){
+                console.log("ngnggngn")
+            if (name.trim() === '' || /^\s/.test(name)) {
+                    document.getElementById('error-name').textContent = 'Name cannot be empty or start with a space.';
+            }
+            if (phone.length != 10 || zeroCount > 5) {
+                console.log("ngnggngnRRRRRR")
+    
+                document.getElementById('error-phone').textContent = 'Please enter a valid 10-digit phone number.';
+            }
+            if (Address.trim() =='' || /^\s/.test(Address)) {
+                console.log("FFFFngnggngnRRRRRR")
+    
+                document.getElementById('error-address').textContent = 'Address cannot be empty or start with a space.';
+                valid = false;
+            
+                    
+            }
+            if (Landmark.trim() =='' || /^\s/.test(Landmark)) {
+                console.log("FFFFngnggngnRRRRRR")
+    
+                document.getElementById('error-landmark').textContent = 'landmark cannot be empty or start with a space.';
+                valid = false;
+            
+                    
+            }
+            if (city.trim() =='' || /^\s/.test(city)) {
+                console.log("FFFFngnggngnRRRRRR")
+    
+                document.getElementById('error-city').textContent = 'city cannot be empty or start with a space.';
+                valid = false;
+            
+                    
+            }
+            if (District.trim() =='' || /^\s/.test(District)) {
+                console.log("FFFFngnggngnRRRRRR")
+    
+                document.getElementById('error-district').textContent = 'District cannot be empty or start with a space.';
+                valid = false;
+            
+                    
+            }
+            if (state.trim() =='' || /^\s/.test(state)) {
+                console.log("FFFFngnggngnRRRRRR")
+    
+                document.getElementById('error-state').textContent = 'state cannot be empty or start with a space.';
+                valid = false;
+            
+                    
+            }
+            if (pin.trim() === '' || !/^\d{6}$/.test(pin)) {
+                document.getElementById('error-pin').textContent = 'PIN must be 6 digits long.';
+                valid = false;
+            }
+    
+            }else{
+                console.log("ngnggnGGSAFCXZSgnRRRRRR")
+    
+                console.log("kkkkkkkkkkkkkkkkkkkkkkkkkkk")
+            let formData = new URLSearchParams();
+                formData.append('Email',Email);
+                formData.append('name',name);
+                formData.append('phone',phone);
+                formData.append('Address',Address);
+                formData.append('Landmark',Landmark);
+                formData.append('city',city);
+                formData.append('District',District);
+                formData.append('state',state);
+    
+                formData.append('pin',pin);
+                
+                fetch("{% url 'userprofile:add_user_address' %}",{
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: formData.toString()
+                }).then(response => response.json())
+                .then(data=>{
+                    location.reload()
+                })
+    
+            }
+    
+        }
+    </script>
 </body>
 
 

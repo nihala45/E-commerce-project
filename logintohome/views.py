@@ -10,9 +10,14 @@ from django.http import JsonResponse
 from django.urls import reverse
 
 
-
 # Create your views here.
 
+def homee(request):
+    if 'email' in request.session:
+        
+        user = request.session['email']
+        return render(request,'userside/home.html',{'user12':user})
+    return render(request,'userside/home.html')
 
 def Signup(request):
     
@@ -73,12 +78,6 @@ def loginn(request):
     return redirect('logintohome:homee')
 
 
-def homee(request):
-    if 'email' in request.session:
-        
-        user = request.session['email']
-        return render(request,'userside/home.html',{'user12':user})
-    return render(request,'userside/home.html')
 
 def otp(request, id):
     return render(request, 'userside/otpp.html', {'id': id})
@@ -108,6 +107,7 @@ def otp_varification(request,id):
     return render(request, "userside/otpp.html")
 
 
+
 def shop(request):
     
     
@@ -118,29 +118,12 @@ def shop(request):
     return render(request, 'userside/shop.html', {'products': products, 'category': category1})
 
 
-# def filterProduct(request):
-#     if request.method == 'POST':
-#         selected_categories = request.POST.getlist('categories')
-#     else:
-#         selected_categories = None  
-#         products = newproducts.objects.all()  
-   
-#     for i in selected_categories:
-#         pro = newproducts.objects.filter(category_id=i)
-#         print(pro)
-#         products=products.union(pro)
-#     category1 = categories.objects.all()
-#     if request.method=='GET':
-#         search_item=request.GET.get('q')
-#         print(search_item,'hellloooo kooiiqqqqqqqqqqqqqqqqqqqqqqqqa')
-#         s=newproducts.objects.filter(name_icontains=search_item)
-#         products=products.union(s)
-#     return render(request, 'userside/shop.html', {'products': products, 'category': category1})
-   
+
+# @login_required(login_url='logintohome:homee')
 def filterProduct(request):
     category1 = categories.objects.all()
     products=newproducts.objects.none()
-    
+    print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
     # category filtering
     
     if request.method =='POST':

@@ -36,15 +36,15 @@
 </head>
 
 <body>
-      <!-- EDIT ADDRESS -->
-      <div class="modal fade" id="editaddress-modal" tabindex="-1" role="dialog" aria-hidden="true">
+     
+      <!-- EDIT ADDRESS MODAL -->
+    <div class="modal fade" id="editaddress-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true"><i class="icon-close"></i></span>
                     </button>
-                    
                     <div class="form-box">
                         <div class="form-tab">
                             <ul class="nav nav-pills nav-fill nav-border-anim" role="tablist">
@@ -54,39 +54,61 @@
                             </ul>
                             <div class="tab-content" id="tab-content-5">
                                 <div class="tab-pane fade show active" id="editaddress" role="tabpanel" aria-labelledby="editaddress-tab">
-                                    <form action="" method="POST" class="form-horizontal">
+                                    <form onSubmit="editAddress(event)" method="POST">
                                         {% csrf_token %}
+                                        <input type="hidden" id="edit-address-id" name="address_id" value="">
                                         <div class="form-group">
-                                            <label for="username">Username</label>
-                                            <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}" required>
+                                            <p id="edit-error-name" class="text-danger"></p>
+
+                                            <label for="username">Name</label>
+                                            <input type="text" class="form-control" id="edit-name" name="username" required>
                                         </div>
                                         <div class="form-group">
+
                                             <label for="email">Email</label>
-                                            <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+                                            <input type="email" class="form-control" id="edit-email" name="email" required>
                                         </div>
                                         <div class="form-group">
+                                            <p id="edit-error-phone" class="text-danger"></p>
+
+
                                             <label for="phone">Phone</label>
-                                            <input type="tel" class="form-control" id="phone" name="phone" value="{{ user.phone }}" required>
+                                            <input type="tel" class="form-control" id="edit-phone" name="phone" required>
                                         </div>
                                         <div class="form-group">
+                                            <p id="edit-error-address" class="text-danger"></p>
+
+
                                             <label for="address">Address</label>
-                                            <input type="text" class="form-control" id="address" name="address" value="{{ user.address }}" required>
+                                            <input type="text" class="form-control" id="edit-address" name="address" required>
                                         </div>
                                         <div class="form-group">
+                                            <p id="edit-error-city" class="text-danger"></p>
+
+
                                             <label for="city">City</label>
-                                            <input type="text" class="form-control" id="city" name="city" value="{{ user.city }}" required>
+                                            <input type="text" class="form-control" id="edit-city" name="city" required>
                                         </div>
                                         <div class="form-group">
+                                            <p id="edit-error-district" class="text-danger"></p>
+
+
                                             <label for="district">District</label>
-                                            <input type="text" class="form-control" id="district" name="district" value="{{ user.district }}" required>
+                                            <input type="text" class="form-control" id="edit-district" name="district" required>
                                         </div>
                                         <div class="form-group">
+                                            <p id="edit-error-state" class="text-danger"></p>
+
+
                                             <label for="state">State</label>
-                                            <input type="text" class="form-control" id="state" name="state" value="{{ user.state }}" required>
+                                            <input type="text" class="form-control" id="edit-state" name="state" required>
                                         </div>
                                         <div class="form-group">
+                                            <p id="edit-error-pin" class="text-danger"></p>
+
+
                                             <label for="pincode">PIN Code</label>
-                                            <input type="text" class="form-control" id="pincode" name="pincode" value="{{ user.pincode }}" required>
+                                            <input type="text" class="form-control" id="edit-pin" name="pin" required>
                                         </div>
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -539,128 +561,7 @@
                                         </div><!-- End .row -->
                                     </div><!-- End .megamenu megamenu-md -->
                                 </li>
-                                <li>
-                                    <a href="product.html" class="sf-with-ul">Product</a>
-
-                                    <div class="megamenu megamenu-sm">
-                                        <div class="row no-gutters">
-                                            <div class="col-md-6">
-                                                <div class="menu-col">
-                                                    <div class="menu-title">Product Details</div><!-- End .menu-title -->
-                                                    <ul>
-                                                        <li><a href="product.html">Default</a></li>
-                                                        <li><a href="product-centered.html">Centered</a></li>
-                                                        <li><a href="product-extended.html"><span>Extended Info<span class="tip tip-new">New</span></span></a></li>
-                                                        <li><a href="product-gallery.html">Gallery</a></li>
-                                                        <li><a href="product-sticky.html">Sticky Info</a></li>
-                                                        <li><a href="product-sidebar.html">Boxed With Sidebar</a></li>
-                                                        <li><a href="product-fullwidth.html">Full Width</a></li>
-                                                        <li><a href="product-masonry.html">Masonry Sticky Info</a></li>
-                                                    </ul>
-                                                </div><!-- End .menu-col -->
-                                            </div><!-- End .col-md-6 -->
-
-                                            <div class="col-md-6">
-                                                <div class="banner banner-overlay">
-                                                    <a href="category.html">
-                                                        <img src="static/images/menu/banner-2.jpg" alt="Banner">
-
-                                                        <div class="banner-content banner-content-bottom">
-                                                            <div class="banner-title text-white">New Trends<br><span><strong>spring 2019</strong></span></div><!-- End .banner-title -->
-                                                        </div><!-- End .banner-content -->
-                                                    </a>
-                                                </div><!-- End .banner -->
-                                            </div><!-- End .col-md-6 -->
-                                        </div><!-- End .row -->
-                                    </div><!-- End .megamenu megamenu-sm -->
-                                </li>
-                                <li>
-                                    <a href="#" class="sf-with-ul">Pages</a>
-
-                                    <ul>
-                                        <li>
-                                            <a href="about.html" class="sf-with-ul">About</a>
-
-                                            <ul>
-                                                <li><a href="about.html">About 01</a></li>
-                                                <li><a href="about-2.html">About 02</a></li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            <a href="contact.html" class="sf-with-ul">Contact</a>
-
-                                            <ul>
-                                                <li><a href="contact.html">Contact 01</a></li>
-                                                <li><a href="contact-2.html">Contact 02</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="login.html">Login</a></li>
-                                        <li><a href="faq.html">FAQs</a></li>
-                                        <li><a href="404.html">Error 404</a></li>
-                                        <li><a href="coming-soon.html">Coming Soon</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="blog.html" class="sf-with-ul">Blog</a>
-
-                                    <ul>
-                                        <li><a href="blog.html">Classic</a></li>
-                                        <li><a href="blog-listing.html">Listing</a></li>
-                                        <li>
-                                            <a href="#">Grid</a>
-                                            <ul>
-                                                <li><a href="blog-grid-2cols.html">Grid 2 columns</a></li>
-                                                <li><a href="blog-grid-3cols.html">Grid 3 columns</a></li>
-                                                <li><a href="blog-grid-4cols.html">Grid 4 columns</a></li>
-                                                <li><a href="blog-grid-sidebar.html">Grid sidebar</a></li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            <a href="#">Masonry</a>
-                                            <ul>
-                                                <li><a href="blog-masonry-2cols.html">Masonry 2 columns</a></li>
-                                                <li><a href="blog-masonry-3cols.html">Masonry 3 columns</a></li>
-                                                <li><a href="blog-masonry-4cols.html">Masonry 4 columns</a></li>
-                                                <li><a href="blog-masonry-sidebar.html">Masonry sidebar</a></li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            <a href="#">Mask</a>
-                                            <ul>
-                                                <li><a href="blog-mask-grid.html">Blog mask grid</a></li>
-                                                <li><a href="blog-mask-masonry.html">Blog mask masonry</a></li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            <a href="#">Single Post</a>
-                                            <ul>
-                                                <li><a href="single.html">Default with sidebar</a></li>
-                                                <li><a href="single-fullwidth.html">Fullwidth no sidebar</a></li>
-                                                <li><a href="single-fullwidth-sidebar.html">Fullwidth with sidebar</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="elements-list.html" class="sf-with-ul">Elements</a>
-
-                                    <ul>
-                                        <li><a href="elements-products.html">Products</a></li>
-                                        <li><a href="elements-typography.html">Typography</a></li>
-                                        <li><a href="elements-titles.html">Titles</a></li>
-                                        <li><a href="elements-banners.html">Banners</a></li>
-                                        <li><a href="elements-product-category.html">Product Category</a></li>
-                                        <li><a href="elements-video-banners.html">Video Banners</a></li>
-                                        <li><a href="elements-buttons.html">Buttons</a></li>
-                                        <li><a href="elements-accordions.html">Accordions</a></li>
-                                        <li><a href="elements-tabs.html">Tabs</a></li>
-                                        <li><a href="elements-testimonials.html">Testimonials</a></li>
-                                        <li><a href="elements-blog-posts.html">Blog Posts</a></li>
-                                        <li><a href="elements-portfolio.html">Portfolio</a></li>
-                                        <li><a href="elements-cta.html">Call to Action</a></li>
-                                        <li><a href="elements-icon-boxes.html">Icon Boxes</a></li>
-                                    </ul>
-                                </li>
+                                                          </li>
                             </ul><!-- End .menu -->
                         </nav><!-- End .main-nav -->
                     </div><!-- End .header-left -->
@@ -834,6 +735,7 @@
                                             <!-- Your content here -->
                                             </div><!-- End .card-body -->
                                         </div><!-- End .card-dashboard -->
+                                        
                                         <div class="small-div" style="width: 200px; height: 50px; background-color: #DCDCDC; border: 10px solid white; margin-left:100px; margin-top:20px;">
                                             <a href="{% url 'userprofile:editprofile' %}" style="text-decoration: none; color: black; display: inline-block; width: 100%; height: 100%;">
                                             <p style='margin-left:50px' href='{% url 'userprofile:editprofile'%}' >Edit profile</p>
@@ -864,15 +766,15 @@
                                                 {% endfor %}
                                             </tbody>
                                             {% else %}
-                                            <p>No order has been made yet.</p>
+                                            {% comment %} <p>No order has been made yet.</p> {% endcomment %}
                                             {% endif %}
 
                                         </table>
                                         
-                                        <p>No order has been made yet.</p>
-                                        <a href="category.html" class="btn btn-outline-primary-2">
+                                        {% comment %} <p>No order has been made yet.</p> {% endcomment %}
+                                        {% comment %} <a href="category.html" class="btn btn-outline-primary-2">
                                             <span>GO SHOP</span><i class="icon-long-arrow-right"></i>
-                                        </a>
+                                        </a> {% endcomment %}
                                     </div><!-- .End .tab-pane -->
                                     
 
@@ -925,10 +827,9 @@
                                                         <p style='margin-left:10px; margin-top:10px;'>Pin: {{ address.pin }}</p>
                                                         
                                                         <!-- Edit Button -->
-                                                        <button href="" data-toggle="modal" data-target="#editaddress-modal" onClick="openEditaddressModal({{address.id}},event)">Edit</button>
+                                                        <button href="" data-toggle="modal" data-target="#editaddress-modal" onClick="openEditaddressModal({{ address.id }}, event)">Edit</button>
 
-                                                        {% comment %} <button type='submit' class="btn btn-danger">Remove</button> {% endcomment %}
-                                                        <!-- Remove Button (you can use a form for this) -->
+                                                        
                                                         <form method="post" action="{% url 'userprofile:remove_address' address.id %}">
                                                             {% csrf_token %}
                                                             <button type="submit" class="btn btn-danger">Remove</button>
@@ -1369,7 +1270,11 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Main JS File -->
 <script src="{% static 'js/main.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+
+
+<!--ADD ADDRESS-->
 <script>
     function addAddress(e){
        console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
@@ -1491,7 +1396,148 @@
     }
 </script>
 
-       
+<script>
+    const addresses = {{ addresses|safe }};
+</script>
+
+
+<!--EDIT ADDRESS BUTTON-->
+<script>
+    function openEditaddressModal(address_id, e) {
+        e.preventDefault();
+        console.log('hello ')
+        const address = addresses.find(addr => addr.id === address_id);
+        if (address) {
+            document.getElementById('edit-address-id').value = address.id;
+
+            document.getElementById('edit-name').value = address.address_name;
+            document.getElementById('edit-email').value = address.address_Email;
+            document.getElementById('edit-phone').value = address.address_Phone;
+            document.getElementById('edit-address').value = address.Address;
+            document.getElementById('edit-city').value = address.city;
+            document.getElementById('edit-district').value = address.district;
+            document.getElementById('edit-state').value = address.state;
+            document.getElementById('edit-pin').value = address.pin;
+            $('#editaddress-modal').modal('show');
+        }
+    }
+</script>
+
+<!--EDIT ADDRESS-->
+<script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    function editAddress(e) {
+        e.preventDefault();
+        console.log('nihala is the best one');
+
+        document.getElementById('edit-error-name').textContent = '';
+        document.getElementById('edit-error-phone').textContent = '';
+        document.getElementById('edit-error-address').textContent = '';
+        document.getElementById('edit-error-city').textContent = '';
+        document.getElementById('edit-error-district').textContent = '';
+        document.getElementById('edit-error-state').textContent = '';
+        document.getElementById('edit-error-pin').textContent = '';
+
+        let edit_email = document.getElementById('edit-email').value;
+        let edit_name = document.getElementById('edit-name').value;
+        let edit_phone = document.getElementById('edit-phone').value;
+        let edit_address = document.getElementById('edit-address').value;
+        let edit_city = document.getElementById('edit-city').value;
+        let edit_district = document.getElementById('edit-district').value;
+        let edit_state = document.getElementById('edit-state').value;
+        let edit_pincode = document.getElementById('edit-pin').value;
+        let address_id = document.getElementById('edit-address-id').value;
+        let zeroCount = (edit_phone.match(/0/g) || []).length;
+
+
+        console.log(edit_email,edit_name,edit_address,'hellllooiiii rinyyyyy')
+
+        const csrftoken = getCookie('csrftoken');
+        if (edit_name.trim() === '' || /^\s/.test(edit_name) || edit_phone.length != 10 || zeroCount > 5 ||
+            edit_address.trim() === '' || /^\s/.test(edit_address) || edit_city.trim() === '' || /^\s/.test(edit_city) ||
+            edit_district.trim() === '' || /^\s/.test(edit_district) || edit_state.trim() === '' || /^\s/.test(edit_state) ||
+            edit_pincode.trim() === '' || !/^\d{6}$/.test(edit_pincode)) {
+            if (edit_name.trim() === '' || /^\s/.test(edit_name)) {
+                document.getElementById('edit-error-name').textContent = 'Name cannot be empty or start with a space.';
+            }
+            if (edit_phone.length != 10 || zeroCount > 5) {
+                document.getElementById('edit-error-phone').textContent = 'Please enter a valid 10-digit phone number.';
+            }
+            if (edit_address.trim() === '' || /^\s/.test(edit_address)) {
+                document.getElementById('edit-error-address').textContent = 'Address cannot be empty or start with a space.';
+            }
+            if (edit_city.trim() === '' || /^\s/.test(edit_city)) {
+                document.getElementById('edit-error-city').textContent = 'City cannot be empty or start with a space.';
+            }
+            if (edit_district.trim() === '' || /^\s/.test(edit_district)) {
+                document.getElementById('edit-error-district').textContent = 'District cannot be empty or start with a space.';
+            }
+            if (edit_state.trim() === '' || /^\s/.test(edit_state)) {
+                document.getElementById('edit-error-state').textContent = 'State cannot be empty or start with a space.';
+            }
+            if (edit_pincode.trim() === '' || !/^\d{6}$/.test(edit_pincode)) {
+                document.getElementById('edit-error-pin').textContent = 'PIN must be 6 digits long.';
+            }
+        
+        } else {
+            let formData = new URLSearchParams();
+            formData.append('edit_email', edit_email);
+            formData.append('edit_name', edit_name);
+            formData.append('edit_phone', edit_phone);
+            formData.append('edit_address', edit_address);
+            formData.append('edit_city', edit_city);
+            formData.append('edit_district', edit_district);
+            formData.append('edit_state', edit_state);
+            formData.append('edit_pincode', edit_pincode);
+            formData.append('address_id', address_id);
+            console.log(edit_email, address_id);
+
+            fetch("{% url 'userprofile:edit_address' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrftoken
+                },
+                body: formData.toString()
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status == 'success') {
+                    Swal.fire("Success", "Address updated successfully!", "success");
+                } else {
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire("Error", "Failed to update address", "error");
+            });
+        }
+    }
+</script>
+
+
+
+
+
+
+
+
+<!--CHANGE PASSWORD-->       
  <script>
             function getCookie(name) {
                 let cookieValue = null;
@@ -1571,8 +1617,10 @@
                 return false
                 
             }
-        </script>
+    </script>
+
+
 </body>
 
-<!-- molla/dashboard.html  22 Nov 2019 10:03:13 GMT -->
+
 </html>

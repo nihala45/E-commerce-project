@@ -15,7 +15,7 @@ urlpatterns = [
     path('shop/',views.shop,name='shop'),
     path('shop_to_home/',views.shop_to_home,name='shop_to_home'),
     # path('search_items/',views.search_items,name='search_items'),
-    path('filterProduct/',views.filterProduct,name='filterProduct'),
+    path('filterProduct/',views.filterProduct,name='filterProduct')
     
     
     

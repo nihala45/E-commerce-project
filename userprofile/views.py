@@ -29,18 +29,29 @@ def userdashboard(request):
     }
     
     user = get_object_or_404(CustomUser, email=email)
-    print(user.id,'helllllllllllloooooooooooooooooooooooo')
-    address = UserAddress.objects.filter(user=user.id)
-        
+    address_queryset = UserAddress.objects.filter(user=user.id)
     ordered_items = Orders.objects.filter(user=user.id).order_by('-id')
-    
+
+    # Convert QuerySet to a list of dictionaries
+    addresses = list(address_queryset.values())
+
     address_context = {
-        'addresses': address,
+        'addresses': addresses,  # Use the list of dictionaries
         'ordered_items': ordered_items
     }
     context.update(address_context)
     
+    
+    
     return render(request, 'userside/userdashboard.html', context)
+
+    
+
+
+
+        
+
+
 
 
 
@@ -86,8 +97,8 @@ def save_edit(request):
 def add_user_address(request):
     if request.method == 'POST':
         print("hadfsjcmnczxmvdm3456789")
-        address_name = request.POST.get('Email')
-        address_Email = request.POST.get('name')
+        address_name = request.POST.get('name')
+        address_Email = request.POST.get('Email')
         address_Phone = request.POST.get('phone')
         Address = request.POST.get('Address')
         landmark = request.POST.get('Landmark')
@@ -112,6 +123,35 @@ def add_user_address(request):
         )
         User_Address.save()
         return JsonResponse({'status':'success'})
+
+def edit_address(request):
+    print('hellooooiiiiikooiiiiiiiihelllooooo guyssloooooits nihala shirin')
+    if request.method == "POST":
+        add_id = request.POST.get('address_id')
+        name = request.POST.get('edit_name')
+        email = request.POST.get('edit_email')
+        phone = request.POST.get('edit_phone')
+        address = request.POST.get('edit_address')
+        city = request.POST.get('edit_city')
+        district = request.POST.get('edit_district')
+        state = request.POST.get('edit_state')
+        pin = request.POST.get('edit_pincode')
+        print(add_id,name,email,phone,address,city,'hiiiiii guyssss')
+        address_obj = get_object_or_404(UserAddress, id=add_id)
+
+        address_obj.address_name = name
+        address_obj.address_Email = email
+        address_obj.address_Phone = phone
+        address_obj.Address = address
+        address_obj.city = city
+        address_obj.district = district
+        address_obj.state = state
+        address_obj.pin = pin
+
+        address_obj.save()
+
+        return JsonResponse({'status': 'success'})
+    
     
     
 def remove_address(request,address_id):
@@ -119,11 +159,10 @@ def remove_address(request,address_id):
     address1.delete()
     return redirect('userprofile:userdashboard')    
     
-def edit_address(request,address_id):
-    print("HIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
-    address2=UserAddress.objects.get(id=address_id)
-    print(address2,'LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
-    return render(request,'userside/userdashboard.html',address2)
+# def edit_address(request,address_id):
+#     address2=UserAddress.objects.get(id=address_id)
+    # print(address2,'LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
+    # return render(request,'userside/userdashboard.html',address2)
 
 
 def change_password(request):

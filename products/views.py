@@ -8,12 +8,13 @@ import re
 from products.models import newproducts
 from django.shortcuts import get_object_or_404
 from django.http import Http404
+from django.contrib.auth.decorators import login_required
 
 
 
 
 # Create your views here.
-
+@login_required(login_url='adminside:adminlogin')
 def products(request):
     productss=newproducts.objects.all()
     # print(productss)
@@ -22,9 +23,14 @@ def products(request):
     
     return render(request,'customadmin/products.html',{'products':productss})
 
+@login_required(login_url='adminside:adminlogin')
+
 def addproduct(request):
     categoryy=categories.objects.all()
     return render(request,'customadmin/addproduct.html',{'cat':categoryy})
+
+
+@login_required(login_url='adminside:adminlogin')
 
 def saveproducts(request):
     print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" )
@@ -75,6 +81,7 @@ def saveproducts(request):
         return redirect('products:products')
 
 
+@login_required(login_url='adminside:adminlogin')
       
 def product_delete(request, prod_id):
     pro = get_object_or_404(newproducts, id=prod_id)
@@ -84,12 +91,17 @@ def product_delete(request, prod_id):
     return redirect('products:products')
 
 
+
+@login_required(login_url='adminside:adminlogin')
+
 def product_editpage(request, prod_id):
     product = newproducts.objects.get(id=prod_id)
     catyy = categories.objects.all()
     print(vars(product),"gjyhgbvc ",product.id,"iddddddddddddddddddd")
     return render(request, 'customadmin/editproduct.html', {'product': product, 'catyy': catyy})
 
+
+@login_required(login_url='adminside:adminlogin')
 
 def product_editsave(request):
     if request.method == 'POST':
@@ -142,14 +154,15 @@ def product_editsave(request):
             
             
         
+# @login_required(login_url='adminside:adminlogin')
 
-def search_for_product(request):
-    if request.method == 'POST':
-        query = request.POST.get('query')
+# def search_for_product(request):
+#     if request.method == 'POST':
+#         query = request.POST.get('query')
         
-        products = newproducts.objects.filter(name__icontains=query)
+#         products = newproducts.objects.filter(name__icontains=query)
     
-        return render(request, 'products.html', products)
+#         return render(request, 'products.html', products)
     
         
         
