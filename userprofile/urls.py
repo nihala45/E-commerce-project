@@ -20,6 +20,4 @@ urlpatterns = [
     path('edit_address/', views.edit_address, name='edit_address'),
     
     
-    
-    
 ] 

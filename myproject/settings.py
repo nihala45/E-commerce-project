@@ -50,6 +50,9 @@ INSTALLED_APPS = [
     'usermanagement',
     'userprofile',
     'ordermanagement',
+    'offermanagement',
+    'couponmanagement',
+    'wishlist',
 ]
 
 MIDDLEWARE = [

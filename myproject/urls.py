@@ -32,6 +32,12 @@ urlpatterns = [
     path('usermanagement/', include('usermanagement.urls')),
     path('userprofile/', include('userprofile.urls')),
     path('ordermanagement/', include('ordermanagement.urls')),
+    path('offermanagement/', include('offermanagement.urls')),
+    path('couponmanagement/', include('couponmanagement.urls')),
+    path('wishlist/', include('wishlist.urls')),
+    
+    
+    
     
     
 ]

@@ -118,6 +118,14 @@
                         <i title="Order" class='bx bx-cart nav_icon'></i>
                         <span class="nav_name">Order</span>
                     </a>
+                    <a href="{% url 'offermanagement:offermanagement' %}" class="nav_link">
+                        <i title="Offers" class='bx bx-gift nav_icon'></i>
+                        <span class="nav_name">Offers</span>
+                    </a>
+                    <a href="{% url 'couponmanagement:coupon' %}" class="nav_link {% if request.resolver_match.url_name == 'coupon' %}active{% endif %}">
+                        <i title="Coupons" class='bx bx-tag nav_icon'></i>
+                        <span class="nav_name">Coupons</span>
+                    </a>
 
                    
 

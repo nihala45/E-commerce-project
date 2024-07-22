@@ -159,10 +159,6 @@ def remove_address(request,address_id):
     address1.delete()
     return redirect('userprofile:userdashboard')    
     
-# def edit_address(request,address_id):
-#     address2=UserAddress.objects.get(id=address_id)
-    # print(address2,'LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
-    # return render(request,'userside/userdashboard.html',address2)
 
 
 def change_password(request):
@@ -214,4 +210,5 @@ def cancelOrder(request,or_id):
     ord.status="Cancelled"
     ord.save()
     return redirect(reverse('userprofile:view_details', args=[or_id]))
-    
+
+
