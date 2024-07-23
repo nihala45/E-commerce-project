@@ -9,6 +9,11 @@ from django.contrib import messages
 from datetime import date
 from cartapp.models import Orders
 from django.contrib.auth.decorators import login_required
+from myproject.settings import RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET
+import razorpay
+
+
+
 
 
 # 
@@ -38,7 +43,7 @@ def add_to_cart(request):
             return JsonResponse({'status': 'success'})
 
     return JsonResponse({'status': 'invalid request'}, status=400)
-
+    
 
 def cart_view(request):
     user = request.session.get('email')
@@ -132,7 +137,7 @@ def proceed_to_checkout(request):
         }
         return render(request, 'userside/checkout.html', context)
         
-
+client=razorpay.Client(auth=(RAZORPAY_KEY_ID,RAZORPAY_KEY_SECRET))
 
 def place_order(request):
     user_email = request.session['email']
@@ -140,15 +145,16 @@ def place_order(request):
     cartItems=MyCart.objects.filter(user_id=user.id)   
     
     if request.method=='POST':
-        address_id=request.POST.get('selected_address')
-        payment_method=request.POST.get('payment_method')
+        address_id=request.POST.get('selectedAddress')
+        payment_method=request.POST.get('selectedPaymentMethod')
         ordered_date = date.today()
         cart_items = MyCart.objects.filter(user_id=user.id)
         address=UserAddress.objects.get(id=address_id)
         
-        for item in cart_items:
-            print(address_id,item.product.id,item.quantity,"kkkkk",)
-            order_detail=Orders(
+        if payment_method=='cash_on_delivery':
+            for item in cart_items:
+                print(address_id,item.product.id,item.quantity,"kkkkk",)
+                order_detail=Orders(
                 user=user,
                 address=address,
                 ordered_date=ordered_date,
@@ -159,26 +165,39 @@ def place_order(request):
                 product_price=item.product.price * item.quantity,
                 product_size=item.size
                 ).save()
-            pro = newproducts.objects.get(id=item.product_id)
-            if item.size == 's':
-                pro.small = int(pro.small) - item.quantity
-            elif item.size == 'm':
-                pro.medium = int(pro.medium) - item.quantity
-            else:
-                pro.large = int(pro.large) - item.quantity
+                pro = newproducts.objects.get(id=item.product_id)
+                if item.size == 's':
+                    pro.small = int(pro.small) - item.quantity
+                elif item.size == 'm':
+                    pro.medium = int(pro.medium) - item.quantity
+                else:
+                    pro.large = int(pro.large) - item.quantity
             
-            pro.save()
+                pro.save()
                 
-                
-                
+            return JsonResponse({'status':'success'})    
+        elif payment_method=='razor_pay':
+            print('MINI MILTIA')
+            DATA = {
+            "amount": 675445,
+            "currency": "INR",
+            "payment_capture": '1',
+            "receipt": "receipt_1"
+#              "notes": {
+#              "key1": "value3",
+#              "key2": "value2"
+#          }
+            }
+            payment_order=client.order.create(data=DATA)
+            print(payment_order,'GTA VICE CITY GTA SANDREAS')
+            return JsonResponse({'status':'razorpay','payment_order':payment_order,'key':RAZORPAY_KEY_ID})   
                 
                 
                 
             
-            print(order_detail,"hiii")
+            
         
-        cart_items.delete()
-    return render(request,'userside/success.html')
+       
 
     
 
@@ -210,3 +229,7 @@ def Remove_cart_product(request,it_id):
     cart_product = MyCart.objects.get(id=it_id)
     cart_product.delete()
     return redirect('cartapp:show_cart')
+
+
+def successpage(request):
+    return render(request,'userside/success.html')

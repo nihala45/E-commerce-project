@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-a0ouwqze^o&9uvnvy5#w!ic3$ykav&g3e)=q54z&788a7%o$k4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -152,3 +152,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static/")]
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+RAZORPAY_KEY_ID='rzp_test_oevjnesbeVV1Xk'
+RAZORPAY_KEY_SECRET='tfhpyNA9jTd59Szh8z23773U'
+SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
