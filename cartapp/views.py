@@ -11,14 +11,14 @@ from cartapp.models import Orders
 from django.contrib.auth.decorators import login_required
 from myproject.settings import RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET
 import razorpay
-
+from decimal import Decimal
 
 
 
 
 # 
 def add_to_cart(request):
-    print('helllooo$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
+    
     
     if request.method == 'POST':
         product_id = request.POST.get('product_id')
@@ -137,61 +137,152 @@ def proceed_to_checkout(request):
         }
         return render(request, 'userside/checkout.html', context)
         
-client=razorpay.Client(auth=(RAZORPAY_KEY_ID,RAZORPAY_KEY_SECRET))
+
+client = razorpay.Client(auth=(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET))
 
 def place_order(request):
     user_email = request.session['email']
     user = CustomUser.objects.get(email=user_email)
-    cartItems=MyCart.objects.filter(user_id=user.id)   
-    
-    if request.method=='POST':
-        address_id=request.POST.get('selectedAddress')
-        payment_method=request.POST.get('selectedPaymentMethod')
+    cartItems = MyCart.objects.filter(user_id=user.id)   
+    total_price = Decimal(0)
+    for item in cartItems:
+                total_price += item.product.price * item.quantity
+    if request.method == 'POST':
+        address_id = request.POST.get('selectedAddress')
+        payment_method = request.POST.get('selectedPaymentMethod')
         ordered_date = date.today()
-        cart_items = MyCart.objects.filter(user_id=user.id)
-        address=UserAddress.objects.get(id=address_id)
+        address = UserAddress.objects.get(id=address_id)
+        if payment_method == 'cash_on_delivery':
+            for item in cartItems:
+                Orders(
+                    user=user,
+                    address=address,
+                    ordered_date=ordered_date,
+                    payment_method=payment_method,
+                    product=item.product,
+                    product_qty=item.quantity,
+                    product_price=item.product.price * item.quantity,
+                    product_size=item.size,
+                    status='placed'
+                ).save()
+            
+            pro = newproducts.objects.get(id=item.product_id)
+            if item.size == 's':
+                pro.small = int(pro.small) - item.quantity
+            elif item.size == 'm':
+                pro.medium = int(pro.medium) - item.quantity
+            else:
+                pro.large = int(pro.large) - item.quantity
+            
+            pro.save()
+            
         
-        if payment_method=='cash_on_delivery':
-            for item in cart_items:
-                print(address_id,item.product.id,item.quantity,"kkkkk",)
-                order_detail=Orders(
+            cartItems.delete()
+            return JsonResponse({'status': 'success'})   
+        elif payment_method == 'razor_pay':
+            total_price_float = float(total_price)
+            DATA = {
+                "amount": int(total_price_float * 100),
+                "currency": "INR",
+                "payment_capture": '1',
+                "receipt": "receipt_1"
+            }
+            payment_order = client.order.create(data=DATA)
+            return JsonResponse({
+                'status': 'razorpay',
+                'payment_order': payment_order,
+                'key': RAZORPAY_KEY_ID
+            })
+            
+def razor_save(request):
+    user_email = request.session['email']
+    user = CustomUser.objects.get(email=user_email)
+    cartItems = MyCart.objects.filter(user_id=user.id)   
+    if request.method == 'POST':
+        address_id = request.POST.get('selectedAddress')
+        payment_method = request.POST.get('selectedPaymentMethod')
+        ordered_date = date.today()
+        address = UserAddress.objects.get(id=address_id)
+    for item in cartItems:
+            Orders(
                 user=user,
                 address=address,
                 ordered_date=ordered_date,
                 payment_method=payment_method,
                 product=item.product,
-                status='Placed',
                 product_qty=item.quantity,
                 product_price=item.product.price * item.quantity,
-                product_size=item.size
-                ).save()
-                pro = newproducts.objects.get(id=item.product_id)
-                if item.size == 's':
-                    pro.small = int(pro.small) - item.quantity
-                elif item.size == 'm':
-                    pro.medium = int(pro.medium) - item.quantity
-                else:
-                    pro.large = int(pro.large) - item.quantity
+                product_size=item.size,
+                status='placed' 
+            ).save()
             
-                pro.save()
-                
-            return JsonResponse({'status':'success'})    
-        elif payment_method=='razor_pay':
-            print('MINI MILTIA')
-            DATA = {
-            "amount": 675445,
-            "currency": "INR",
-            "payment_capture": '1',
-            "receipt": "receipt_1"
-#              "notes": {
-#              "key1": "value3",
-#              "key2": "value2"
-#          }
-            }
-            payment_order=client.order.create(data=DATA)
-            print(payment_order,'GTA VICE CITY GTA SANDREAS')
-            return JsonResponse({'status':'razorpay','payment_order':payment_order,'key':RAZORPAY_KEY_ID})   
-                
+            pro = newproducts.objects.get(id=item.product_id)
+            if item.size == 's':
+                pro.small = int(pro.small) - item.quantity
+            elif item.size == 'm':
+                pro.medium = int(pro.medium) - item.quantity
+            else:
+                pro.large = int(pro.large) - item.quantity
+            
+            pro.save()
+        
+            cartItems.delete()
+            return JsonResponse({'status': 'success'}) 
+
+# def place_order(request):
+#     user_email = request.session['email']
+#     user = CustomUser.objects.get(email=user_email)
+#     cartItems = MyCart.objects.filter(user_id=user.id)   
+#     total_price = Decimal(0)
+    
+#     if request.method == 'POST':
+#         address_id = request.POST.get('selectedAddress')
+#         payment_method = request.POST.get('selectedPaymentMethod')
+#         ordered_date = date.today()
+#         address = UserAddress.objects.get(id=address_id)
+        
+#         for item in cartItems:
+#             Orders(
+#                 user=user,
+#                 address=address,
+#                 ordered_date=ordered_date,
+#                 payment_method=payment_method,
+#                 product=item.product,
+#                 product_qty=item.quantity,
+#                 product_price=item.product.price * item.quantity,
+#                 product_size=item.size,
+#                 status='placed' if payment_method == 'cash_on_delivery' else 'pending'
+#             ).save()
+            
+#             pro = newproducts.objects.get(id=item.product_id)
+#             if item.size == 's':
+#                 pro.small = int(pro.small) - item.quantity
+#             elif item.size == 'm':
+#                 pro.medium = int(pro.medium) - item.quantity
+#             else:
+#                 pro.large = int(pro.large) - item.quantity
+            
+#             pro.save()
+#             total_price += item.product.price * item.quantity
+        
+#         cartItems.delete()
+        
+#         if payment_method == 'cash_on_delivery':
+#             return JsonResponse({'status': 'success'})    
+#         elif payment_method == 'razor_pay':
+#             total_price_float = float(total_price)
+#             DATA = {
+#                 "amount": int(total_price_float * 100),  # Amount in paise
+#                 "currency": "INR",
+#                 "payment_capture": '1',
+#                 "receipt": "receipt_1"
+#             }
+#             payment_order = client.order.create(data=DATA)
+#             return JsonResponse({
+#                 'status': 'razorpay',
+#                 'payment_order': payment_order,
+#                 'key': RAZORPAY_KEY_ID
+#             })               
                 
                 
             

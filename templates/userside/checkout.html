@@ -2093,146 +2093,142 @@
       }
     </script>
 
+   
     <script>
       function placeOrder(e) {
-        e.preventDefault();
-        console.log("nihalaaaa");
+          e.preventDefault();
+          console.log("Order placement initiated");
+  
+          let selectedAddress = document.querySelector(
+              'input[name="selected_address"]:checked'
+          ).value;
+  
+          let selectedPaymentMethod = document.querySelector(
+              'input[name="payment_method"]:checked'
+          ).value;
+  
+          console.log("Selected Address ID:", selectedAddress);
+          console.log("Selected Payment Method:", selectedPaymentMethod);
+  
+          let formData = new FormData();
+          formData.append("selectedAddress", selectedAddress);
+          formData.append("selectedPaymentMethod", selectedPaymentMethod);
+  
+          for (let pair of formData.entries()) {
+              console.log(pair[0] + ": " + pair[1]);
+          }
+  
+          fetch("{% url 'cartapp:place_order' %}", {
+              method: "POST",
+              body: formData,
+              headers: {
+                  "X-CSRFToken": getCookie("csrftoken"),
+              },
+          })
+          .then((response) => response.json())
+          .then((data) => {
+              console.log("Response Data:", data);
+  
+              if (data.status === "success") {
+                  location.href = "{% url 'cartapp:successpage' %}";
+              } else if (data.status === "razorpay") {
+                  console.log("Razorpay order data:", data);
+                  razorPay(data.payment_order, data.key);
+                  console.log(data.payment_order,'helloooo',data.key,'h8888')
+              } else {
+                  console.error("Order failed:", data);
+              }
+          })
+          .catch((error) => {
+              console.error("Error:", error);
+          });
+      }
+  
+      async function razorPay(order, key_id) {
+        console.log(order, 'Received order data for Razorpay integration');
+        console.log(order.amount, 'Order amount for Razorpay');
 
+          var options = {
+              key: key_id,
+              amount: order.amount,  
+              currency: "INR",
+              name: "Fashion Store",
+              description: "Test Transaction",
+              image: "https://example.com/your_logo",
+              order_id: order.id,
+              handler: function (response) {
+                  verifyPayment(response, order);
+              },
+              prefill: {
+                  name: "Gaurav Kumar",
+                  email: "gaurav.kumar@example.com",
+                  contact: "9000090000",
+              },
+              notes: {
+                  address: "Razorpay Corporate Office",
+              },
+              theme: {
+                  color: "#3399cc",
+              }
+          };
+          let rzp1 = new Razorpay(options);
+          rzp1.open();
+      }
+  
+      function verifyPayment(e) {
+    
+        console.log('hellooo guyssss');
+    
         let selectedAddress = document.querySelector(
-          'input[name="selected_address"]:checked'
+            'input[name="selected_address"]:checked'
         ).value;
-
+    
         let selectedPaymentMethod = document.querySelector(
-          'input[name="payment_method"]:checked'
+            'input[name="payment_method"]:checked'
         ).value;
-
-        console.log("Selected Address ID:", selectedAddress);
-        console.log("Selected Payment Method:", selectedPaymentMethod);
-
+    
         let formData = new FormData();
         formData.append("selectedAddress", selectedAddress);
         formData.append("selectedPaymentMethod", selectedPaymentMethod);
-
-        for (let pair of formData.entries()) {
-          console.log(pair[0] + ": " + pair[1]);
-        }
-
-        fetch("{% url 'cartapp:place_order' %}", {
-          method: "POST",
-          body: formData,
-          headers: {
-            "X-CSRFToken": getCookie("csrftoken"),
-          },
+    
+        console.log(selectedPaymentMethod, selectedAddress, 'selectedaddresssssssselectedPaumentmethodddddddddddddddddddd');
+    
+        fetch("{% url 'cartapp:razor_save' %}", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken"),
+            },
         })
-          .then((response) => response.json())
-          .then((data) => {
+        .then((response) => response.json())
+        .then((data) => {
             console.log("Response Data:", data);
-
             if (data.status === "success") {
-              location.href = "{% url 'cartapp:successpage' %}";
-            } else if (data.status === "razorpay") {
-              razor_data = data.payment_order;
-              console.log(data,"jhgfdsdfghj")
-              key=data.key
-              razorPay(razor_data,key);
-            } else {
-              console.error("Order failed:", data);
+                location.href = "{% url 'cartapp:successpage' %}";
             }
-          })
-          .catch((error) => {
+        })
+        .catch((error) => {
             console.error("Error:", error);
-          });
-      }
-     async function razorPay(data,key_id) {
-        console.log(data.amount,"kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
-        var options = {
-          key: "rzp_test_waokdwpF3Rteg3",
-          amount: 56465,
-          currency: "INR",
-          name: "firr Corp",
-          description: "Test Transaction",
-          image: "https://example.com/your_logo",
-          handler: function (response) {
-            alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
-
-                varifyPayment(response,data)
-
-
-           
-          },
-          prefill: {
-            name: "Gaurav Kumar",
-            email: "gaurav.kumar@example.com",
-            contact: "9000090000",
-          },
-          notes: {
-            address: "Razorpay Corporate Office",
-          },
-          theme: {
-            color: "#3399cc",
-          },
-        };
-        let rzp1= new Razorpay(options)
-        await rzp1.open()
-      }
-
-      {% comment %}  {% endcomment %}
-      async function razorpayPayment(order){
-        console.log(order,"joojojoj");
-var options = {
-    "key": "rzp_test_ALMHXTFiHgePY1", // Enter the Key ID generated from the Dashboard
-    "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-    "currency": "INR",
-    "name": "Fashion Store", //your business name
-    "description": "Test Transaction",
-    "image": "https://example.com/your_logo",
-    "order_id": order.id, //This is a sample Order ID. Pass the id obtained in the response of Step 1
-    "handler": function (response) {
-            verifyPayment(response, order)
-          },
-    "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
-        "name": "Gaurav Kumar", //your customer's name
-        "email": "gaurav.kumar@example.com",
-        "contact": "9000090000" //Provide the customer's phone number for better conversion rates 
-    },
-    "notes": {
-        "address": "Razorpay Corporate Office"
-    },
-    "theme": {
-        "color": "#3399cc"
+        });
     }
-};
-console.log("razor pay reached here")
-var rzp1 = new Razorpay(options);
-await rzp1.open()
-
-
-    }
-
-      {% comment %}  {% endcomment %}
-
-
-
-      function varifyPayment(payment_response,data_order){
-        console.log('hiiiiiiiii guysssssssssssssssssss')
-      }
-
+    
+  
       function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== "") {
-          const cookies = document.cookie.split(";");
-          for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === name + "=") {
-              cookieValue = decodeURIComponent(
-                cookie.substring(name.length + 1)
-              );
-              break;
-            }
+          let cookieValue = null;
+          if (document.cookie && document.cookie !== "") {
+              const cookies = document.cookie.split(";");
+              for (let i = 0; i < cookies.length; i++) {
+                  const cookie = cookies[i].trim();
+                  if (cookie.substring(0, name.length + 1) === name + "=") {
+                      cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                      break;
+                  }
+              }
           }
-        }
-        return cookieValue;
+          return cookieValue;
       }
-    </script>
+  
+      
+  </script>
   </body>
 </html>
