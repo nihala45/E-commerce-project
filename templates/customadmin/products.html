@@ -295,7 +295,7 @@
 					
                     <tr>
 					
-                        <th>id</th>
+                        <th>no</th>
                         <th>name</th>
 						<th>category</th>
 						<th>description</th>
@@ -317,20 +317,18 @@
 					{% for prod in products%}
                     
                     <tr>
-                        <td>{{prod.id}}</td>
+                        <td>{{ forloop.counter }}</td> 
                         <td>{{prod.name}}</td>
 						<td>{{prod.category.category_name}}</td>
 						<td>{{prod.description}}</td>
-                        <td>{{prod.price}}
-							{% comment %} {{prod.price-prod.offer.discoun}} {% endcomment %}
-						</td>
+                        <td>{{prod.price}}</td>
 						
 						<td>
 
 
 							
 								{% if prod.image1 %}
-									<img src="{{ prod.image1.url }}" alt="Product Image" width="100px" height="100px"/>
+								<img src="{{ prod.image1.url }}" alt="Product Image" width="100px" height="100px"/>
 								{% else %}
 									No image
 								{% endif %}

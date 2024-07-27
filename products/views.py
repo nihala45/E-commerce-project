@@ -16,12 +16,8 @@ from offermanagement.models import Offer
 # Create your views here.
 @login_required(login_url='adminside:adminlogin')
 def products(request):
-    productss=newproducts.objects.all()
-    
+    productss=newproducts.objects.all().order_by('id')
     # print(productss)
-   
-    
-    
     return render(request,'customadmin/products.html',{'products':productss})
 
 @login_required(login_url='adminside:adminlogin')
