@@ -39,8 +39,23 @@ def Addcoupon(request):
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=405)
 
+def get_coupon(request,coupon_id):
+    try:
+        coupon=Coupon.objects.get(id=coupon_id)
+        date = {
+            'name': coupon.name,
+            'code': coupon.code,
+            'percentage':coupon.percentage,
+            'cash_date':coupon.date,
+            'expire_date':coupon.expiry_date,
+        }
+        return JsonResponse(date)
+    except Coupon.DoesNotExist:
+        return JsonResponse({'status':'error', 'message':'Offer not found'},status=400)
+        
+
 
 def remove_coupon(request,coupon_id):
     coupon=Coupon.objects.get(id=coupon_id)
     coupon.delete()
-    return redirect('couponmanagement:coupon')
+    return redirect('couponmanagement:coupons')

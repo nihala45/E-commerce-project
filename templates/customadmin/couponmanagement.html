@@ -10,43 +10,31 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <!-- Custom CSS for additional styling -->
     <style>
-        .l-navbar {
-            background-color: #343a40;
+        .sidebar {
             height: 100vh;
-            width: 250px;
+            background: #343a40;
+            color: #fff;
             position: fixed;
             top: 0;
             left: 0;
+            width: 250px;
+            transition: all 0.3s;
+        }
+        .sidebar .nav-link {
             color: #fff;
-        }
-        .nav_logo {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            color: #fff;
-            text-decoration: none;
-        }
-        .nav_logo-icon {
-            font-size: 2rem;
-            margin-right: 10px;
-        }
-        .nav_list {
-            padding: 15px 0;
-        }
-        .nav_link {
+            padding: 15px 20px;
             display: block;
-            padding: 10px 20px;
-            color: #fff;
+            transition: background 0.3s;
+        }
+        .sidebar .nav-link:hover {
+            background: #495057;
             text-decoration: none;
-            font-size: 1rem;
         }
-        .nav_link.active {
-            background-color: #007bff;
-            border-radius: 5px;
-        }
-        .nav_icon {
-            font-size: 1.2rem;
-            margin-right: 10px;
+        .sidebar .nav-logo {
+            font-size: 24px;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #495057;
         }
         .btn-custom {
             background-color: #007bff;
@@ -56,12 +44,15 @@
             background-color: #0056b3;
         }
         .table-container {
-            margin-left: 270px; /* To offset the width of the navbar */
+            margin-left: 270px; /* To offset the width of the sidebar */
             padding: 20px;
             padding-bottom: 80px; /* Space for the fixed button */
         }
+        .table-containers{
+            margin-right:100px
+        }
         .table th, .table td {
-            text-align: center;
+            text-align: left;
         }
         .table th {
             background-color: #f8f9fa;
@@ -76,60 +67,32 @@
 </head>
 <body>
     <!-- Sidebar Navigation -->
-    <div class="l-navbar" id="nav-bar">
-        <nav class="nav">
-            <div>
-                <a href="#" class="nav_logo">
-                    <i class='bx bx-layer nav_logo-icon'></i>
-                    <span class="nav_logo-name">Shop</span>
-                </a>
-                <div class="nav_list">
-                    <a href="/adminhome/" class="nav_link active">
-                        <i title="Dashboard" class='bx bx-grid-alt nav_icon'></i>
-                        <span class="nav_name">Dashboard</span>
-                    </a>
-                    <a href="{% url 'usermanagement:usermanagement' %}" class="nav_link">
-                        <i title="Users" class='bx bx-user nav_icon'></i>
-                        <span class="nav_name">Users</span>
-                    </a>
-                    <a href="{% url 'products:products' %}" class="nav_link">
-                        <i title="Products" class='bx bx-message-square-detail nav_icon'></i>
-                        <span class="nav_name">Products</span>
-                    </a>
-                    <a href="{% url 'category:categorymanagement' %}" class="nav_link">
-                        <i title="Categories" class='bx bx-bookmark nav_icon'></i>
-                        <span class="nav_name">Categories</span>
-                    </a>
-                    <a href="{% url 'ordermanagement:order_management' %}" class="nav_link">
-                        <i title="Order" class='bx bx-cart nav_icon'></i>
-                        <span class="nav_name">Order</span>
-                    </a>
-                    <a href="{% url 'offermanagement:offermanagement' %}" class="nav_link">
-                        <i title="Offers" class='bx bx-gift nav_icon'></i>
-                        <span class="nav_name">Offers</span>
-                    </a>
-                    <a href="{% url 'couponmanagement:coupon' %}" class="nav_link {% if request.resolver_match.url_name == 'coupon' %}active{% endif %}">
-                        <i title="Coupons" class='bx bx-tag nav_icon'></i>
-                        <span class="nav_name">Coupons</span>
-                    </a>
-                    <a href="{% url 'adminside:logout_view' %}" class="edit">
-                        <span>Logout</span>
-                    </a>
-                </div>
-            </div>
+    <div class="sidebar">
+        <div class="nav-logo">
+            <i class='bx bx-layer'></i> Shop
+        </div>
+        <nav class="nav flex-column">
+            <a href="/adminhome/" class="nav-link active"><i class='bx bx-grid-alt'></i> Dashboard</a>
+            <a href="{% url 'adminside:dashboard' %}" class="nav-link"><i class='bx bx-user'></i> Users</a>
+            <a href="{% url 'products:products' %}" class="nav-link"><i class='bx bx-message-square-detail'></i> Products</a>
+            <a href="{% url 'category:categorymanagement' %}" class="nav-link"><i class='bx bx-bookmark'></i> Categories</a>
+            <a href="{% url 'ordermanagement:order_management' %}" class="nav-link"><i class='bx bx-cart'></i> Orders</a>
+            <a href="{% url 'offermanagement:offermanagement' %}" class="nav-link"><i class='bx bx-gift'></i> Offers</a>
+            <a href="{% url 'couponmanagement:coupon' %}" class="nav-link {% if request.resolver_match.url_name == 'coupon' %}active{% endif %}"><i class='bx bx-tag'></i> Coupons</a>
+            <a href="{% url 'adminside:logout_view' %}" class="nav-link"><i class='bx bx-log-out'></i> Logout</a>
         </nav>
     </div>
 
     <!-- Main Content -->
-    <div class="container table-container">
+    <div class="container table-container">     
         <h1>Coupon Management</h1>
-        <div class="table-container">
+        <div class="table-containers">
+            <div class="table-content">
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th>Coupon Name</th>
                         <th>Coupon Code</th>
-
                         <th>Percentage</th>
                         <th>Date</th>
                         <th>Expire Date</th>
@@ -141,22 +104,22 @@
                         <tr>
                             <td>{{ coupon.name }}</td>
                             <td>{{ coupon.code }}</td>
-
                             <td>{{ coupon.percentage }}%</td>
                             <td>{{ coupon.date }}</td>
                             <td>{{ coupon.expiry_date }}</td>
                             <td>
-                                <a href="" class="btn btn-warning btn-sm">Edit</a>
+                                <a onClick="openEditCoupon(event,{{coupon.id}})" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editofferModal">Edit</a>
                                 <a href="{% url 'couponmanagement:remove_coupon' coupon.id %}" class="btn btn-danger btn-sm">Delete</a>
                             </td>
                         </tr>
                     {% empty %}
                         <tr>
-                            <td colspan="5">No coupons available</td>
+                            <td colspan="6">No coupons available</td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
+        </div>
         </div>
     </div>
 
@@ -218,20 +181,65 @@
         </div>
     </div>
 
-    <!-- Include Bootstrap and jQuery scripts -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
-
-
+    <!--EDIT COUPON MODAL-->
+    <div class="modal fade" id="addEditModal" tabindex="-1" role="dialog" aria-labelledby="editCouponModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addCouponModalLabel">Add New Coupon</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addCouponForm" onSubmit="addCoupon(event)">
+                        <div class="form-group">
+                            <p id="name-error" class="text-danger"></p>
+                            <label for="couponName">Coupon Name</label>
+                            <input type="text" class="form-control" id="couponName" name="couponName" required>
+                        </div>
+                        <div class="form-group">
+                            <p id="code-error" class="text-danger"></p>
+                            <label for="couponCode">Coupon Code</label>
+                            <input type="text" class="form-control" id="couponCode" name="couponCode" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="percentage">Percentage</label>
+                            <input type="number" 
+                                   class="form-control" 
+                                   id="percentage" 
+                                   name="percentage" 
+                                   min="0" 
+                                   max="100" 
+                                   step="1" 
+                                   required 
+                                   aria-describedby="percentageHelp">
+                            <small id="percentageHelp" class="form-text text-muted">
+                                Enter a value between 0 and 100.
+                            </small>
+                        </div>
+                        <div class="form-group">
+                            <label for="date">Date</label>
+                            <input type="date" class="form-control" id="date" name="date" required>
+                        </div>
+                        <div class="form-group">
+                            <p id="date-error" class="text-danger"></p>
+                            <label for="expireDate">Expire Date</label>
+                            <input type="date" class="form-control" id="expireDate" name="expireDate" required>
+                        </div>
+                        <button type="submit" class="btn btn-custom">Save Coupon</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Include Bootstrap and jQuery scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!--ADD COUPON-->
     <script>
         function getCookie(name) {
             let cookieValue = null;
@@ -249,47 +257,38 @@
         }
         function addCoupon(e) {
             e.preventDefault();
-            console.log('helloooo');
             document.getElementById('name-error').textContent = '';
             document.getElementById('date-error').textContent = '';
             document.getElementById('code-error').textContent = ''; 
-            
-        
+
             let couponName = document.getElementById('couponName').value;
             let percentage = document.getElementById('percentage').value;
             let code = document.getElementById('couponCode').value; // Get coupon code value
-        
             let date = document.getElementById('date').value;
             let expireDate = document.getElementById('expireDate').value;
             const csrftoken = getCookie('csrftoken');
-        
-            console.log('couponName:', couponName);
-            console.log('percentage:', percentage);
-            console.log('date:', date);
-            console.log('expireDate:', expireDate);
-            console.log('code:', code); 
 
             const codePattern = /^[A-Z]{2}\d{4}$/;
             if (!codePattern.test(code)) {
                 document.getElementById('code-error').textContent = 'Coupon code must be 2 uppercase letters followed by 4 digits.';
                 return;
             }
-        
+
             if (couponName.trim() === '' || /^\s/.test(couponName) || date > expireDate) {
                 if (couponName.trim() === '' || /^\s/.test(couponName)) {
-                    document.getElementById('name-error').textContent = 'Offer name cannot be empty or start with a space.';
+                    document.getElementById('name-error').textContent = 'Coupon name cannot be empty or start with a space.';
                 }
                 if (date > expireDate) {
-                    document.getElementById('date-error').textContent = 'Cash date cannot be later than expire date.';
+                    document.getElementById('date-error').textContent = 'Date cannot be later than expire date.';
                 }
             } else {
                 let formData = new URLSearchParams();
                 formData.append('couponName', couponName);
-                formData.append('code', code); // Append coupon code
+                formData.append('code', code);
                 formData.append('percentage', percentage);
                 formData.append('date', date);
                 formData.append('expireDate', expireDate);
-        
+
                 fetch("{% url 'couponmanagement:Addcoupon' %}", {
                     method: 'POST',
                     headers: {
@@ -320,9 +319,43 @@
                 });
             }
         }
-            
-        
     </script>
 
+    <!--EDIT COUPON-->
+
+    <script>
+        function openEditCoupon(e,couponId){
+            e.preventDefault()
+            console.log(couponId,'speaker log hellooooooooo')
+            console.log('hiideragaighaigalugbaafsikncxcvaipuwfhaokjwgjhoiauoghnnihafjanfjanfj')
+
+            const url='/couponmanagement/coupons/${couponId}/details/';
+
+            fetch(url)
+                .then(response =>{
+                    if (!response.ok){
+                        throw new Error('Network response was not ok');
+
+                    }
+                    return response.json;
+                })
+                .then(data => {
+                    if (data.status === 'error') {
+                        console.error(data.message);
+                        return;
+                    }
+                     
+                    document.getElementById('edit-coupon-id').value = offerId;
+                    document.getElementById('edit-couponName').value = data.name || '';
+                    document.getElementById('edit-coupoCode').value = data.discount || '';
+                    document.getElementById('edit-cashDate').value = data.cash_date || '';
+                    document.getElementById('edit-expireDate').value = data.expire_date || '';
+                    
+                    $('#editofferModal').modal('show');
+                })
+                .catch(error => console.error('Error fetching offer details:', error));
+        }
+        }
+    </script>
 </body>
 </html>

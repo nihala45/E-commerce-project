@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Offers Table</title>
+    <title>Offer Management</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Include jQuery -->
@@ -17,6 +17,38 @@
             margin: 0;
             padding: 20px;
         }
+        
+ .sidebar {
+    height: 100vh;
+    background: #343a40;
+    color: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    transition: all 0.3s;
+}
+.sidebar .nav-link {
+    color: #fff;
+    padding: 15px 20px;
+    display: block;
+    transition: background 0.3s;
+}
+.sidebar .nav-link:hover {
+    background: #495057;
+    text-decoration: none;
+}
+.sidebar .nav-logo {
+    font-size: 24px;
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid #495057;
+}
+
+.sidebar a:hover {
+background-color: #495057; /* Slightly lighter background on hover */
+}
+
         h1 {
             text-align: center;
             color: #333;
@@ -30,9 +62,9 @@
             display: block;
             width: 150px;
             margin: 20px auto;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
+            background-color: white;
+            color: black;
+            border: black;
             padding: 10px;
             text-align: center;
             text-decoration: none;
@@ -40,9 +72,6 @@
             cursor: pointer;
             border-radius: 5px;
             transition: background-color 0.3s;
-        }
-        .add-offer-button:hover {
-            background-color: #45a049;
         }
         table {
             width: 100%;
@@ -59,8 +88,8 @@
             text-align: left;
         }
         th {
-            background-color: #4CAF50;
-            color: white;
+            background-color: white;
+            color: black;
         }
         tr:nth-child(even) {
             background-color: #f9f9f9;
@@ -96,12 +125,25 @@
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>Offers Table</h1>
-        {% comment %} <button type="button" class="add-offer-button" data-toggle="modal" data-target="#offerModal">
-            Add Offer
-        </button> {% endcomment %}
+<body style="">
+    <div>
+    <div class="sidebar">
+        <div class="nav-logo">
+            <i class='bx bx-layer'></i> Shop
+        </div>
+        <nav class="nav flex-column">
+            <a href="{% url 'adminside:dashboard' %}" class="nav-link active"><i class='bx bx-grid-alt'></i> Dashboard</a>
+            <a href="{% url 'usermanagement:usermanagement' %}" class="nav-link"><i class='bx bx-user'></i> Users</a>
+            <a href="{% url 'products:products' %}" class="nav-link"><i class='bx bx-message-square-detail'></i> Products</a>
+            <a href="{% url 'category:categorymanagement' %}" class="nav-link"><i class='bx bx-bookmark'></i> Categories</a>
+            <a href="{% url 'ordermanagement:order_management' %}" class="nav-link"><i class='bx bx-cart'></i> Orders</a>
+            <a href="{% url 'offermanagement:offermanagement' %}" class="nav-link"><i class='bx bx-gift'></i> Offers</a>
+            <a href="{% url 'couponmanagement:coupon' %}" class="nav-link {% if request.resolver_match.url_name == 'coupon' %}active{% endif %}"><i class='bx bx-tag'></i> Coupons</a>
+            <a href="{% url 'adminside:logout_view' %}" class="nav-link"><i class='bx bx-log-out'></i> Logout</a>
+        </nav>
+    </div>
+    <div class="container" style="margin-left:270px"> 
+        <h1>Offer Management</h1>
         
         <table>
             <thead>
@@ -121,10 +163,9 @@
                     <td>{{ offer.active_date }}</td>
                     <td>{{ offer.expiry_date }}</td>
                     <td>
-                        <a onClick="openEditoffer(event,{{offer.id}})" class="btn btn-warning btn-sm">Edit</a>
+                        <a onClick="openEditOffer(event,{{offer.id}})" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editofferModal">Edit</a>
                         <a href="{% url 'offermanagement:remove_offer' offer.id %}" class="btn btn-danger btn-sm">Delete</a>
                     </td>
-
                 </tr>
                 {% endfor %}
             </tbody>
@@ -133,7 +174,7 @@
             Add Offer
         </button>
     </div>
-
+</div>
     <!-- ADD OFFER Modal -->
     <div class="modal fade" id="offerModal" tabindex="-1" role="dialog" aria-labelledby="offerModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -176,7 +217,9 @@
         </div>
     </div>
 
-    <!--EDIT ADDRESS MODAL-->
+
+
+    <!-- EDIT OFFER Modal -->
     <div class="modal fade" id="editofferModal" tabindex="-1" role="dialog" aria-labelledby="editofferModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -204,7 +247,7 @@
                             <input type="date" class="form-control" id="edit-cashDate" name="cashDate" required>
                         </div>
                         <div class="form-group">
-                            <p id="edit-name-error" class="text-danger"></p>
+                            <p id="edit-date-error" class="text-danger"></p>
 
                             <label for="expireDate">Expire Date:</label>
                             <input type="date" class="form-control" id="edit-expireDate" name="expireDate" required>
@@ -333,20 +376,30 @@
     <script>
         function openEditOffer(e, offerId) {
             e.preventDefault();
-    
-            // AJAX request to fetch offer details
-            fetch(`{% url 'offermanagement:get_offer' %} ${offerId}`)  // Replace with your actual endpoint
-                .then(response => response.json())
+            console.log('heleloeawbfuaipobgfpiuahogioaugbiahohlgoa')
+            
+            const url = `/offermanagement/offers/${offerId}/details/`;  // Correct URL pattern
+            
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => {
-                    console.log("ggggggggggggggggggggggggg")
-                    // Populate the modal with the fetched data
-                    document.getElementById('offerName').value = data.offerName;
-                    document.getElementById('discount').value = data.discount;
-                    document.getElementById('cashDate').value = data.cashDate;
-                    document.getElementById('expireDate').value = data.expireDate;
+                    if (data.status === 'error') {
+                        console.error(data.message);
+                        return;
+                    }
                     
-                    // Show the modal
-                    $('#offerModal').modal('show');
+                    document.getElementById('edit-offer-id').value = offerId;
+                    document.getElementById('edit-offerName').value = data.name || '';
+                    document.getElementById('edit-discount').value = data.discount || '';
+                    document.getElementById('edit-cashDate').value = data.cash_date || '';
+                    document.getElementById('edit-expireDate').value = data.expire_date || '';
+                    
+                    $('#editofferModal').modal('show');
                 })
                 .catch(error => console.error('Error fetching offer details:', error));
         }
@@ -374,8 +427,8 @@
             console.log('hello my name is nihala shirin');
         
             // Clear previous error messages
-            document.getElementById('name-error').textContent = '';
-            document.getElementById('date-error').textContent = '';
+            document.getElementById('edit-name-error').textContent = '';
+            document.getElementById('edit-date-error').textContent = '';
             
             let offer_id = document.getElementById('edit-offer-id').value;
             let offerName = document.getElementById('edit-offerName').value;
@@ -393,10 +446,10 @@
         
             if (offerName.trim() === '' || /^\s/.test(offerName) || cashDate > expireDate) {
                 if (offerName.trim() === '' || /^\s/.test(offerName)) {
-                    document.getElementById('name-error').textContent = 'Offer name cannot be empty or start with a space.';
+                    document.getElementById('edit-name-error').textContent = 'Offer name cannot be empty or start with a space.';
                 }
                 if (cashDate > expireDate) {
-                    document.getElementById('date-error').textContent = 'Cash date cannot be later than expire date.';
+                    document.getElementById('edit-date-error').textContent = 'Cash date cannot be later than expire date.';
                 }
             } else {
                 let formData = new URLSearchParams();
@@ -448,6 +501,7 @@
 
         
     </script>
+    
     
 
     

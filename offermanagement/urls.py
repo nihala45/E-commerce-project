@@ -8,7 +8,7 @@ urlpatterns = [
     path('Addoffer/', views.Addoffer, name='Addoffer'),
     path('editSubmitOffer/', views.editSubmitOffer, name='editSubmitOffer'),
     path('remove_offer/<int:offer_id>/', views.remove_offer, name='remove_offer'),
-    path('get_offer/<int:offer_id>/', views.get_offer, name='get_offer'),
+    path('offers/<int:offer_id>/details/', views.get_offer, name='offer-details'),
     
     
     

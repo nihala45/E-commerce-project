@@ -37,9 +37,18 @@ def Addoffer(request):
         # Return JSON response
         return JsonResponse({'status': 'success'})
         
-def get_offer(request,offer_id):
-    print("helfaikmklnladnvald")
-    return JsonResponse({'status':'hello'})
+def get_offer(request, offer_id):
+    try:
+        offer = Offer.objects.get(id=offer_id)
+        data = {
+            'name': offer.name,
+            'discount': offer.discount,
+            'cash_date': offer.active_date,
+            'expire_date': offer.expiry_date,
+        }
+        return JsonResponse(data)
+    except Offer.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Offer not found'}, status=404)
 
 def editSubmitOffer(request):
     if request.method == 'POST':
@@ -49,16 +58,15 @@ def editSubmitOffer(request):
         cash_date = request.POST.get('cashDate')
         expire_date = request.POST.get('expireDate')
 
-        if not all([offer_id, name, discount, cash_date, expire_date]):
-            return JsonResponse({'status': 'error', 'message': 'Missing required fields'}, status=400)
-
         offer = get_object_or_404(Offer, id=offer_id)
 
+    
         offer.name = name
         offer.discount = discount
         offer.active_date = cash_date
         offer.expiry_date = expire_date
 
+        
         offer.save()
 
         return JsonResponse({'status': 'success'})
