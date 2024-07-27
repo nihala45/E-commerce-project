@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect
 from couponmanagement.models import Coupon
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+
 
 # Create your views here.
 def coupon(request):
@@ -52,7 +54,31 @@ def get_coupon(request,coupon_id):
         return JsonResponse(date)
     except Coupon.DoesNotExist:
         return JsonResponse({'status':'error', 'message':'Offer not found'},status=400)
-        
+    
+def editCoupon(request):
+    if request.method == 'POST':
+        coupon_id = request.POST.get('coupon_id')
+        name = request.POST.get('couponName')
+        code = request.POST.get('code')
+        percentage = request.POST.get('percentage')
+        cashDate = request.POST.get('cashDate')
+        expireDate = request.POST.get('expireDate')
+
+        if not all([coupon_id, name, code, percentage, cashDate, expireDate]):
+            return JsonResponse({'status': 'error', 'message': 'Missing required fields'}, status=400)
+
+        coupon = get_object_or_404(Coupon, id=coupon_id)
+        coupon.name = name
+        coupon.code = code
+        coupon.percentage = percentage
+        coupon.date = cashDate
+        coupon.expiry_date = expireDate
+
+        coupon.save()
+        return JsonResponse({'status': 'success'})
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+ 
 
 
 def remove_coupon(request,coupon_id):
