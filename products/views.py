@@ -9,7 +9,7 @@ from products.models import newproducts
 from django.shortcuts import get_object_or_404
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
-
+from offermanagement.models import Offer
 
 
 
@@ -17,6 +17,7 @@ from django.contrib.auth.decorators import login_required
 @login_required(login_url='adminside:adminlogin')
 def products(request):
     productss=newproducts.objects.all()
+    
     # print(productss)
    
     
@@ -27,7 +28,8 @@ def products(request):
 
 def addproduct(request):
     categoryy=categories.objects.all()
-    return render(request,'customadmin/addproduct.html',{'cat':categoryy})
+    offers=Offer.objects.all()
+    return render(request,'customadmin/addproduct.html',{'cat':categoryy,'off':offers})
 
 
 @login_required(login_url='adminside:adminlogin')
@@ -40,11 +42,13 @@ def saveproducts(request):
         category_id = request.POST['category']
         description=request.POST['description']
         price=request.POST['price']
+        
         # if not re.match("^[A-Za-z]+$", name):
             
         #     messages.error(request, "Product name should only contain letters without spaces or numbers.")
         #     return redirect('products:saveproducts') 
         category = categories.objects.get(id=category_id)
+        
         
         # if "croppedImageData" in request.POST:
         #     img1 = request.POST["croppedImageData"]
@@ -60,6 +64,8 @@ def saveproducts(request):
         small=request.POST['small_quantity']
         medium=request.POST['medium_quantity']
         large=request.POST['large_quantity']
+        offer_id=request.POST['offer']
+        offer=Offer.objects.get(id=offer_id)
         
         
         
@@ -76,6 +82,7 @@ def saveproducts(request):
            small=small,
            medium=medium,
            large=large,
+           offer=offer,
         )    
         products2.save()
         return redirect('products:products')
@@ -97,8 +104,9 @@ def product_delete(request, prod_id):
 def product_editpage(request, prod_id):
     product = newproducts.objects.get(id=prod_id)
     catyy = categories.objects.all()
+    offer_details=Offer.objects.all()
     print(vars(product),"gjyhgbvc ",product.id,"iddddddddddddddddddd")
-    return render(request, 'customadmin/editproduct.html', {'product': product, 'catyy': catyy})
+    return render(request, 'customadmin/editproduct.html', {'product': product, 'catyy': catyy,'offers':offer_details})
 
 
 @login_required(login_url='adminside:adminlogin')
@@ -120,6 +128,8 @@ def product_editsave(request):
         editsmall = request.POST.get('smallquantity')
         editmedium = request.POST.get('mediumquantity')
         editlarge = request.POST.get('largequantity')
+        editoffer = request.POST.get('off')
+        
         
         print(editcategory,'EDIT CATEGORUYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY')
         pro = newproducts.objects.get(id=prod_id)
@@ -127,6 +137,8 @@ def product_editsave(request):
         pro.description = editdescription
         # pro.category = editcategory
         category = categories.objects.get(id=editcategory)
+        offers = Offer.objects.get(id=editoffer)
+        
         pro.category = category
         
 
@@ -142,6 +154,8 @@ def product_editsave(request):
         pro.small = editsmall
         pro.medium = editmedium
         pro.large = editlarge
+        pro.offer = offers
+        
 
         pro.save()
         

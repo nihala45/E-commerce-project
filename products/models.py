@@ -1,5 +1,6 @@
 from django.db import models
 from category.models import categories
+from offermanagement.models import Offer
 # Create your models here.
 
 class newproducts(models.Model):
@@ -14,6 +15,8 @@ class newproducts(models.Model):
     small = models.CharField(max_length=50)
     medium = models.CharField(max_length=50)
     large = models.CharField(max_length=50)
+    offer = models.ForeignKey(Offer, on_delete=models.SET_NULL, blank=True, null=True)
+
 
    
 # class varients(models.Model):

@@ -111,6 +111,17 @@
                     <label for="large_quantity">Large Quantity:</label>
                     <input type="number" id="large_quantity" name="large_quantity" class="form-control" min="0" required>
                 </div>
+                 <!-- offer -->
+                 <div class="form-group">
+                    <label for="category">Offer:</label>
+                    <select id="offer" name="offer" class="form-control" required>
+                        <option value="" selected disabled>Select Category</option>
+                        {% for j in off %}
+                        <option value="{{j.id}}">{{j.name}}</option>
+                         {%endfor%}
+                        
+                    </select>
+                </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Save</button>
                 </div>
