@@ -5,6 +5,8 @@ class Coupon(models.Model):
     name = models.CharField(max_length=100)
     code = models.CharField(max_length=20, unique=True) 
     percentage = models.PositiveIntegerField()  # Changed to PositiveIntegerField for non-negative values
+    name = models.CharField(max_length=100)
+    critiria_amount = models.IntegerField()
     date = models.DateField()
     expiry_date = models.DateField()
 

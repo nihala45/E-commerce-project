@@ -17,8 +17,11 @@ def Addcoupon(request):
         couponName = request.POST.get('couponName')
         code = request.POST.get('code')
         percentage = request.POST.get('percentage')
+        amount = request.POST.get('amount')
+        
         date = request.POST.get('date')
         expireDate = request.POST.get('expireDate')
+        
 
         
         if Coupon.objects.filter(code=code).exists():
@@ -31,6 +34,7 @@ def Addcoupon(request):
             name=couponName,
             code=code,
             percentage=percentage,
+            critiria_amount=amount,
             date=date,
             expiry_date=expireDate
         )
@@ -48,6 +52,7 @@ def get_coupon(request,coupon_id):
             'name': coupon.name,
             'code': coupon.code,
             'percentage':coupon.percentage,
+            'critiria_amount':coupon.critiria_amount,
             'cash_date':coupon.date,
             'expire_date':coupon.expiry_date,
         }
@@ -61,6 +66,8 @@ def editCoupon(request):
         name = request.POST.get('couponName')
         code = request.POST.get('code')
         percentage = request.POST.get('percentage')
+        amount = request.POST.get('amount')
+        
         cashDate = request.POST.get('cashDate')
         expireDate = request.POST.get('expireDate')
 
@@ -71,6 +78,8 @@ def editCoupon(request):
         coupon.name = name
         coupon.code = code
         coupon.percentage = percentage
+        coupon.critiria_amount = amount
+        
         coupon.date = cashDate
         coupon.expiry_date = expireDate
 

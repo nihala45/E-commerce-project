@@ -94,6 +94,8 @@
                         <th>Coupon Name</th>
                         <th>Coupon Code</th>
                         <th>Percentage</th>
+                        <th>Amount</th>
+
                         <th>Date</th>
                         <th>Expire Date</th>
                         <th>Actions</th>
@@ -105,6 +107,8 @@
                             <td>{{ coupon.name }}</td>
                             <td>{{ coupon.code }}</td>
                             <td>{{ coupon.percentage }}%</td>
+                            <td>{{ coupon.critiria_amount }}</td>
+
                             <td>{{ coupon.date }}</td>
                             <td>{{ coupon.expiry_date }}</td>
                             <td>
@@ -165,6 +169,12 @@
                                 Enter a value between 0 and 100.
                             </small>
                         </div>
+
+                        <div class="form-group">
+                            <label for="critiria">Amount:</label>
+                            <input type="number" id="critiria-amount" name="critiria-amount" class="form-control" min="0" step="0.01" required>
+                        </div>
+
                         <div class="form-group">
                             <label for="date">Date</label>
                             <input type="date" class="form-control" id="date" name="date" required>
@@ -219,6 +229,12 @@
                                 Enter a value between 0 and 100.
                             </small>
                         </div>
+
+                        <div class="form-group">
+                            <label for="critiria">Amount:</label>
+                            <input type="number" id="edit-critiria-amount" name="edit-critiria-amount" class="form-control" min="0" step="0.01" required>
+                        </div>
+
                         <div class="form-group">
                             <label for="date">Date</label>
                             <input type="date" class="form-control" id="edit-Cashdate" name="date" required>
@@ -264,6 +280,8 @@
 
             let couponName = document.getElementById('couponName').value;
             let percentage = document.getElementById('percentage').value;
+            let amount = document.getElementById('critiria-amount').value;
+
             let code = document.getElementById('couponCode').value; // Get coupon code value
             let date = document.getElementById('date').value;
             let expireDate = document.getElementById('expireDate').value;
@@ -287,8 +305,11 @@
                 formData.append('couponName', couponName);
                 formData.append('code', code);
                 formData.append('percentage', percentage);
+                formData.append('amount', amount);
+                
                 formData.append('date', date);
                 formData.append('expireDate', expireDate);
+                
 
                 fetch("{% url 'couponmanagement:Addcoupon' %}", {
                     method: 'POST',
@@ -348,6 +369,8 @@
                     document.getElementById('edit-couponName').value = data.name || '';
                     document.getElementById('edit-code').value = data.code || '';
                     document.getElementById('edit-percentage').value = data.percentage || '';
+                    document.getElementById('edit-critiria-amount').value = data.critiria_amount || '';
+
                     document.getElementById('edit-Cashdate').value = data.cash_date || '';
                     document.getElementById('edit-expireDate').value = data.expire_date || '';
                     
@@ -387,8 +410,11 @@
             let couponName = document.getElementById('edit-couponName').value;
             let code = document.getElementById('edit-code').value;
             let percentage = document.getElementById('edit-percentage').value;
+            let amount = document.getElementById('edit-critiria-amount').value;
+
             let cashDate = document.getElementById('edit-Cashdate').value;
             let expireDate = document.getElementById('edit-expireDate').value;
+            
             const csrftoken = getCookie('csrftoken');
     
             console.log('NIHALA SHIRIN');
@@ -418,6 +444,8 @@
                 formData.append('couponName', couponName);
                 formData.append('code', code);
                 formData.append('percentage', percentage);
+                formData.append('amount', amount);
+
                 formData.append('cashDate', cashDate);
                 formData.append('expireDate', expireDate);
     
