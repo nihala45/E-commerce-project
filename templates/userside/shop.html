@@ -73,6 +73,17 @@
             margin-top: auto; /* Push action buttons to the bottom */
         }
         
+        .discounted-price {
+        color: green;
+        font-weight: bold;
+        }
+        .original-price {
+        text-decoration: line-through;
+        color: grey;
+        margin-right: 10px;
+        }
+        
+        
     </style>
 </head>
 
@@ -600,9 +611,9 @@
                                             <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a>
                                         </div><!-- End .product-action-vertical -->
                             
-                                        <div class="product-action">
+                                        {% comment %} <div class="product-action">
                                             <a href="/productdetails/" class="btn-product btn-cart"><span>add to cart</span></a>
-                                        </div><!-- End .product-action -->
+                                        </div><!-- End .product-action --> {% endcomment %}
                                     </figure><!-- End .product-media -->
                             
                                     <div class="product-body">
@@ -610,9 +621,25 @@
                                             <a href="/usermanagement/">{{prod.category.category_name}}</a>
                                         </div><!-- End .product-cat -->
                                         <h3 class="product-title"><a href="/productdetails/{{prod.id}}">{{prod.name}}</a></h3><!-- End .product-title -->
+                                        {% comment %} <div class="product-price">
+                                            {% if prod.offer %}
+                                                <span class="original-price">₹{{ prod.price }}</span>
+                                                <span class="discounted-price">₹{{ prod.discounted_price }}</span>
+                                            {% else %}
+                                                ₹{{ prod.price }}
+                                            {% endif %}
+                                        </div> {% endcomment %}
+
                                         <div class="product-price">
-                                            ₹ {{prod.price}}
-                                        </div><!-- End .product-price -->
+                                            {% if prod.offer %}
+                                                <span class="original-price">₹{{ prod.price }}</span>
+                                                <span class="discounted-price">₹{{ prod.get_discounted_price }}</span>
+                                            {% else %}
+                                                ₹{{ prod.price }}
+                                            {% endif %}
+                                        </div>
+
+
                                         <div class="ratings-container">
                                             <div class="ratings">
                                                 <div class="ratings-val" style="width: 20%;"></div><!-- End .ratings-val -->

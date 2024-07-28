@@ -16,8 +16,7 @@ from offermanagement.models import Offer
 # Create your views here.
 @login_required(login_url='adminside:adminlogin')
 def products(request):
-    productss=newproducts.objects.all().order_by('id')
-    # print(productss)
+    productss=newproducts.objects.all().order_by('-id')
     return render(request,'customadmin/products.html',{'products':productss})
 
 @login_required(login_url='adminside:adminlogin')
@@ -60,11 +59,9 @@ def saveproducts(request):
         small=request.POST['small_quantity']
         medium=request.POST['medium_quantity']
         large=request.POST['large_quantity']
-        offer_id=request.POST['offer']
-        offer=Offer.objects.get(id=offer_id)
+        offer_id = request.POST.get('offer', None)
         
-        
-        
+        offer = Offer.objects.get(id=offer_id) if offer_id else None
         print(category,"kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
         products2=newproducts(
            name=name,
@@ -110,8 +107,7 @@ def product_editpage(request, prod_id):
 def product_editsave(request):
     if request.method == 'POST':
         prod_id = request.POST.get('product_id')
-        print(prod_id,'niahfiahfiahfiahfiahiahfhu')
-        
+        print(prod_id, 'niahfiahfiahfiahfiahiahfhu')
 
         editname = request.POST.get('productname')
         editdescription = request.POST.get('descri')
@@ -126,18 +122,20 @@ def product_editsave(request):
         editlarge = request.POST.get('largequantity')
         editoffer = request.POST.get('off')
         
+        print(editcategory, 'EDIT CATEGORUYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY')
         
-        print(editcategory,'EDIT CATEGORUYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY')
+        # Fetch product and update fields
         pro = newproducts.objects.get(id=prod_id)
         pro.name = editname
         pro.description = editdescription
-        # pro.category = editcategory
-        category = categories.objects.get(id=editcategory)
-        offers = Offer.objects.get(id=editoffer)
         
+        category = categories.objects.get(id=editcategory)
         pro.category = category
         
-
+        # Check and assign offer
+        offer = Offer.objects.get(id=editoffer) if editoffer else None
+        pro.offer = offer
+        
         pro.price = editprice
         if editimage1:
             pro.image1 = editimage1
@@ -150,17 +148,12 @@ def product_editsave(request):
         pro.small = editsmall
         pro.medium = editmedium
         pro.large = editlarge
-        pro.offer = offers
         
-
         pro.save()
         
-
         return redirect('products:products')
     else:
         return redirect('products:products')
-    
-        
             
             
         

@@ -16,6 +16,12 @@ class newproducts(models.Model):
     medium = models.CharField(max_length=50)
     large = models.CharField(max_length=50)
     offer = models.ForeignKey(Offer, on_delete=models.SET_NULL, blank=True, null=True)
+    
+    def get_discounted_price(self):
+        if self.offer and self.offer.discount:
+            return self.price - self.offer.discount
+        return self.price 
+   
 
 
    

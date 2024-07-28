@@ -33,7 +33,18 @@
     <!-- Inside your HTML template -->
 <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-
+<style>
+    .discounted-price {
+    color: green;
+    font-weight: bold;
+    }
+    .original-price {
+    text-decoration: line-through;
+    color: grey;
+    margin-right: 10px;
+    }
+  
+</style>
     
 </head>
 
@@ -487,24 +498,39 @@
                                                             <img src="{{ i.product.image1.url }}" alt="Product image">
                                                         </a>
                                                     </figure>
-                                
+                                    
                                                     <h3 class="product-title">
                                                         <a href="#">{{ i.product.name }}</a>
                                                     </h3><!-- End .product-title -->
                                                 </div><!-- End .product -->
                                             </td>
-                                            <td class="price-col">₹{{ i.product.price }}</td>
-                                            <td class="quantity-col">
-                                                <div class="row">
-                                                    <button type="button" class="border-secondary" style="border: none;" onclick="updateQuantity({{i.product_id}},-1,'{{i.size}}')">-</button>
-                                                    <input type="text" class="col-3" id="quantity" name='quantity' value="{{ i.quantity }}" disabled required />
-                                                    <button type="button" class="border-secondary" style="border: none;" onclick="updateQuantity({{i.product_id}},1,'{{i.size}}')">+</button>
+                                            <td>
+                                                <div class="product-price">
+                                                    {% if i.product.offer %}
+                                                        <span class="original-price">₹{{ i.product.price }}</span>
+                                                        <span class="discounted-price">₹{{ i.product.get_discounted_price }}</span>
+                                                    {% else %}
+                                                        ₹{{ i.product.price }}
+                                                    {% endif %}
                                                 </div>
                                             </td>
-                                            <td>{{i.size}}</td>
+                                            <td class="quantity-col">
+                                                <div class="row">
+                                                    <button type="button" class="border-secondary" style="border: none;" onclick="updateQuantity({{ i.product_id }}, -1, '{{ i.size }}')">-</button>
+                                                    <input type="text" class="col-3" id="quantity" name="quantity" value="{{ i.quantity }}" disabled required />
+                                                    <button type="button" class="border-secondary" style="border: none;" onclick="updateQuantity({{ i.product_id }}, 1, '{{ i.size }}')">+</button>
+                                                </div>
+                                            </td>
+                                            <td>{{ i.size }}</td>
                                             
-                                            <td class="total-col" id="total-price-{{ i.id }}">₹{{ i.total_amount }}</td>
+                                            <td class="total-col" id="total-price-{{ i.id }}"> 
+                                                {% if i.product.offer %}
+                                                ₹{{ i.get_discount_cart_total }}</td>
+                                                {%else%}
+                                                ₹{{ i.total_amount }}</td>
 
+                                                {% endif %}
+                                                
                                             <td class="remove-col">
                                                 <form action="{% url 'cartapp:Remove_cart_product' i.id %}" method="POST">
                                                     {% csrf_token %}
@@ -517,6 +543,7 @@
                                         </tr>
                                         {% endfor %}
                                     </tbody>
+                                    
                                 </table><!-- End .table table-wishlist -->
                                 
                                 

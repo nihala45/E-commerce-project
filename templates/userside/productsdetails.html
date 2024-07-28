@@ -36,6 +36,19 @@
     <!-- Inside your HTML template -->
 <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<style>
+    .discounted-price {
+    color: green;
+    font-weight: bold;
+    }
+    .original-price {
+    text-decoration: line-through;
+    color: grey;
+    margin-right: 10px;
+    }
+    
+    
+</style>
 </head>
 
 <body>
@@ -516,7 +529,12 @@
                                     </div><!-- End .rating-container -->
 
                                     <div class="product-price">
-                                        {{product.price}}
+                                        {% if product.offer %}
+                                            <span class="original-price">₹{{ product.price }}</span>
+                                            <span class="discounted-price">₹{{ product.get_discounted_price }}</span>
+                                        {% else %}
+                                            ₹{{ product.price }}
+                                        {% endif %}
                                     </div><!-- End .product-price -->
 
                                     <div class="product-content">

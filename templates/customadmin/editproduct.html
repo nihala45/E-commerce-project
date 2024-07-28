@@ -141,19 +141,17 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="category">Offers:</label>
-                    <select id="off" name="off" class="form-control" required>
-                        <option value="" selected disabled>Select Category</option>
-                        {% for j in offers %}
-                        {%if j.id == product.offer.id%}
-                        <option value="{{j.id}}" selected>{{j.name}}</option>
-                        {%else%}
-                        <option value="{{j.id}}" >{{j.name}}</option>
-                        {%endif%}
-                         {%endfor%}
+                    <label for="offer">Offers:</label>
+                    <select id="off" name="off" class="form-control">
+                        <!-- "None" option to represent no offer -->
+                        <option value="" {% if not product.offer %}selected{% endif %}>None</option>
                         
+                        {% for j in offers %}
+                        <option value="{{ j.id }}" {% if j.id == product.offer.id %}selected{% endif %}>{{ j.name }}</option>
+                        {% endfor %}
                     </select>
                 </div>
+                
 
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Save</button>

@@ -108,16 +108,6 @@ def otp_varification(request,id):
 
 
 
-def shop(request):
-    
-    
-    category1 = categories.objects.all()
-    products = newproducts.objects.all()
-    print(products,"herekfmdddssssssssssssssss")
-
-    return render(request, 'userside/shop.html', {'products': products, 'category': category1})
-
-
 
 # @login_required(login_url='logintohome:homee')
 def filterProduct(request):
@@ -178,5 +168,11 @@ def filterProduct(request):
 
 def shop_to_home(request):
     return redirect('logintohome:homee')
+
+
+def shop(request):
+    category1 = categories.objects.all()
+    products = newproducts.objects.all().order_by('-id')
+    return render(request, 'userside/shop.html', {'products': products, 'category': category1})
 
 

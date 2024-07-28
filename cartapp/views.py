@@ -16,7 +16,7 @@ from decimal import Decimal
 
 
 
-# 
+
 def add_to_cart(request):
     
     
@@ -45,30 +45,36 @@ def add_to_cart(request):
     return JsonResponse({'status': 'invalid request'}, status=400)
     
 
-def cart_view(request):
-    user = request.session.get('email')
-    if not user:
-        return redirect('login') 
 
-    user_id = CustomUser.objects.get(email=user)
-    print(vars(user_id), 'User Details')
+
+def show_cart(request):
+    user_email = request.session.get('email')
+    if user_email:
+        user = CustomUser.objects.get(email=user_email)
+        cart_items = MyCart.objects.filter(user_id=user.id).order_by('product_id')
+        sub_total = 0
+        total = 0
+        
+        
+        # for item in cart_items:
+        #     sub_total += item.product.price * item.quantity
+        for item in cart_items:
+            if item.product.offer:
+                sub_total += (item.product.price - item.product.offer.discount)*(item.quantity)
+            else:
+                sub_total+= item.product.price * item.quantity
+        context = {
+            'cart_items': cart_items,
+            'sub_total': sub_total
+        }
+        return render(request, 'userside/cart.html', context)
     
-    cart_items = MyCart.objects.filter(user_id=user_id.id).order_by('product_id')
-    
-    sub_total = 0
-    for item in cart_items:
-        sub_total += item.product.price * item.quantity
-
-    context = {
-        'cart_items': cart_items,
-        'sub_total': sub_total
-    }
-    return render(request, 'userside/cart.html',context)
 
 
 
-def proceed(request):
-    return render(request,'userside/checkout.html')
+
+# def proceed(request):
+#     return render(request,'userside/checkout.html')
 
 
 
@@ -128,7 +134,10 @@ def proceed_to_checkout(request):
         addresses = UserAddress.objects.filter(user_id=user.id)
         sub_total = 0
         for item in cart_items:
-            sub_total += item.product.price * item.quantity
+            if item.product.offer:
+                sub_total += (item.product.price - item.product.offer.discount)*(item.quantity)
+            else:
+                sub_total+= item.product.price * item.quantity
     
         context = {
             'cart_items': cart_items,
@@ -301,19 +310,7 @@ def continue_shopping(request):
 
     
     
-def show_cart(request):
-    user_email = request.session.get('email')
-    if user_email:
-        user = CustomUser.objects.get(email=user_email)
-        cart_items = MyCart.objects.filter(user_id=user.id).order_by('product_id')
-        sub_total = 0
-        for item in cart_items:
-            sub_total += item.product.price * item.quantity
-        context = {
-            'cart_items': cart_items,
-            'sub_total': sub_total
-        }
-        return render(request, 'userside/cart.html', context)
+
     
     
 def Remove_cart_product(request,it_id):

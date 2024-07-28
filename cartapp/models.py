@@ -20,6 +20,12 @@ class  MyCart(models.Model):
     def total_amount(self):
         return self.quantity * self.product.price
     
+    @property
+    def get_discount_cart_total(self):
+        if self.product.offer and self.product.offer.discount:
+            return (self.product.price - self.product.offer.discount)*(self.quantity)
+        return self.total_amount
+    
     
 class Orders(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
