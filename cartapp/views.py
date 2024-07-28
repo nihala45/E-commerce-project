@@ -155,6 +155,9 @@ def place_order(request):
     cartItems = MyCart.objects.filter(user_id=user.id)   
     total_price = Decimal(0)
     for item in cartItems:
+            if item.product.offer:
+                total_price += (item.product.price - item.product.offer.discount)*(item.quantity)
+            else:
                 total_price += item.product.price * item.quantity
     if request.method == 'POST':
         address_id = request.POST.get('selectedAddress')
