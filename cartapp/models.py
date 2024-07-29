@@ -13,6 +13,8 @@ class  MyCart(models.Model):
     ]
     user = models.ForeignKey('logintohome.CustomUser', on_delete=models.CASCADE)
     product = models.ForeignKey('products.newproducts', on_delete=models.CASCADE)
+   
+    discount_percentage = models.PositiveIntegerField(default=0)
     quantity = models.IntegerField(default=1)
     size = models.CharField(max_length=1, choices=SIZE_CHOICES)
     
@@ -35,8 +37,8 @@ class Orders(models.Model):
     status = models.CharField(max_length=100, default="Pending")
     # return_status = models.CharField(max_length=100, null=True, blank=True)
     address = models.ForeignKey(UserAddress, on_delete=models.CASCADE)
-    # discount_amt = models.DecimalField(max_digits=30, decimal_places=1, default=0)
     product = models.ForeignKey(newproducts, on_delete=models.CASCADE)
+    discount_amt = models.DecimalField(max_digits=30, decimal_places=1, default=0)
     product_qty = models.PositiveIntegerField()  
     product_price=models.IntegerField()
     product_size=models.CharField(max_length=10)

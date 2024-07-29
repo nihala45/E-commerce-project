@@ -15,6 +15,8 @@ urlpatterns = [
     path('Remove_cart_product/<int:it_id>/',views.Remove_cart_product, name='Remove_cart_product'),
     path('successpage/',views.successpage,name='successpage'),
     path('razor_save/',views.razor_save,name='razor_save'),
+    path('apply_coupon/', views.apply_coupon, name='apply_coupon'),
+    
 
     
     

@@ -176,3 +176,6 @@ def shop(request):
     return render(request, 'userside/shop.html', {'products': products, 'category': category1})
 
 
+
+
+

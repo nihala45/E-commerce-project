@@ -140,20 +140,7 @@
                         </div><!-- End .header-dropdown -->
                     </div><!-- End .header-left -->
 
-                    <div class="header-right">
-                        <ul class="top-menu">
-                            <li>
-                                <a href="#">Links</a>
-                                <ul>
-                                    <li><a href="tel:#"><i class="icon-phone"></i>Call: +0123 456 789</a></li>
-                                    <li><a href="wishlist.html"><i class="icon-heart-o"></i>Wishlist <span>(3)</span></a></li>
-                                    <li><a href="about.html">About Us</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
-                                    <li><a href="#signin-modal" data-toggle="modal"><i class="icon-user"></i>Login</a></li>
-                                </ul>
-                            </li>
-                        </ul><!-- End .top-menu -->
-                    </div><!-- End .header-right -->
+                    
                 </div><!-- End .container -->
             </div><!-- End .header-top -->
 
@@ -172,7 +159,7 @@
                         <nav class="main-nav">
                             <ul class="menu sf-arrows">
                                 <li class="megamenu-container active">
-                                    <a href="index.html" class="sf-with-ul">Home</a>
+                                    <a href="{% url 'logintohome:shop_to_home' %}" class="sf-with-ul">Home</a>
 
                                     <div class="megamenu demo">
                                         <div class="menu-col">
@@ -356,7 +343,7 @@
                                     </div><!-- End .megamenu -->
                                 </li>
                                 <li>
-                                    <a href="category.html" class="sf-with-ul">Shop</a>
+                                    <a href="{% url 'logintohome:shop' %}" class="sf-with-ul">Shop</a>
 
                                     <div class="megamenu megamenu-md">
                                         <div class="row no-gutters">
@@ -629,7 +616,7 @@
                                 </div><!-- End .dropdown-cart-total -->
 
                                 <div class="dropdown-cart-action">
-                                    <a href="cart.html" class="btn btn-primary">View Cart</a>
+                                    <a href="{% url 'cartapp:show_cart' %}" class="btn btn-primary">View Cart</a>
                                     <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
                                 </div><!-- End .dropdown-cart-total -->
                             </div><!-- End .dropdown-menu -->
@@ -660,20 +647,22 @@
                     <div class="product-list">
                         <!-- Product 1 -->
                         {% for i in wishlist_item %}
-                        <div class="product-item container">
-                            <div class="product-media">
-                                <img src="{{ i.product.image1.url }}" alt="{{ i.product.name }}" class="product-image">
-                            </div>
-                            <div class="product-details">
-                                <h3 class="product-title">{{ i.product.name }}</h3>
-                                <p class="product-price">₹ {{ i.product.price }}</p>
-                                <a href="{% url 'productdetail:productdetails' i.product.id %}" class="btn btn-outline-primary">View Details</a>
-                                <button class="btn-remove" aria-label="Remove from wishlist">
-                                    <i class="icon-close"></i>
-                                </button>
-                            </div>
-                        </div>
-                        {% endfor %}
+<div class="product-item container" style="display:flex; ">
+    <div class="product-media">
+        <img src="{{ i.product.image1.url }}" alt="{{ i.product.name }}" class="product-image">
+    </div>
+    <div class="product-details" style="display:flex ; justify-content:space-around" >
+        <div>
+        <h3 class="product-title">{{ i.product.name }}</h3>
+        <p class="product-price">₹ {{ i.product.price }}</p>
+        <a href="{% url 'productdetail:productdetails' i.product.id %}" class="btn btn-outline-primary">View Details</a>
+        </div>
+        <div style="margin-top:20px"> 
+        <a href="{% url 'wishlist:remove_from_wishlist' i.id  %}">Remove</a>
+    </div>
+    </div>
+</div>
+{% endfor %}
                         
                     </div><!-- End .product-list -->
                     

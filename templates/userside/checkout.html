@@ -1046,7 +1046,7 @@
           <div class="checkout">
             <div class="container">
               <div class="checkout-discount">
-                <form action="#">
+                {% comment %} <form action="#">
                   <input
                     type="text"
                     class="form-control"
@@ -1057,8 +1057,33 @@
                     >Have a coupon?
                     <span>Click here to enter your code</span></label
                   >
-                </form>
+                </form> {% endcomment %}
               </div>
+
+              <form id="coupon-form" onSubmit="applyCoupon(event)">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="select-coupon">Select a coupon</label>
+                    <div class="input-group">
+                        <select id="select-coupon" name="coupon_id" class="form-control">
+                            <option value="">Select a coupon</option>
+                            {% if applicable_coupons %}
+                                {% for coupon in applicable_coupons %}
+                                    <option value="{{ coupon.id }}" data-coupon-name="{{ coupon.name }}">{{ coupon.name }}</option>
+                                {% endfor %}
+                            {% else %}
+                                <option value="">No coupons available</option>
+                            {% endif %}
+                        </select>
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary">
+                                Apply Coupon
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            
               <!-- End .checkout-discount -->
               <form onSubmit="placeOrder(event)">
                 {% csrf_token %}
@@ -1177,12 +1202,14 @@
                             <td>{{ sub_total }}</td>
                           </tr>
                           <tr>
-                            <td>Shipping:</td>
-                            <td>Free shipping</td>
+                    
+                            <td>discount</td>
+                            <td>{{discount}}</td>
+
                           </tr>
                           <tr class="summary-total">
                             <td>Total:</td>
-                            <td>{{ sub_total }}</td>
+                            <td>{{ final_amount }}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -2230,5 +2257,73 @@
   
       
   </script>
+
+
+  <!--coupon apply-->
+  <script>
+    function applyCoupon(e) {
+        e.preventDefault();
+        let couponId = document.getElementById("select-coupon").value;
+        console.log('jcipafnpaw', couponId);
+        let formData = new FormData();
+        const csrftoken = getCookie("csrftoken");
+
+        formData.append("coupon_id", couponId);
+
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
+
+        fetch("{% url 'cartapp:apply_coupon' %}", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-CSRFToken": csrftoken,
+            },
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.status === "already") {
+                Swal.fire({
+                    title: "This coupon has already been used",
+                    confirmButtonColor: "#3085d6"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload();
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: "Your coupon was applied successfully",
+                    icon: "success",
+                    confirmButtonColor: "#3085d6"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload();
+                    }
+                });
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+
   </body>
 </html>

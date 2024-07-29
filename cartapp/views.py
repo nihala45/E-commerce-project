@@ -12,6 +12,9 @@ from django.contrib.auth.decorators import login_required
 from myproject.settings import RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET
 import razorpay
 from decimal import Decimal
+from couponmanagement.models import Coupon
+from couponmanagement.models import CouponUsage
+
 
 
 
@@ -53,11 +56,7 @@ def show_cart(request):
         user = CustomUser.objects.get(email=user_email)
         cart_items = MyCart.objects.filter(user_id=user.id).order_by('product_id')
         sub_total = 0
-        total = 0
         
-        
-        # for item in cart_items:
-        #     sub_total += item.product.price * item.quantity
         for item in cart_items:
             if item.product.offer:
                 sub_total += (item.product.price - item.product.offer.discount)*(item.quantity)
@@ -65,7 +64,7 @@ def show_cart(request):
                 sub_total+= item.product.price * item.quantity
         context = {
             'cart_items': cart_items,
-            'sub_total': sub_total
+            'sub_total': sub_total,
         }
         return render(request, 'userside/cart.html', context)
     
@@ -128,23 +127,74 @@ def proceed_to_checkout(request):
     user_email = request.session.get('email')
     user = CustomUser.objects.get(email=user_email)
     cart_items = MyCart.objects.filter(user_id=user.id)
+    
     if cart_items.count() == 0:
         return redirect('cartapp:show_cart')
     else:
         addresses = UserAddress.objects.filter(user_id=user.id)
         sub_total = 0
+        coupon_discount=0
+        m=0
+        
         for item in cart_items:
+            coupon_discount=item.discount_percentage
             if item.product.offer:
                 sub_total += (item.product.price - item.product.offer.discount)*(item.quantity)
             else:
                 sub_total+= item.product.price * item.quantity
+       
+        discount = (sub_total*coupon_discount)/100
+        final_amount =sub_total-discount
+        print(discount,"fffffffffffffffffffffffffffffffffffffffffff",coupon_discount)
+        
+        coupons = Coupon.objects.all()
+        applicable_coupons = [coupon for coupon in coupons if sub_total >= coupon.critiria_amount]
+        
     
         context = {
             'cart_items': cart_items,
             'sub_total': sub_total,
-            'addresses':addresses
+            'addresses':addresses,
+            'coupons': coupons,
+            'applicable_coupons': applicable_coupons,
+            'discount':discount,
+            'final_amount':final_amount
         }
         return render(request, 'userside/checkout.html', context)
+    
+
+# 
+
+
+
+    
+    
+    
+def apply_coupon(request):
+    if request.method == 'POST':
+        user_email = request.session.get('email')
+        user = get_object_or_404(CustomUser, email=user_email)
+        coupon_id = request.POST.get('coupon_id')
+
+
+        coupon = get_object_or_404(Coupon, id=coupon_id)
+        # if CouponUsage.objects.filter(coupon=coupon, user=user).exists():
+        #     return JsonResponse({'status': 'already'})
+        current_cart=MyCart.objects.filter(user_id=user.id)
+        print(current_cart,"hhhhhhhhhhhhhhhhhhhhhhhh")
+        for item in current_cart:
+            item.discount_percentage = coupon.percentage
+            item.save()  
+        print("jjjjjjjj")
+        CouponUsage.objects.create(coupon=coupon, user=user)
+        return JsonResponse({'status': 'success', 'message': 'Coupon added successfully.'})
+    
+        
+    
+
+
+
+
         
 
 client = razorpay.Client(auth=(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET))
@@ -154,11 +204,18 @@ def place_order(request):
     user = CustomUser.objects.get(email=user_email)
     cartItems = MyCart.objects.filter(user_id=user.id)   
     total_price = Decimal(0)
+    discount_prg=0
     for item in cartItems:
+            discount_prg=item.discount_percentage
             if item.product.offer:
                 total_price += (item.product.price - item.product.offer.discount)*(item.quantity)
             else:
                 total_price += item.product.price * item.quantity
+    discount = (total_price*discount_prg)/100
+    total_price =total_price-discount
+    print(discount_prg,total_price,discount,"kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
+                
+    
     if request.method == 'POST':
         address_id = request.POST.get('selectedAddress')
         payment_method = request.POST.get('selectedPaymentMethod')
@@ -173,6 +230,7 @@ def place_order(request):
                     payment_method=payment_method,
                     product=item.product,
                     product_qty=item.quantity,
+                    discount_amt=discount,
                     product_price=item.product.price * item.quantity,
                     product_size=item.size,
                     status='placed'
@@ -209,7 +267,8 @@ def place_order(request):
 def razor_save(request):
     user_email = request.session['email']
     user = CustomUser.objects.get(email=user_email)
-    cartItems = MyCart.objects.filter(user_id=user.id)   
+    cartItems = MyCart.objects.filter(user_id=user.id)  
+    discount_prg=cartItems[0].discount_percentage
     if request.method == 'POST':
         address_id = request.POST.get('selectedAddress')
         payment_method = request.POST.get('selectedPaymentMethod')
@@ -222,6 +281,7 @@ def razor_save(request):
                 ordered_date=ordered_date,
                 payment_method=payment_method,
                 product=item.product,
+                discount_amt=discount_prg,
                 product_qty=item.quantity,
                 product_price=item.product.price * item.quantity,
                 product_size=item.size,
