@@ -16,6 +16,8 @@ urlpatterns = [
     path('successpage/',views.successpage,name='successpage'),
     path('razor_save/',views.razor_save,name='razor_save'),
     path('apply_coupon/', views.apply_coupon, name='apply_coupon'),
+    path('none_coupon/', views.none_coupon, name='none_coupon'),
+    
     
 
     

@@ -1079,10 +1079,25 @@
                             <button type="submit" class="btn btn-primary">
                                 Apply Coupon
                             </button>
+                            {% comment %} <div style="margin-top: 20px; text-align: center;">
+                              <button href="{% url 'cartapp:remove_coupon' %}" style="padding: 10px 20px; background-color: black; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                                  Remove
+                              </button>
+                          </div> {% endcomment %}
                         </div>
                     </div>
+                    
                 </div>
             </form>
+
+<div style="margin-top: 20px; text-align: center;">
+  <form id="remove-coupon-form" action="{% url 'cartapp:none_coupon' %}" method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-secondary" style="padding: 10px 20px; background-color: black; color: white; border: none; border-radius: 5px; cursor: pointer;">
+          Remove
+      </button>
+  </form>
+</div>
             
               <!-- End .checkout-discount -->
               <form onSubmit="placeOrder(event)">

@@ -188,7 +188,18 @@ def apply_coupon(request):
         print("jjjjjjjj")
         CouponUsage.objects.create(coupon=coupon, user=user)
         return JsonResponse({'status': 'success', 'message': 'Coupon added successfully.'})
+
+def none_coupon(request):
+    user_email = request.session.get('email')
+
+    user = get_object_or_404(CustomUser, email=user_email)
+    cart_items = MyCart.objects.filter(user=user)
     
+    for item in cart_items:
+        item.discount_percentage = 0  
+        item.save()
+    
+    return redirect('cartapp:proceed_to_checkout')
         
     
 
@@ -301,61 +312,6 @@ def razor_save(request):
             cartItems.delete()
             return JsonResponse({'status': 'success'}) 
 
-# def place_order(request):
-#     user_email = request.session['email']
-#     user = CustomUser.objects.get(email=user_email)
-#     cartItems = MyCart.objects.filter(user_id=user.id)   
-#     total_price = Decimal(0)
-    
-#     if request.method == 'POST':
-#         address_id = request.POST.get('selectedAddress')
-#         payment_method = request.POST.get('selectedPaymentMethod')
-#         ordered_date = date.today()
-#         address = UserAddress.objects.get(id=address_id)
-        
-#         for item in cartItems:
-#             Orders(
-#                 user=user,
-#                 address=address,
-#                 ordered_date=ordered_date,
-#                 payment_method=payment_method,
-#                 product=item.product,
-#                 product_qty=item.quantity,
-#                 product_price=item.product.price * item.quantity,
-#                 product_size=item.size,
-#                 status='placed' if payment_method == 'cash_on_delivery' else 'pending'
-#             ).save()
-            
-#             pro = newproducts.objects.get(id=item.product_id)
-#             if item.size == 's':
-#                 pro.small = int(pro.small) - item.quantity
-#             elif item.size == 'm':
-#                 pro.medium = int(pro.medium) - item.quantity
-#             else:
-#                 pro.large = int(pro.large) - item.quantity
-            
-#             pro.save()
-#             total_price += item.product.price * item.quantity
-        
-#         cartItems.delete()
-        
-#         if payment_method == 'cash_on_delivery':
-#             return JsonResponse({'status': 'success'})    
-#         elif payment_method == 'razor_pay':
-#             total_price_float = float(total_price)
-#             DATA = {
-#                 "amount": int(total_price_float * 100),  # Amount in paise
-#                 "currency": "INR",
-#                 "payment_capture": '1',
-#                 "receipt": "receipt_1"
-#             }
-#             payment_order = client.order.create(data=DATA)
-#             return JsonResponse({
-#                 'status': 'razorpay',
-#                 'payment_order': payment_order,
-#                 'key': RAZORPAY_KEY_ID
-#             })               
-                
                 
             
             
