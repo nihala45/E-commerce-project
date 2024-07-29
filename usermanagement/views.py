@@ -14,7 +14,7 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 @login_required(login_url='adminside:adminlogin')
 def usermanagement(request):
-    user = CustomUser.objects.all()
+    user = CustomUser.objects.all().order_by('-id')
     return render(request,'customadmin/users.html',{'user': user})
 
 @login_required(login_url='adminside:adminlogin')

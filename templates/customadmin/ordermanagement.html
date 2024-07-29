@@ -334,7 +334,13 @@
                         {% for i in ordered_items %}
                         <tr> 
                             <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd; background-color: #f9f9f9;">{{ i.ordered_date }}</td>
-                            <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd; background-color: #f9f9f9;">₹{{ i.product_price }}</td>
+                            <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd; background-color: #f9f9f9;">{% if i.product.offer %}
+								₹{{i.get_discount_cart_total_order}}
+								{% else %}
+								₹{{i.total_amount_order}}
+								{% endif %}
+
+							</td>
                             <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd; background-color: #f9f9f9;">{{ i.payment_method }}</td>
                             <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd; background-color: #f9f9f9;">
                                 <a href="{% url 'ordermanagement:admin_ordered_view' i.id %}">View</a>

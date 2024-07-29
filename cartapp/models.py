@@ -3,8 +3,6 @@ from logintohome.models import CustomUser
 from products.models import newproducts
 from userprofile.models import UserAddress
 
-
-# # Create your models here.
 class  MyCart(models.Model):
     SIZE_CHOICES = [
         ('s', 'Small'),
@@ -42,4 +40,27 @@ class Orders(models.Model):
     product_qty = models.PositiveIntegerField()  
     product_price=models.IntegerField()
     product_size=models.CharField(max_length=10)
-                                
+    
+    
+    
+    # @property
+    # def unit_price_order(self):
+    #     return self.product_price
+    @property
+    def unit_price(self):
+        return self.product.price-self.product.offer.discount
+    
+    
+    @property
+    def total_amount_order(self):
+        return self.product_price
+    
+    @property
+    def get_discount_cart_total_order(self):
+        if self.product.offer and self.product.offer.discount:
+            return (self.product_price )-(self.product.offer.discount*self.product_qty)
+        else:
+            return self.total_amount_order
+    
+
+  

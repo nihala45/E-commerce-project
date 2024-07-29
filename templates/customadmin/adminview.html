@@ -317,6 +317,8 @@
             <h4>Order Status</h4>
 			{% if item.status == 'Cancelled' %}
 			<h3 style='color:red'>Order cancelled</h3>
+			{% elif item.status == 'Return' %}
+			<h3 style='color:red'>Order returned</h3>
 			{% else %}
             <form action="{% url 'ordermanagement:status_update' %}" method="POST">
                 {% csrf_token %}
@@ -363,8 +365,19 @@
 							<td>{{ item.product.name }}</td>
 							<td>{{ item.product_qty }}</td>
 							<td>{{ item.product_size }}</td>
-							<td>₹{{ item.product.price }}</td>
-							<td>₹{{ item.product_price }}</td>
+							<td>{% if item.product.offer %}
+								{{item.unit_price}}
+								{% else %}
+								{{item.product.price}}
+								{% endif %}</td>
+								
+							<td> {% if item.product.offer %}
+                                                               
+								₹{{item.get_discount_cart_total_order}}
+								{% else %}
+								₹{{item.total_amount_order}}
+								{% endif %}
+</td>
 						</tr>
 					</tbody>
 				</table>

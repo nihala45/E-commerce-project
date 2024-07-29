@@ -8,6 +8,8 @@ from django.contrib import messages
 from category.models import categories
 from django.http import JsonResponse
 from django.urls import reverse
+from wishlist.models import WishlistProduct
+
 
 
 # Create your views here.
@@ -173,7 +175,8 @@ def shop_to_home(request):
 def shop(request):
     category1 = categories.objects.all()
     products = newproducts.objects.all().order_by('-id')
-    return render(request, 'userside/shop.html', {'products': products, 'category': category1})
+    wishlist_items=WishlistProduct.objects.all()
+    return render(request, 'userside/shop.html', {'products': products, 'category': category1,'wishlist_item':wishlist_items})
 
 
 

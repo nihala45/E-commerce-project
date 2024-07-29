@@ -516,14 +516,33 @@
                                                     <div style="display: flex; justify-content: space-between;">
                                                         <div style="flex-grow: 1;">
                                                             <p><strong>Name:</strong> {{ ordered_item.product.name }}</p>
+                                                            
                                                             <p><strong>Size:</strong> {{ ordered_item.product_size }}</p>
-                                                            <p><strong>Unit Price:</strong> ₹{{ ordered_item.product.price }}</p>
+                                                           
+                                                            <p><strong>Unit Price:</strong> {% if ordered_item.product.offer %}
+                                                                {{ordered_item.unit_price}}
+                                                                {% else %}
+                                                                {{ordered_item.product.price}}
+                                                                {% endif %}
+                                                            </p>
                                                             <p><strong>Quantity:</strong> {{ ordered_item.product_qty }}</p>
-                                                            <p><strong>Total:</strong> ₹{{ ordered_item.product_price }}</p>
+                                                            <p><strong>Total: {% if ordered_item.product.offer %}
+                                                               
+                                                                ₹{{ordered_item.get_discount_cart_total_order}}
+                                                                {% else %}
+                                                                ₹{{ordered_item.total_amount_order}}
+                                                                {% endif %}
+
+                                                            </strong> 
                                                             <p><strong>Status:</strong> {{ordered_item.status}}</p>
-                                                            {% if ordered_item.status != 'Delivered' and ordered_item.status != 'Cancelled' %}
+                                                            {% if ordered_item.status != 'Cancelled' and ordered_item.status != 'Return' %}
                                                             <p><strong>Action:</strong>
+                                                                {% if ordered_item.status == 'Delivered' %}
+                                                                <a href="{% url 'userprofile:returnOrder' ordered_item.id %}" style="border:none; background:none; color:red; text-decoration:underline;">Return</a>
+                                                                {% else %}
                                                                 <a href="{% url 'userprofile:cancelOrder' ordered_item.id %}" style="border:none; background:none; color:red; text-decoration:underline;">Cancel</a>
+                                                                {% endif %}
+
                                                             </p>
                                                                         
                                                             {% else %}

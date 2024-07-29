@@ -2,12 +2,14 @@ from django.shortcuts import render,redirect
 from logintohome.models import CustomUser
 from django.contrib import messages
 from userprofile.models import UserAddress
+from userprofile.models import Wallet
 from products.models import newproducts
 from django.contrib import messages
 from django.http import JsonResponse
 from cartapp.models import Orders
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
+from django.utils import timezone
 
 
 
@@ -20,7 +22,7 @@ def userdashboard(request):
     email = request.session.get('email')
     phone = request.session.get('phone')
     username = request.session.get('username')
-    
+    # total_discount_price=get_discounted_price
 
     context = {
         'username': username,
@@ -31,13 +33,17 @@ def userdashboard(request):
     user = get_object_or_404(CustomUser, email=email)
     address_queryset = UserAddress.objects.filter(user=user.id)
     ordered_items = Orders.objects.filter(user=user.id).order_by('-id')
-
-    # Convert QuerySet to a list of dictionaries
+    balance=0
+    wallet = Wallet.objects.filter(user=user.id)
+    for i in wallet:
+        balance += i.amount
     addresses = list(address_queryset.values())
 
     address_context = {
-        'addresses': addresses,  # Use the list of dictionaries
-        'ordered_items': ordered_items
+        'addresses': addresses,  
+        'ordered_items': ordered_items,
+        'wallet_items':wallet,
+        'balance':balance
     }
     context.update(address_context)
     
@@ -205,10 +211,46 @@ def view_details(request, ord_id):
     ordered_item = get_object_or_404(Orders, id=ord_id)
     
     return render(request, "userside/view.html", {'ordered_item': ordered_item})
-def cancelOrder(request,or_id):
-    ord=Orders.objects.get(id=or_id)
-    ord.status="Cancelled"
+
+
+def cancelOrder(request, or_id):
+    user_email = request.session.get('email')
+    user = get_object_or_404(CustomUser, email=user_email)
+    ord = get_object_or_404(Orders, id=or_id)
+    ord.status = "Cancelled"
     ord.save()
+    
+    if ord.payment_method=='razor_pay':
+        wallet_item = Wallet(
+        user=user,
+        date_time=timezone.now(),
+        amount=ord.total_amount_order,
+        is_credit=True
+        )
+        wallet_item.save()
+
     return redirect(reverse('userprofile:view_details', args=[or_id]))
+
+
+
+def returnOrder(request, or_id):
+    # user_email = request.session.get('email')
+    # user = get_object_or_404(CustomUser, email=user_email)
+    ord = get_object_or_404(Orders, id=or_id)
+    ord.status = "Return"
+    ord.save()
+
+    # wallet_item = Wallet(
+    #     user=user,
+    #     date_time=timezone.now(),
+    #     amount=ord.total_amount_orders,
+    #     is_credit=True
+    # )
+    # wallet_item.save()
+
+    return redirect(reverse('userprofile:view_details', args=[or_id]))
+
+
+
 
 
