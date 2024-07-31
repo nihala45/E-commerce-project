@@ -93,4 +93,4 @@ def editCoupon(request):
 def remove_coupon(request,coupon_id):
     coupon=Coupon.objects.get(id=coupon_id)
     coupon.delete()
-    return redirect('couponmanagement:coupons')
+    return redirect('couponmanagement:coupon')

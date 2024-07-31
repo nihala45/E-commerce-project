@@ -220,7 +220,16 @@ def cancelOrder(request, or_id):
     ord.status = "Cancelled"
     ord.save()
     
-    if ord.payment_method=='razor_pay':
+
+    if ord.payment_method=='razor_pay' and ord.product.offer:
+        wallet_item = Wallet(
+        user=user,
+        date_time=timezone.now(),
+        amount=ord.get_discount_cart_total_order,
+        is_credit=True
+        )
+        wallet_item.save()
+    else:
         wallet_item = Wallet(
         user=user,
         date_time=timezone.now(),
@@ -234,19 +243,28 @@ def cancelOrder(request, or_id):
 
 
 def returnOrder(request, or_id):
-    # user_email = request.session.get('email')
-    # user = get_object_or_404(CustomUser, email=user_email)
+    user_email = request.session.get('email')
+    user = get_object_or_404(CustomUser, email=user_email)
     ord = get_object_or_404(Orders, id=or_id)
     ord.status = "Return"
     ord.save()
 
-    # wallet_item = Wallet(
-    #     user=user,
-    #     date_time=timezone.now(),
-    #     amount=ord.total_amount_orders,
-    #     is_credit=True
-    # )
-    # wallet_item.save()
+    if ord.payment_method=='razor_pay' and ord.product.offer:
+        wallet_item = Wallet(
+        user=user,
+        date_time=timezone.now(),
+        amount=ord.get_discount_cart_total_order,
+        is_credit=True
+        )
+        wallet_item.save()
+    else:
+        wallet_item = Wallet(
+        user=user,
+        date_time=timezone.now(),
+        amount=ord.total_amount_order,
+        is_credit=True
+        )
+        wallet_item.save()
 
     return redirect(reverse('userprofile:view_details', args=[or_id]))
 

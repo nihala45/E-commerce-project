@@ -912,10 +912,10 @@
                                                     <p class="transaction-date">{{i.date_time}}</p>
 
                                                     <p><strong></strong> {{i.amount}}</p>
-                                                    <p>{% if is_credit is t %}
-                                                        Credit
+                                                    <p>{% if i.is_credit is True %}
+                                                        <p style="color:green">Credit</p>
                                                         {% else %}
-                                                        Debit
+                                                        <p style="color:red ;"> Debit</p>
                                                         {% endif %}
                                                     </p>
                                                 </div>

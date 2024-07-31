@@ -1268,18 +1268,24 @@
                           </div>
                           <div class="card-header" id="heading-1">
                             <h2 class="card-title">
-                              <input
+                             
+                              <div>
+                                <input
                                 type="radio"
                                 name="payment_method"
-                                value="cash_on_delivery"
-                                id="payment-cash-on-delivery"
-                                checked
+                                value="Wallet"
+                                id="payment-Wallet"
+                                {% if disabled_content == True %} disabled {% endif %}
                               />
+                              
                               <label for="payment-cash-on-delivery"
-                                >Wallet</label
+                                >Wallet      </label
                               >
+                              <h5 style="color:green; margin-left:12px"> ₹{{balance_amount}}</h5>
+                              </div>
                             </h2>
                           </div>
+                      
                           <div class="card-header" id="heading-2">
                             <h2 class="card-title">
                               <input

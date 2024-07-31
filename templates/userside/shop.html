@@ -93,7 +93,7 @@
             <div class="header-top">
                 <div class="container">
                     <div class="header-left">
-                        <div class="header-dropdown">
+                        {% comment %} <div class="header-dropdown">
                             <a href="#">Usd</a>
                             <div class="header-menu">
                                 <ul>
@@ -113,7 +113,7 @@
                                 </ul>
                             </div><!-- End .header-menu -->
                         </div><!-- End .header-dropdown -->
-                    </div><!-- End .header-left -->
+                    </div><!-- End .header-left --> {% endcomment %}
 
                     <div class="header-right">
                         <ul class="top-menu">
@@ -122,6 +122,13 @@
                                  <ul>
                                     
                                     <li><a href="{% url 'wishlist:Wishlist' %}"><i class="icon-heart-o"></i>Wishlist <span>(3)</span></a></li> 
+                                    <ul style="margin-top: 15px; margin-right: 15px;">
+                        
+            
+                                    
+                                        
+                                    </ul>
+                                    <li ><a href="{% url 'userprofile:userdashboard' %}"><i class="icon-user"></i>profile</a></li>
 
                                 </ul> 
                                 {% comment %} <li><a href="{% url 'wishlist:Wishlist' %}"><i class="icon-heart-o"></i>Wishlist <span>(3)</span></a></li>  {% endcomment %}

@@ -111,20 +111,19 @@ def otp_varification(request,id):
 
 
 
-# @login_required(login_url='logintohome:homee')
+
 def filterProduct(request):
     category1 = categories.objects.all()
     products=newproducts.objects.none()
     print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
-    # category filtering
-    
+        
     if request.method =='POST':
         selected_categories=request.POST.getlist('categories')
         for i in selected_categories:
             pro=newproducts.objects.filter(category_id=i)
             products=products.union(pro)
             
-    # search filter 
+    
             
     elif request.method =='GET':
         print("ddddddddddddddddddddddddddddddddddddddddddddddddddddddddDDDDDDDDDDDDDDDDDDDDDDDDDDD")

@@ -14,7 +14,8 @@ import razorpay
 from decimal import Decimal
 from couponmanagement.models import Coupon
 from couponmanagement.models import CouponUsage
-
+from userprofile.models import Wallet
+from django.utils import timezone
 
 
 
@@ -127,6 +128,10 @@ def proceed_to_checkout(request):
     user_email = request.session.get('email')
     user = CustomUser.objects.get(email=user_email)
     cart_items = MyCart.objects.filter(user_id=user.id)
+    wallet = Wallet.objects.filter(user=user.id)
+    balance=0
+    for i in wallet:
+        balance += i.amount
     
     if cart_items.count() == 0:
         return redirect('cartapp:show_cart')
@@ -149,8 +154,10 @@ def proceed_to_checkout(request):
         
         coupons = Coupon.objects.all()
         applicable_coupons = [coupon for coupon in coupons if sub_total >= coupon.critiria_amount]
-        
-    
+        dis= False
+        if sub_total > balance:
+            dis=True
+     
         context = {
             'cart_items': cart_items,
             'sub_total': sub_total,
@@ -158,7 +165,10 @@ def proceed_to_checkout(request):
             'coupons': coupons,
             'applicable_coupons': applicable_coupons,
             'discount':discount,
-            'final_amount':final_amount
+            'final_amount':final_amount,
+            'balance_amount':balance,
+            'disabled_content':dis
+            
         }
         return render(request, 'userside/checkout.html', context)
     
@@ -216,6 +226,11 @@ def place_order(request):
     cartItems = MyCart.objects.filter(user_id=user.id)   
     total_price = Decimal(0)
     discount_prg=0
+    wallet = Wallet.objects.filter(user=user.id)
+    balance=0
+    for i in wallet:
+        balance += i.amount
+    
     for item in cartItems:
             discount_prg=item.discount_percentage
             if item.product.offer:
@@ -225,6 +240,7 @@ def place_order(request):
     discount = (total_price*discount_prg)/100
     total_price =total_price-discount
     print(discount_prg,total_price,discount,"kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
+    
                 
     
     if request.method == 'POST':
@@ -257,7 +273,6 @@ def place_order(request):
             
             pro.save()
             
-        
             cartItems.delete()
             return JsonResponse({'status': 'success'})   
         elif payment_method == 'razor_pay':
@@ -274,6 +289,48 @@ def place_order(request):
                 'payment_order': payment_order,
                 'key': RAZORPAY_KEY_ID
             })
+        else:
+            wallet_deduction=0
+            for item in cartItems:
+                if item.product.offer:
+                    wallet_deduction +=item.get_discount_cart_total
+                else:
+                    wallet_deduction+=item.total_amount  
+                Orders(
+                    user=user,
+                    address=address,
+                    ordered_date=ordered_date,
+                    payment_method=payment_method,
+                    product=item.product,
+                    product_qty=item.quantity,
+                    discount_amt=discount,
+                    product_price=item.product.price * item.quantity,
+                    product_size=item.size,
+                    status='placed'
+                ).save()
+                wallet_item = Wallet(
+                user=user,
+                date_time=timezone.now(),
+                amount=-wallet_deduction,
+                is_credit=False
+                )
+                wallet_item.save()
+            
+            pro = newproducts.objects.get(id=item.product_id)
+            if item.size == 's':
+                pro.small = int(pro.small) - item.quantity
+            elif item.size == 'm':
+                pro.medium = int(pro.medium) - item.quantity
+            else:
+                pro.large = int(pro.large) - item.quantity
+            
+            pro.save()
+            
+        
+            cartItems.delete()
+            
+            return JsonResponse({'status': 'success'})  
+            
             
 def razor_save(request):
     user_email = request.session['email']
@@ -285,7 +342,9 @@ def razor_save(request):
         payment_method = request.POST.get('selectedPaymentMethod')
         ordered_date = date.today()
         address = UserAddress.objects.get(id=address_id)
+
     for item in cartItems:
+        
             Orders(
                 user=user,
                 address=address,
@@ -309,8 +368,8 @@ def razor_save(request):
             
             pro.save()
         
-            cartItems.delete()
-            return JsonResponse({'status': 'success'}) 
+    cartItems.delete()
+    return JsonResponse({'status': 'success'}) 
 
                 
             
