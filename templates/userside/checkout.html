@@ -998,7 +998,7 @@
                   <!-- End .dropdown-cart-total -->
 
                   <div class="dropdown-cart-action">
-                    <a href="cart.html" class="btn btn-primary">View Cart</a>
+                    <a href="{% url 'newcart:show_cart' %}" class="btn btn-primary">View Cart</a>
                     <a href="checkout.html" class="btn btn-outline-primary-2"
                       ><span>Checkout</span><i class="icon-long-arrow-right"></i
                     ></a>
@@ -1080,7 +1080,7 @@
                                 Apply Coupon
                             </button>
                             {% comment %} <div style="margin-top: 20px; text-align: center;">
-                              <button href="{% url 'cartapp:remove_coupon' %}" style="padding: 10px 20px; background-color: black; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                              <button href="{% url 'newcart:remove_coupon' %}" style="padding: 10px 20px; background-color: black; color: white; border: none; border-radius: 5px; cursor: pointer;">
                                   Remove
                               </button>
                           </div> {% endcomment %}
@@ -1091,7 +1091,7 @@
             </form>
 
 <div style="margin-top: 20px; text-align: center;">
-  <form id="remove-coupon-form" action="{% url 'cartapp:none_coupon' %}" method="post">
+  <form id="remove-coupon-form" action="{% url 'newcart:none_coupon' %}" method="post">
       {% csrf_token %}
       <button type="submit" class="btn btn-secondary" style="padding: 10px 20px; background-color: black; color: white; border: none; border-radius: 5px; cursor: pointer;">
           Remove
@@ -1223,7 +1223,7 @@
 
                           </tr>
                           <tr class="summary-total">
-                            <td>Total:</td>
+                            <td >Total:</td>
                             <td>{{ final_amount }}</td>
                           </tr>
                         </tbody>
@@ -1354,7 +1354,7 @@
                       <button
                         type="submit"
                         class="btn btn-outline-primary-2 btn-order btn-block"
-                        href="{% url 'cartapp:place_order' %}"
+                        href="{% url 'newcart:place_order' %}"
                       >
                         <span class="btn-text">Place Order</span>
                         <span class="btn-hover-text">Proceed to Checkout</span>
@@ -2177,19 +2177,24 @@
           let selectedPaymentMethod = document.querySelector(
               'input[name="payment_method"]:checked'
           ).value;
+
   
           console.log("Selected Address ID:", selectedAddress);
           console.log("Selected Payment Method:", selectedPaymentMethod);
+         
+
   
           let formData = new FormData();
           formData.append("selectedAddress", selectedAddress);
           formData.append("selectedPaymentMethod", selectedPaymentMethod);
+          
+
   
           for (let pair of formData.entries()) {
               console.log(pair[0] + ": " + pair[1]);
           }
   
-          fetch("{% url 'cartapp:place_order' %}", {
+          fetch("{% url 'newcart:place_order' %}", {
               method: "POST",
               body: formData,
               headers: {
@@ -2201,7 +2206,7 @@
               console.log("Response Data:", data);
   
               if (data.status === "success") {
-                  location.href = "{% url 'cartapp:successpage' %}";
+                  location.href = "{% url 'newcart:successpage' %}";
               } else if (data.status === "razorpay") {
                   console.log("Razorpay order data:", data);
                   razorPay(data.payment_order, data.key);
@@ -2264,7 +2269,7 @@
     
         console.log(selectedPaymentMethod, selectedAddress, 'selectedaddresssssssselectedPaumentmethodddddddddddddddddddd');
     
-        fetch("{% url 'cartapp:razor_save' %}", {
+        fetch("{% url 'newcart:razor_save' %}", {
             method: "POST",
             body: formData,
             headers: {
@@ -2275,7 +2280,7 @@
         .then((data) => {
             console.log("Response Data:", data);
             if (data.status === "success") {
-                location.href = "{% url 'cartapp:successpage' %}";
+                location.href = "{% url 'newcart:successpage' %}";
             }
         })
         .catch((error) => {
@@ -2318,7 +2323,7 @@
             console.log(pair[0] + ': ' + pair[1]);
         }
 
-        fetch("{% url 'cartapp:apply_coupon' %}", {
+        fetch("{% url 'newcart:apply_coupon' %}", {
             method: "POST",
             body: formData,
             headers: {

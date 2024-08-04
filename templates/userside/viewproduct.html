@@ -1,0 +1,48 @@
+<script>
+    function returnOrder(ord_id, e) {
+        e.preventDefault();
+        console.log(ord_id, "order ID");
+
+        Swal.fire({
+            title: 'Enter Return reason',
+            input: 'text',
+            inputLabel: "Return Reason",
+            inputPlaceholder: 'Please enter the reason for Return',
+            showCancelButton: true,
+            confirmButtonText: 'Return Order',
+            cancelButtonText: 'Cancel',
+            preConfirm: (returnReason) => {
+                if (!returnReason) {
+                    Swal.showValidationMessage('Return reason is required');
+                }
+                return returnReason;
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let formData = new FormData();
+                formData.append('orderId', ord_id);  
+
+                const csrftoken = getCookie('csrftoken'); 
+
+                fetch('{% url "userprofile:returnOrder" %}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrftoken,  
+                    },
+                    body: formData  
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.return) {  // Assuming 'return' field is used in the response
+                        location.reload();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>

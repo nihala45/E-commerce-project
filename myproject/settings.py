@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'adminside',
-    'cartapp',
     'category',
     'checkout',
     'logintohome',
@@ -53,6 +52,7 @@ INSTALLED_APPS = [
     'offermanagement',
     'couponmanagement',
     'wishlist',
+    'newcart',
 ]
 
 MIDDLEWARE = [

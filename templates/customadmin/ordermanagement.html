@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -454,6 +455,8 @@ background-color: #495057; /* Slightly lighter background on hover */
                 <table>
                     <thead>
                         <tr>
+                            <th style="padding: 12px; background-color: #4CAF50; color: white; font-weight: bold; text-transform: uppercase;">No</th>
+
                             <th style="padding: 12px; background-color: #4CAF50; color: white; font-weight: bold; text-transform: uppercase;">Date</th>
                             <th style="padding: 12px; background-color: #4CAF50; color: white; font-weight: bold; text-transform: uppercase;">Amount</th>
                             <th style="padding: 12px; background-color: #4CAF50; color: white; font-weight: bold; text-transform: uppercase;">Payment Method</th>
@@ -463,13 +466,11 @@ background-color: #495057; /* Slightly lighter background on hover */
                     <tbody>
                         {% for i in ordered_items %}
                         <tr> 
-                            <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd; background-color: #f9f9f9;">{{ i.ordered_date }}</td>
-                            <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd; background-color: #f9f9f9;">{% if i.product.offer %}
-								₹{{i.get_discount_cart_total_order}}
-								{% else %}
-								₹{{i.total_amount_order}}
-								{% endif %}
-
+                            <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd; background-color: #f9f9f9;">{{ forloop.counter }}</td>
+                            
+                            <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd; background-color: #f9f9f9;">{{ i.order_date }}</td>
+                            <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd; background-color: #f9f9f9;">
+								₹{{i.total_amount}}
 							</td>
                             <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd; background-color: #f9f9f9;">{{ i.payment_method }}</td>
                             <td style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd; background-color: #f9f9f9;">

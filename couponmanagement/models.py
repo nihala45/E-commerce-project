@@ -19,5 +19,5 @@ class Coupon(models.Model):
     
 
 class CouponUsage(models.Model):
-    coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE)
+    coupon = models.ForeignKey(Coupon, on_delete=models.SET_NULL, blank=True, null=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

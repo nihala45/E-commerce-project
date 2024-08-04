@@ -1,413 +1,255 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Order Details</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Order Management</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Custom CSS -->
+	<style>
 
-<style>
-	.o {
-		color: red !important;
-	}
-	
-	body {
-		font-family: 'Varela Round', sans-serif;
-		font-size: 13px;
-	}
-	.table-wrapper {
-		background: #fff;
-		padding: 20px 25px;
-		margin: 30px 0;
-		border-radius: 3px;
-		box-shadow: 0 1px 1px rgba(0,0,0,.05);
-	}
-	.table-title {        
-		padding-bottom: 15px;
-		background: #03070d;
-		color: #fff;
-		padding: 16px 30px;
-		margin: -20px -25px 10px;
-		border-radius: 3px 3px 0 0;
-	}
-	.table-title h2 {
-		margin: 5px 0 0;
-		font-size: 24px;
-	}
-	.table-title .btn-group {
-		float: right;
-	}
-	.table-title .btn {
-		color: #fff;
-		float: right;
-		font-size: 13px;
-		border: none;
-		min-width: 50px;
-		border-radius: 2px;
-		margin-left: 10px;
-	}
-	.table-title .btn i {
-		float: left;
-		font-size: 21px;
-		margin-right: 5px;
-	}
-	.table-title .btn span {
-		float: left;
-		margin-top: 2px;
-	}
-	table.table tr th, table.table tr td {
-		border-color: #e9e9e9;
-		padding: 12px 15px;
-		vertical-align: middle;
-	}
-	table.table tr th:first-child {
-		width: 60px;
-	}
-	table.table tr th:last-child {
-		width: 100px;
-	}
-	table.table-striped tbody tr:nth-of-type(odd) {
-		background-color: #fcfcfc;
-	}
-	table.table-striped.table-hover tbody tr:hover {
-		background: #f5f5f5;
-	}
-	table.table th i {
-		font-size: 13px;
-		margin: 0 5px;
-		cursor: pointer;
-	}
-	table.table td:last-child i {
-		opacity: 0.9;
-		font-size: 22px;
-		margin: 0 5px;
-	}
-	table.table td a {
-		font-weight: bold;
-		color: #566787;
-		display: inline-block;
-		text-decoration: none;
-	}
-	table.table td a:hover {
-		color: #2196F3;
-	}
-	table.table td a.edit {
-		color: #FFC107;
-	}
-	table.table td a.delete {
-		color: #F44336;
-	}
-	table.table td i {
-		font-size: 19px;
-	}
-	table.table .avatar {
-		border-radius: 50%;
-		vertical-align: middle;
-		margin-right: 10px;
-	}
-	.pagination {
-		float: right;
-		margin: 0 0 5px;
-	}
-	.pagination li a {
-		border: none;
-		font-size: 13px;
-		min-width: 30px;
-		min-height: 30px;
-		color: #999;
-		margin: 0 2px;
-		line-height: 30px;
-		border-radius: 2px;
-		text-align: center;
-		padding: 0 6px;
-	}
-	.pagination li a:hover {
-		color: #666;
-	}
-	.pagination li.active a, .pagination li.active a.page-link {
-		background: #03A9F4;
-	}
-	.pagination li.active a:hover {        
-		background: #0397d6;
-	}
-	.pagination li.disabled i {
-		color: #ccc;
-	}
-	.pagination li i {
-		font-size: 16px;
-		padding-top: 6px
-	}
-	.hint-text {
-		float: left;
-		margin-top: 10px;
-		font-size: 13px;
-	}
-	.custom-checkbox {
-		position: relative;
-	}
-	.custom-checkbox input[type="checkbox"] {
-		opacity: 0;
-		position: absolute;
-		margin: 5px 0 0 3px;
-		z-index: 9;
-	}
-	.custom-checkbox label:before {
-		width: 18px;
-		height: 18px;
-	}
-	.custom-checkbox label:before {
-		content: '';
-		margin-right: 10px;
-		display: inline-block;
-		vertical-align: text-top;
-		background: white;
-		border: 1px solid #bbb;
-		border-radius: 2px;
-		box-sizing: border-box;
-		z-index: 2;
-	}
-	.custom-checkbox input[type="checkbox"]:checked + label:after {
-		content: '';
-		position: absolute;
-		left: 6px;
-		top: 3px;
-		width: 6px;
-		height: 11px;
-		border: solid #000;
-		border-width: 0 3px 3px 0;
-		transform: rotateZ(45deg);
-		z-index: 3;
-	}
-	.custom-checkbox input[type="checkbox"]:checked + label:before {
-		border-color: #03A9F4;
-		background: #03A9F4;
-	}
-	.custom-checkbox input[type="checkbox"]:checked + label:after {
-		border-color: #fff;
-	}
-	.custom-checkbox input[type="checkbox"]:disabled + label:before {
-		color: #b8b8b8;
-		cursor: auto;
-		box-shadow: none;
-		background: #ddd;
-	}
-	.modal .modal-dialog {
-		max-width: 400px;
-	}
-	.modal .modal-header, .modal .modal-body, .modal .modal-footer {
-		padding: 20px 30px;
-	}
-	.modal .modal-content {
-		border-radius: 3px;
-	}
-	.modal .modal-footer {
-		background: #ecf0f1;
-		border-radius: 0 0 3px 3px;
-	}
-	.modal .modal-title {
-		display: inline-block;
-	}
-	.modal .form-control {
-		border-radius: 2px;
-		box-shadow: none;
-		border-color: #dddddd;
-	}
-	.modal textarea.form-control {
-		resize: vertical;
-	}
-	.modal .btn {
-		border-radius: 2px;
-		min-width: 100px;
-	}
-	.modal form label {
-		font-weight: normal;
-	}
-	.hai {
-		background-color: rgb(6, 59, 6) !important;
-	}
-	.text1 {   
-		color: white;
-		font-size: 30px;
-	}
-	.butto1 {
-		background: rgb(55, 134, 203);
-		border-radius: 5px;
-		padding: 7px;
-	}
-	table {
-		width: 100%;
-		border-collapse: collapse;
-	}
-	th, td {
-		padding: 12px;
-		text-align: left;
-		border-bottom: 1px solid #ddd;
-	}
-	th {
-		background-color: #4CAF50;
-		color: white;
-		font-weight: bold;
-		text-transform: uppercase;
-	}
-	td {
-		background-color: #f9f9f9;
-	}
-	tr:nth-child(even) td {
-		background-color: #f2f2f2;
-	}
-	a {
-		color: #3498db;
-		text-decoration: none;
-	}
-	a:hover {
-		text-decoration: underline;
-	}
-</style>
+		body, h1, h2, h3, p {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		
+		/* Sidebar Styling */
+		.sidebar {
+			height: 100vh;
+			background: #343a40;
+			color: #fff;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 250px;
+			transition: all 0.3s;
+			z-index: 1000;
+		}
+		.sidebar .nav-link {
+			color: #fff;
+			padding: 15px 20px;
+			display: block;
+			transition: background 0.3s;
+		}
+		.sidebar .nav-link:hover {
+			background: #495057;
+			text-decoration: none;
+		}
+		.sidebar .nav-logo {
+			font-size: 24px;
+			padding: 20px;
+			text-align: center;
+			border-bottom: 1px solid #495057;
+		}
+		
+		/* Content Styling */
+		.content {
+			margin-left: 270px;
+			padding: 20px;
+			width: calc(100% - 270px);
+		}
+		
+		/* Navbar Styling */
+		.custom-navbar {
+			width: calc(100% - 270px);
+			margin-left: 270px;
+			padding: 15px;
+			background-color: #343a40;
+			box-shadow: 0px 4px 2px -2px gray;
+		}
+		
+		/* Order Details Styling */
+		.order-details {
+			background: #f9f9f9;
+			padding: 20px;
+			margin-top: 15px;
+			border-radius: 5px;
+			box-shadow: 0px 4px 2px -2px gray;
+			width: 45%; /* Adjusted to fit side-by-side */
+			display: inline-block; /* To allow side-by-side display */
+			vertical-align: top;
+		}
+		
+		.order-details h3 {
+			margin-bottom: 15px;
+		}
+		
+		.order-details p {
+			margin: 5px 0;
+		}
+		
+		/* Table Styling */
+		.table-wrapper {
+			margin-top: 20px;
+		}
+		
+		.table-title {
+			background: #4CAF50;
+			padding: 15px;
+			color: white;
+			border-radius: 5px 5px 0 0;
+		}
+		
+		.table-title h2 {
+			margin: 0;
+		}
+		
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			margin-top: 15px;
+		}
+		
+		table th, table td {
+			padding: 12px;
+			text-align: left;
+			border-bottom: 1px solid #ddd;
+		}
+		
+		table th {
+			background-color: #4CAF50;
+			color: white;
+			font-weight: bold;
+			text-transform: uppercase;
+		}
+		
+		table tbody tr:nth-child(even) {
+			background-color: #f9f9f9;
+		}
+		
+		table tbody tr:hover {
+			background-color: #f1f1f1;
+		}
+		
+		.btn {
+			margin-top: 15px;
+		}
+		table img {
+			width: 100px; /* Set a fixed width */
+			height: 100px; /* Set a fixed height */
+			object-fit: cover; /* Ensures the image covers the area without stretching */
+		}
+
+	</style>
 </head>
 <body>
-    {% if messages %}
-    <div class="alert alert-success mt-3">
-    {% for message in messages %}
-    {{ message }}
-    {% endfor %}
-    </div>
-    {% endif %}
-
-    <!-- Navbar -->
-    <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark hai" aria-label="Furni navigation bar">
-        <div class="container-fluid text-center">
-            <h1 class="m-auto text1">Shop</h1>
+    <div class="sidebar">
+        <div class="nav-logo">
+            <i class='bx bx-layer'></i> Shop
         </div>
-    </nav>
+        <nav class="nav flex-column">
+            <a href="{% url 'adminside:dashboard' %}" class="nav-link active"><i class='bx bx-grid-alt'></i> Dashboard</a>
+            <a href="{% url 'usermanagement:usermanagement' %}" class="nav-link"><i class='bx bx-user'></i> Users</a>
+            <a href="{% url 'products:products' %}" class="nav-link"><i class='bx bx-message-square-detail'></i> Products</a>
+            <a href="{% url 'category:categorymanagement' %}" class="nav-link"><i class='bx bx-bookmark'></i> Categories</a>
+            <a href="{% url 'ordermanagement:order_management' %}" class="nav-link"><i class='bx bx-cart'></i> Orders</a>
+            <a href="{% url 'offermanagement:offermanagement' %}" class="nav-link"><i class='bx bx-gift'></i> Offers</a>
+            <a href="{% url 'couponmanagement:coupon' %}" class="nav-link {% if request.resolver_match.url_name == 'coupon' %}active{% endif %}"><i class='bx bx-tag'></i> Coupons</a>
+            <a href="{% url 'adminside:logout_view' %}" class="nav-link"><i class='bx bx-log-out'></i> Logout</a>
+        </nav>
+    </div>
 
-    <!-- Order Details -->
-    <div class="container-fluid">
-        <div class="table-wrapper">
-            <div class="table-title">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <h2>Order Details</h2>
+    <div class="content">
+        <!-- Navbar -->
+        <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark">
+        </nav>
+		<div style="display:flex; justify-content:space-around">
+        <!-- Address and Order Details -->
+        <div class="order-details">
+            <h3>Order Details</h3>
+           
+            <p><strong>Order Date:</strong> {{ all_order.order_date }}</p>
+            <p><strong>Payment Method:</strong> {{ all_order.payment_method }}</p>
+        </div>
+		<div class="order-details " style="margin-right:200px%">
+            <h3>Address Details</h3>
+            <p><strong>Name:</strong> {{ first_address.address_name }}</p>
+            <p><strong>Email:</strong> {{ first_address.address_Email }}</p>
+            <p><strong>Phone:</strong> {{ first_address.address_phone }}</p>
+
+            <p><strong>Adrees:</strong> {{ first_address.Address }}</p>
+            <p><strong>Landmark:</strong> {{ first_address.landmark }}</p>
+            <p><strong>City:</strong> {{ first_address.city }}</p>
+            <p><strong>district:</strong> {{ first_address.district }}</p>
+            <p><strong>state:</strong> {{ first_address.state }}</p>
+
+            <p><strong>Payment Method:</strong> {{ first_address.pin }}</p>
+            
+        </div>
+	</div>
+        <!-- Order Table -->
+        <div class="container-fluid order-table">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h2>Manage Orders</h2>
+                        </div>
                     </div>
                 </div>
-            </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Product Name</th>
+                            <th>Image</th>
+                            <th>Amount</th>
+                            <th>Details</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                         {% for i in order_item %}
+                        <tr>
+                            <td>{{ forloop.counter }} </td>
+                            <td>{{ i.product.name }} </td>
 
-            <!-- Address Section -->
-		<!-- Address Section -->
-<div class="row">
-    <div class="col-md-6">
-        <div class="address-section" style="padding: 20px; border: 1px solid #ddd; margin-bottom: 20px; border-radius: 5px; background-color: #f9f9f9;">
-            <h4>Shipping Address</h4>
-            <p><strong>Name:</strong> {{ item.address.address_name }}</p>
-            <p><strong>Email:</strong> {{ item.address.address_Email }}</p>
-            <p><strong>Phone:</strong> {{ item.address.address_Phone }}</p>
-            <p><strong>Address:</strong> {{ item.address.Address }}</p>
-            <p><strong>Landmark:</strong> {{ item.address.landmark }}</p>
-            <p><strong>Pin Code:</strong> {{ item.address.pin }}</p>
-            <p><strong>City, State:</strong> {{ item.address.city }}, {{ item.address.state }}</p>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="status-section" style="padding: 20px; border: 1px solid #ddd; margin-bottom: 20px; border-radius: 5px; background-color: #f9f9f9;">
-            <h4>Order Status</h4>
-			{% if item.status == 'Cancelled' %}
-			<h3 style='color:red'>Order cancelled</h3>
-			{% elif item.status == 'Return' %}
-			<h3 style='color:red'>Order returned</h3>
-			{% else %}
-            <form action="{% url 'ordermanagement:status_update' %}" method="POST">
-                {% csrf_token %}
-				
-                <div class="form-group">
-					<input type="hidden" name="item_id" value="{{ item.id }}">
-                    <label for="status">Status:</label>
-                    <select name="status" id="status" class="form-control">
-
-                        <option value="Placed" {% if item.status == 'Placed' %} selected {% endif %}>Placed</option>
-                        <option value="Shipped" {% if item.status == 'Shipped' %} selected {% endif %}>Shipped</option>
-                        <option value="Out for Delivery" {% if item.status == 'Out for Delivery' %} selected {% endif %}>Out for Delivery</option>
-                                                            <p><strong>Action:</strong><button style="border:none;">Cancel</button></p>
-                        <option value="Delivered" {% if item.status == 'Delivered' %} selected {% endif %}>Delivered</option>
-						
-
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary">Update Status</button>
-            </form>
-		{% endif %}
-        </div>
-    </div>
-</div>
-
-			
-
-            <!-- Product Details Table -->
-            <div class="table-container">
-				<table>
-					<thead>
-						<tr>
-							<th>Image</th>
-							<th>Product Name</th>
-							<th>Quantity</th>
-							<th>Size</th>
-							<th>Price</th>
-							<th>Total</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><img src="{{ item.product.image1.url }}" height="90px"></td>
-							<td>{{ item.product.name }}</td>
-							<td>{{ item.product_qty }}</td>
-							<td>{{ item.product_size }}</td>
-							<td>{% if item.product.offer %}
-								{{item.unit_price}}
-								{% else %}
-								{{item.product.price}}
-								{% endif %}</td>
-								
-							<td> {% if item.product.offer %}
-                                                               
-								₹{{item.get_discount_cart_total_order}}
-								{% else %}
-								₹{{item.total_amount_order}}
+                            <td><img src="{{i.product.image1.url}}" alt=""></td>
+                            <td>₹{{ total_amounts|slice:forloop.counter|last|floatformat:2 }}</td>
+                          
+                            <td><a >View {{i.id}}{{all_order.id}}</a></td>
+                            <td>
+								{% if i.status == 'Cancelled' %}
+									<h3 style="color:red;">Order Cancelled<h3>
+									{% elif i.status == 'Returned' %}
+										<h3 style="color:red;">Order Returned<h3>
+									{% else %}
+								<form action="{% url 'ordermanagement:status_update' %}" method="post" id="statusForm{{ forloop.counter }}">
+									{% csrf_token %}
+									<input type="hidden" name="item_id" value="{{ i.id }}">
+									<input type="hidden" name="ord_id" value="{{ all_order.id }}">
+									
+									
+									<select name="status" onchange="statusUpdate({{ forloop.counter }})">
+										<option value="placed" {% if i.status == 'placed' %}selected{% endif %}>Placed</option>
+										<option value="Shipped" {% if i.status == 'Shipped' %}selected{% endif %}>Shipped</option>
+										<option value="Out For Delivery" {% if i.status == 'Out For Delivery' %}selected{% endif %}>Out For Delivery</option>
+										<option value="Delivered" {% if i.status == 'Delivered' %}selected{% endif %}>Delivered</option>
+									</select>
+									
+								</form>
 								{% endif %}
-</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			
-
-            <a href="{% url 'ordermanagement:order_management' %}" class="btn btn-danger"><i class="material-icons"></i> <span>Back to Orders</span></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <a href="{% url 'adminside:dashboard' %}" class="btn btn-danger"><span>Back to Admin Home</span></a>
+            </div>
         </div>
     </div>
+
+	<script>
+		function statusUpdate(formIndex) {
+			const form = document.getElementById('statusForm' + formIndex);
+			form.submit();
+		}
+		</script>
 </body>
-<script>
-    $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip();
-        var checkbox = $('table tbody input[type="checkbox"]');
-        $("#selectAll").click(function(){
-            if(this.checked){
-                checkbox.each(function(){
-                    this.checked = true;                        
-                });
-            } else{
-                checkbox.each(function(){
-                    this.checked = false;                        
-                });
-            } 
-        });
-        checkbox.click(function(){
-            if(!this.checked){
-                $("#selectAll").prop("checked", false);
-            }
-        });
-    });
-</script>
 </html>

@@ -782,27 +782,30 @@
 
 								    <div class="tab-pane fade" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-link">
                                         <table class="table">
-                                            {% if ordered_items %}
+                                            {% if ordered_item %}
                                             <thead>
                                                 <tr>
+                                                    {% comment %} <th>No<th> {% endcomment %}
+                                                    <th>SI.No</th>
                                                     <th>Date</th>
-                                                    <th>Amount</th>
                                                     <th>Payment Method</th>
-                                                    <th>Details</th>
+                                                    <th>total_amount</th>
+                                                    <th>view</th>
+
+            
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {% for i in ordered_items %}
+                                                {% for i in ordered_item %}
                                                 <tr>
-                                                    <td>{{ i.ordered_date }}</td>
+                                                    
+                                                    <td>{{forloop.counter}}</td>
                                                     <td class="total-col" id="total-price-{{ i.id }}"> 
-                                                        {% if i.product.offer %}
-                                                               
-                                                                ₹{{i.get_discount_cart_total_order}}
-                                                                {% else %}
-                                                                ₹{{i.total_amount_order}}
-                                                                {% endif %}
+                                                    
+                                                                {{i.order_date}}</td>
+                                                                
                                                     <td>{{ i.payment_method }}</td>
+                                                    <td>{{i.total_amount}}</td>
                                                     <td><a href="{% url 'userprofile:view_details' i.id %}">View</a></td>
                                                 </tr>
                                                 {% endfor %}

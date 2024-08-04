@@ -29,11 +29,14 @@
     <link rel="stylesheet" href="{% static 'css/plugins/owl-carousel/owl.carousel.css' %}">
     <link rel="stylesheet" href="{% static 'css/plugins/magnific-popup/magnific-popup.css' %}">
     <link rel="stylesheet" href="{% static 'css/plugins/nouislider/nouislider.css' %}">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
     <!-- Main CSS File -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
     <style>
+        
+        
         .no-products-found {
             text-align: center;
             color:red;
@@ -87,14 +90,14 @@
     </style>
 </head>
 
-<body>
+<body id="hellodiv"> 
     <div class="page-wrapper">
         <header class="header">
             <div class="header-top">
                 <div class="container">
                     <div class="header-left">
-                        {% comment %} <div class="header-dropdown">
-                            <a href="#">Usd</a>
+                       <div class="header-dropdown">
+                            {% comment %} <a href="#">Usd</a> {% endcomment %}
                             <div class="header-menu">
                                 <ul>
                                     <li><a href="#">Eur</a></li>
@@ -104,7 +107,7 @@
                         </div><!-- End .header-dropdown -->
 
                         <div class="header-dropdown">
-                            <a href="#">Eng</a>
+                            {% comment %} <a href="#">Eng</a> {% endcomment %}
                             <div class="header-menu">
                                 <ul>
                                     <li><a href="#">English</a></li>
@@ -113,7 +116,7 @@
                                 </ul>
                             </div><!-- End .header-menu -->
                         </div><!-- End .header-dropdown -->
-                    </div><!-- End .header-left --> {% endcomment %}
+                    </div><!-- End .header-left --> 
 
                     <div class="header-right">
                         <ul class="top-menu">
@@ -415,7 +418,7 @@
                         </div><!-- End .header-search -->
                         <div class="dropdown compare-dropdown">
                             <a href="" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static" title="Compare Products" aria-label="Compare Products">
-                                <i class="icon-random"></i>
+                                {% comment %} <i class="icon-random"></i> {% endcomment %}
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right">
@@ -493,7 +496,7 @@
                                 </div><!-- End .dropdown-cart-total -->
 
                                 <div class="dropdown-cart-action">
-                                    <a href="{% url 'cartapp:show_cart' %}" class="btn btn-primary">View Cart</a>
+                                    <a href="{% url 'newcart:show_cart' %}" class="btn btn-primary">View Cart</a>
                                     <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
                                 </div><!-- End .dropdown-cart-total -->
                             </div><!-- End .dropdown-menu -->
@@ -522,7 +525,7 @@
             <div class="page-content">
                 <div class="container">
                 	<div class="row">
-                		<div class="col-lg-9">
+                		<div class="col-lg-9" id="relodDiv">
                 			<div class="toolbox">
                 				<div class="toolbox-left">
                 					<div class="toolbox-info">
@@ -612,8 +615,18 @@
                                             <img src="{{ prod.image1.url }}" alt="{{ prod.name }}" class="product-image">
                                         </a>
                                         <div class="product-action-vertical">
-                                            <a href="{% url 'wishlist:add_to_wishlist' prod.id %}" class="btn-product-icon btn-wishlist btn-expandable" onClick="addWishlist(event)"><span>Add to Wishlist</span></a>
-
+                                            {% comment %} <h1>{{wishlist_item}}<h1> {% endcomment %}
+                                                {% comment %} {% for i in wishlist_item %} {% endcomment %}
+                                                {% if prod.id in wish_item %} 
+                                  <a href="" class="btn-product-icon btn-expandable btn-red"  onClick="addWishlist(event,{{prod.id}})">
+                                    <i class="fa fa-heart" style="font-size:14px;color:red;margin-top:2px">
+                                       {% else %} 
+                                         <a href="" class="btn-product-icon  btn-wishlist btn-expandable btn-red"  onClick="addWishlist(event,{{prod.id}})">
+                                            {% comment %} <i class="fa fa-heart" style="font-size:14px;color:red;margin-top:2px">  {% endcomment %}
+                                                {% endif %}
+                                        {% comment %} {% endfor %} {% endcomment %}
+                                    </i><span>Add to Wishlist</span></a> 
+                                            
 
                                             <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a>
                                             <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a>
@@ -713,8 +726,8 @@
 											<div class="filter-items filter-items-count">
 												<div class="filter-item">
                                                     <form action="{% url 'logintohome:filterProduct' %}" method="POST" id="filterForm">
+                                                        {% csrf_token %}
                                                         {% for i in category %}
-                                                        {% csrf_token%}
                                                         <div class="custom-control custom-checkbox"> 
                                                             <input type="checkbox" name="categories" value="{{ i.id }}" class="custom-control-input category-checkbox" id="cat-{{ i.id }}">
                                                             <label class="custom-control-label" for="cat-{{ i.id }}">{{ i.category_name }}</label>
@@ -722,6 +735,7 @@
                                                         {% endfor %}
                                                         <button type="submit" class="btn btn-default border"><span class="text-danger">Filter</span></button>
                                                     </form>
+                                                    
 													
 												</div><!-- End .filter-item --> 
 
@@ -729,6 +743,11 @@
 											</div><!-- End .filter-items -->
 										</div><!-- End .widget-body -->
 									</div><!-- End .collapse -->
+
+
+
+                                    <!-- Pagination -->
+
                                    
                                     {% comment %} {% else %} {% endcomment %}
             {% comment %} <p>No products found.</p> {% endcomment %}
@@ -954,7 +973,7 @@
 
 	            				<ul class="widget-list">
 	            					<li><a href="#">Sign In</a></li>
-	            					<li><a href="{% url 'cartapp:show_cart' %}" >View Cart</a></li>
+	            					<li><a href="{% url 'newcart:show_cart' %}" >View Cart</a></li>
 	            					<li><a href="#">My Wishlist</a></li>
 	            					<li><a href="#">Track My Order</a></li>
 	            					<li><a href="#">Help</a></li>
@@ -976,6 +995,7 @@
         </footer><!-- End .footer -->
     </div><!-- End .page-wrapper -->
     <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+    
 
     <!-- Mobile Menu -->
     <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
@@ -1275,11 +1295,76 @@
     <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
     <script src="{% static 'js/nouislider.min.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
    
-</body>
-
+    <script>
+        // Function to get the CSRF token from cookies
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    
+        // Function to add a product to the wishlist
+        function addWishlist(e, prod_id) {
+            e.preventDefault();  // Prevent the default action of the link/button
+            
+            console.log('Adding to wishlist for product ID:', prod_id);
+    
+            const csrftoken = getCookie('csrftoken');  // Retrieve CSRF token
+            let formData = new URLSearchParams();      // Create form data
+            formData.append('prod_id', prod_id);       // Append the product ID
+    
+            // Send the POST request with CSRF token and product ID
+            fetch("{% url 'wishlist:add_to_wishlist' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrftoken
+                },
+                body: formData.toString() 
+            })
+            .then(response => response.json())  
+            .then(data => {
+                if (data.status === 'added') {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Product added to wishlist",
+                        showConfirmButton: false,
+                        timer: 1500
+                      });
+                } else if (data.status === 'deleted') {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        
+                        title: "Product removed from wishlist",
+                        showConfirmButton: false,
+                        timer: 1500
+                      });
+                }
+                setTimeout(()=>{
+                    location.reload()
+                },1500)
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
     
 
+</body>
 
 </html>

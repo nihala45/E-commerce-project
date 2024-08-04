@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .invoice-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+          
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .invoice-header, .invoice-footer {
+            margin-bottom: 20px;
+        }
+        .invoice-header h2, .invoice-footer h4 {
+            margin: 0;
+        }
+        .invoice-header p {
+            margin: 5px 0;
+        }
+        .invoice-details h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+            text-align: left;
+        }
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .invoice-table th, .invoice-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            font-size: 14px;
+        }
+        .invoice-table th {
+            background-color: #f7f7f7;
+        }
+        .invoice-table img {
+            width: 50px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+<div class="invoice-container">
+    <!-- Invoice Header -->
+     <div style="align-item:center" ><h2>Invoice</h2></div>
+    <div class="invoice-header">
+        
+        <p><strong>Order ID:</strong> {{ all_orders.id }}</p>
+        <p><strong>Date:</strong> {{ all_orders.order_date }}</p>
+        <p><strong>Name:</strong> {{ first_addressess.address_name }}</p>
+        <p><strong>Address:</strong> {{ first_addressess.Address }}</p>
+        <p><strong>Landmark:</strong> {{ first_addressess.landmark }}</p>
+        <p><strong>State:</strong> {{ first_addressess.state }}</p>
+        <p><strong>Email:</strong> {{ first_addressess.address_Email }}</p>
+        <p><strong>Phone:</strong> {{ first_addressess.address_Phone }}</p>
+        <p><strong>Pincode:</strong> {{ first_addressess.pin }}</p>
+    </div>
+
+    <!-- Product Details -->
+    <div class="invoice-details">
+        <h3>Order Details</h3>
+        <table class="invoice-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Image</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in ordered_item %}
+                <tr>
+                    <td>{{ i.product.name }}</td>
+                    <td><img src="{{ i.product.image1.url }}" alt="{{ i.product.name }}"></td>
+                    <td>{{ unit_price|slice:forloop.counter|last|floatformat:2 }}</td>
+                    <td>{{ i.product_qty }}</td>
+                    <td>{{ total_amounts|slice:forloop.counter|last|floatformat:2 }}</td>
+                    <td>{{ i.status }}</td>
+                </tr>
+                <p>{{i}}</p>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Total Price -->
+    <div class="invoice-footer" style="display:flex;justify-content:flex-end">
+        <h4>Total Price: {{ all_orders.total_amount }}</h4>
+    </div>
+</div>
+
+</body>
+</html>

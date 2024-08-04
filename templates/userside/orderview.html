@@ -3,113 +3,33 @@
 <html lang="en">
 
 
-<!-- molla/wishlist.html  22 Nov 2019 09:55:05 GMT -->
+<!-- molla/dashboard.html  22 Nov 2019 10:03:13 GMT -->
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Molla - Bootstrap eCommerce Template</title>
-    <meta name="keywords" content="HTML5 Template">
-    <meta name="description" content="Molla - Bootstrap eCommerce Template">
-    <meta name="author" content="p-themes">
     <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/icons/apple-touch-icon.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/icons/favicon-32x32.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/icons/favicon-16x16.png' %}">
-    <link rel="manifest" href="{% static 'images/icons/site.html' %}">
-    <link rel="mask-icon" href="{% static 'images/icons/safari-pinned-tab.svg' %}" color="#666666">
-    <link rel="shortcut icon" href="{% static 'images/icons/favicon.ico' %}">
-    <meta name="apple-mobile-web-app-title" content="Molla">
-    <meta name="application-name" content="Molla">
-    <meta name="msapplication-TileColor" content="#cc9966">
-    <meta name="msapplication-config" content="{% static 'images/icons/browserconfig.xml' %}">
-    <meta name="theme-color" content="#ffffff">
-    <!-- Plugins CSS File -->
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <!-- Main CSS File -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'css/demos/demo-18.css' %}">
-    <!-- Inside your HTML template -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
-    <style>
-        .product-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            border: 1px solid #ddd;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .product-media {
-            flex: 0 0 100px;
-            margin-right: 15px;
-        }
-        
-        .product-image {
-            width: 100%;
-            height: auto;
-            border-radius: 5px;
-        }
-        
-        .product-details {
-            flex: 1;
-        }
-        
-        .product-title {
-            margin: 0;
-            font-size: 16px;
-            font-weight: bold;
-        }
-        
-        .product-price {
-            margin: 5px 0;
-            color: ;
-            font-size: 14px;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 8px 12px;
-            font-size: 14px;
-            border: 1px solid transparent;
-            border-radius: 4px;
-            text-align: center;
-            cursor: pointer;
-            text-decoration: none;
-        }
-        
-        .btn-outline-primary {
-            border-color: #007bff;
-            color: #007bff;
-            background-color: transparent;
-        }
-        
-        .btn-outline-primary:hover {
-            background-color: #007bff;
-            color: #fff;
-        }
-        
-        .btn-remove {
-            background: none;
-            border: none;
-            color: #e74c3c;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 10px;
-        }
-        
-        .btn-remove:hover {
-            color: #c0392b;
-        }
-        
-        .icon-close {
-            font-size: 16px;
-        }
-        
-    </style>
+<link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/icons/apple-touch-icon.png' %}">
+<link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/icons/favicon-32x32.png' %}">
+<link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/icons/favicon-16x16.png' %}">
+<link rel="manifest" href="{% static 'images/icons/site.html' %}">
+<link rel="mask-icon" href="{% static 'images/icons/safari-pinned-tab.svg' %}" color="#666666">
+<link rel="shortcut icon" href="{% static 'images/icons/favicon.ico' %}">
+
+<!-- Theme and Application -->
+<meta name="apple-mobile-web-app-title" content="Molla">
+<meta name="application-name" content="Molla">
+<meta name="msapplication-TileColor" content="#cc9966">
+<meta name="msapplication-config" content="{% static 'images/icons/browserconfig.xml' %}">
+<meta name="theme-color" content="#ffffff">
+
+<!-- Plugins CSS File -->
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+<!-- Main CSS File -->
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<style>
+    button:hover {
+        background-color: #007BB5;
+    }
+</style>
 </head>
 
 <body>
@@ -140,7 +60,20 @@
                         </div><!-- End .header-dropdown -->
                     </div><!-- End .header-left -->
 
-                    
+                    <div class="header-right">
+                        <ul class="top-menu">
+                            <li>
+                                <a href="#">Links</a>
+                                {% comment %} <ul>
+                                    <li><a href="tel:#"><i class="icon-phone"></i>Call: +0123 456 789</a></li>
+                                    <li><a href="wishlist.html"><i class="icon-heart-o"></i>Wishlist <span>(3)</span></a></li>
+                                    <li><a href="about.html">About Us</a></li>
+                                    <li><a href="contact.html">Contact Us</a></li>
+                                    <li><a href="#signin-modal" data-toggle="modal"><i class="icon-user"></i>Login</a></li>
+                                </ul> {% endcomment %}
+                            </li>
+                        </ul><!-- End .top-menu -->
+                    </div><!-- End .header-right -->
                 </div><!-- End .container -->
             </div><!-- End .header-top -->
 
@@ -159,182 +92,12 @@
                         <nav class="main-nav">
                             <ul class="menu sf-arrows">
                                 <li class="megamenu-container active">
-                                    <a href="{% url 'logintohome:shop_to_home' %}" class="sf-with-ul">Home</a>
+                                    <a href="index.html" class="sf-with-ul">Home</a>
 
                                     <div class="megamenu demo">
                                         <div class="menu-col">
                                             <div class="menu-title">Choose your demo</div><!-- End .menu-title -->
 
-                                            <div class="demo-list">
-                                                <div class="demo-item">
-                                                    <a href="index-1.html">
-                                                        <span class="demo-bg" style="background-image: url(static/images/menu/demos/1.jpg);"></span>
-                                                        <span class="demo-title">01 - furniture store</span>
-                                                    </a>
-                                                </div><!-- End .demo-item -->
-
-                                                <div class="demo-item">
-                                                    <a href="index-2.html">
-                                                        <span class="demo-bg" style="background-image: url(static/images/menu/demos/2.jpg);"></span>
-                                                        <span class="demo-title">02 - furniture store</span>
-                                                    </a>
-                                                </div><!-- End .demo-item -->
-
-                                                <div class="demo-item">
-                                                    <a href="index-3.html">
-                                                        <span class="demo-bg" style="background-image: url(static/images/menu/demos/3.jpg);"></span>
-                                                        <span class="demo-title">03 - electronic store</span>
-                                                    </a>
-                                                </div><!-- End .demo-item -->
-
-                                                <div class="demo-item">
-                                                    <a href="index-4.html">
-                                                        <span class="demo-bg" style="background-image: url(static/images/menu/demos/4.jpg);"></span>
-                                                        <span class="demo-title">04 - electronic store</span>
-                                                    </a>
-                                                </div><!-- End .demo-item -->
-
-                                                <div class="demo-item">
-                                                    <a href="index-5.html">
-                                                        <span class="demo-bg" style="background-image: url(static/images/menu/demos/5.jpg);"></span>
-                                                        <span class="demo-title">05 - fashion store</span>
-                                                    </a>
-                                                </div><!-- End .demo-item -->
-
-                                                <div class="demo-item">
-                                                    <a href="index-6.html">
-                                                        <span class="demo-bg" style="background-image: url(static/images/menu/demos/6.jpg);"></span>
-                                                        <span class="demo-title">06 - fashion store</span>
-                                                    </a>
-                                                </div><!-- End .demo-item -->
-
-                                                <div class="demo-item">
-                                                    <a href="index-7.html">
-                                                        <span class="demo-bg" style="background-image: url(static/images/menu/demos/7.jpg);"></span>
-                                                        <span class="demo-title">07 - fashion store</span>
-                                                    </a>
-                                                </div><!-- End .demo-item -->
-
-                                                <div class="demo-item">
-                                                    <a href="index-8.html">
-                                                        <span class="demo-bg" style="background-image: url(static/images/menu/demos/8.jpg);"></span>
-                                                        <span class="demo-title">08 - fashion store</span>
-                                                    </a>
-                                                </div><!-- End .demo-item -->
-
-                                                <div class="demo-item">
-                                                    <a href="index-9.html">
-                                                        <span class="demo-bg" style="background-image: url(static/images/menu/demos/9.jpg);"></span>
-                                                        <span class="demo-title">09 - fashion store</span>
-                                                    </a>
-                                                </div><!-- End .demo-item -->
-
-                                                <div class="demo-item">
-                                                    <a href="index-10.html">
-                                                        <span class="demo-bg" style="background-image: url(static/images/menu/demos/10.jpg);"></span>
-                                                        <span class="demo-title">10 - shoes store</span>
-                                                    </a>
-                                                </div><!-- End .demo-item -->
-
-                                                <div class="demo-item hidden">
-                                                    <a href="index-11.html">
-                                                        <span class="demo-bg" style="background-image: url(static/images/menu/demos/11.jpg);"></span>
-                                                        <span class="demo-title">11 - furniture simple store</span>
-                                                    </a>
-                                                </div><!-- End .demo-item -->
-
-                                                <div class="demo-item hidden">
-                                                    <a href="index-12.html">
-                                                        <span class="demo-bg" style="background-image: url(static/images/menu/demos/12.jpg);"></span>
-                                                        <span class="demo-title">12 - fashion simple store</span>
-                                                    </a>
-                                                </div><!-- End .demo-item -->
-
-                                                <div class="demo-item hidden">
-                                                    <a href="index-13.html">
-                                                        <span class="demo-bg" style="background-image: url(static/images/menu/demos/13.jpg);"></span>
-                                                        <span class="demo-title">13 - market</span>
-                                                    </a>
-                                                </div><!-- End .demo-item -->
-
-                                                <div class="demo-item hidden">
-                                                    <a href="index-14.html">
-                                                        <span class="demo-bg" style="background-image: url(static/images/menu/demos/14.jpg);"></span>
-                                                        <span class="demo-title">14 - market fullwidth</span>
-                                                    </a>
-                                                </div><!-- End .demo-item -->
-
-                                                <div class="demo-item hidden">
-                                                    <a href="index-15.html">
-                                                        <span class="demo-bg" style="background-image: url(static/images/menu/demos/15.jpg);"></span>
-                                                        <span class="demo-title">15 - lookbook 1</span>
-                                                    </a>
-                                                </div><!-- End .demo-item -->
-
-                                                <div class="demo-item hidden">
-                                                    <a href="index-16.html">
-                                                        <span class="demo-bg" style="background-image: url(static/images/menu/demos/16.jpg);"></span>
-                                                        <span class="demo-title">16 - lookbook 2</span>
-                                                    </a>
-                                                </div><!-- End .demo-item -->
-
-                                                <div class="demo-item hidden">
-                                                    <a href="index-17.html">
-                                                        <span class="demo-bg" style="background-image: url(static/images/menu/demos/17.jpg);"></span>
-                                                        <span class="demo-title">17 - fashion store</span>
-                                                    </a>
-                                                </div><!-- End .demo-item -->
-
-                                                <div class="demo-item hidden">
-                                                    <a href="index-18.html">
-                                                        <span class="demo-bg" style="background-image: url(static/images/menu/demos/18.jpg);"></span>
-                                                        <span class="demo-title">18 - fashion store (with sidebar)</span>
-                                                    </a>
-                                                </div><!-- End .demo-item -->
-
-                                                <div class="demo-item hidden">
-                                                    <a href="index-19.html">
-                                                        <span class="demo-bg" style="background-image: url(static/images/menu/demos/19.jpg);"></span>
-                                                        <span class="demo-title">19 - games store</span>
-                                                    </a>
-                                                </div><!-- End .demo-item -->
-
-                                                <div class="demo-item hidden">
-                                                    <a href="index-20.html">
-                                                        <span class="demo-bg" style="background-image: url(static/images/menu/demos/20.jpg);"></span>
-                                                        <span class="demo-title">20 - book store</span>
-                                                    </a>
-                                                </div><!-- End .demo-item -->
-
-                                                <div class="demo-item hidden">
-                                                    <a href="index-21.html">
-                                                        <span class="demo-bg" style="background-image: url(static/images/menu/demos/21.jpg);"></span>
-                                                        <span class="demo-title">21 - sport store</span>
-                                                    </a>
-                                                </div><!-- End .demo-item -->
-
-                                                <div class="demo-item hidden">
-                                                    <a href="index-22.html">
-                                                        <span class="demo-bg" style="background-image: url(static/images/menu/demos/22.jpg);"></span>
-                                                        <span class="demo-title">22 - tools store</span>
-                                                    </a>
-                                                </div><!-- End .demo-item -->
-
-                                                <div class="demo-item hidden">
-                                                    <a href="index-23.html">
-                                                        <span class="demo-bg" style="background-image: url(static/images/menu/demos/23.jpg);"></span>
-                                                        <span class="demo-title">23 - fashion left navigation store</span>
-                                                    </a>
-                                                </div><!-- End .demo-item -->
-
-                                                <div class="demo-item hidden">
-                                                    <a href="index-24.html">
-                                                        <span class="demo-bg" style="background-image: url(static/images/menu/demos/24.jpg);"></span>
-                                                        <span class="demo-title">24 - extreme sport store</span>
-                                                    </a>
-                                                </div><!-- End .demo-item -->
-
-                                            </div><!-- End .demo-list -->
 
                                             <div class="megamenu-action text-center">
                                                 <a href="#" class="btn btn-outline-primary-2 view-all-demos"><span>View All Demos</span><i class="icon-long-arrow-right"></i></a>
@@ -343,7 +106,7 @@
                                     </div><!-- End .megamenu -->
                                 </li>
                                 <li>
-                                    <a href="{% url 'logintohome:shop' %}" class="sf-with-ul">Shop</a>
+                                    <a href="category.html" class="sf-with-ul">Shop</a>
 
                                     <div class="megamenu megamenu-md">
                                         <div class="row no-gutters">
@@ -616,7 +379,7 @@
                                 </div><!-- End .dropdown-cart-total -->
 
                                 <div class="dropdown-cart-action">
-                                    <a href="{% url 'newcart:show_cart' %}" class="btn btn-primary">View Cart</a>
+                                    <a href="cart.html" class="btn btn-primary">View Cart</a>
                                     <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
                                 </div><!-- End .dropdown-cart-total -->
                             </div><!-- End .dropdown-menu -->
@@ -629,59 +392,221 @@
         <main class="main">
         	<div class="page-header text-center" style="background-image: url('static/images/page-header-bg.jpg')">
         		<div class="container">
-        			<h1 class="page-title">Wishlist<span>Shop</span></h1>
+        			<h1 class="page-title">My Account<span>Shop</span></h1>
         		</div><!-- End .container -->
         	</div><!-- End .page-header -->
-            <nav aria-label="breadcrumb" class="breadcrumb-nav">
+            <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+<div style="display:flex">
                 <div class="container">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                         <li class="breadcrumb-item"><a href="#">Shop</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Wishlist</li>
+                        <li class="breadcrumb-item active" aria-current="page">My Account</li>
+                     
                     </ol>
                 </div><!-- End .container -->
+                {% comment %} <div style="display: flex; justify-content: flex-end; margin-right: 100px;">
+                    <button 
+                        style="
+                            background-color: grey; 
+                            color: white; 
+                            padding: 8px 16px; 
+                            border: none; 
+                            border-radius: 20px; 
+                            font-weight: 400; 
+                            font-size: 14px; 
+                            cursor: pointer;
+                            transition: background-color 0.3s ease;
+                            height:40px;
+                        " 
+                        onClick="downloadPdf()">
+                        Download Invoice
+                    </button>
+                </div> {% endcomment %}
+            </div>
             </nav><!-- End .breadcrumb-nav -->
 
             <div class="page-content">
-                <div class="container">
-                    <div class="product-list">
-                        <!-- Product 1 -->
-                        {% for i in wishlist_item %}
-<div class="product-item container" style="display:flex; ">
-    <div class="product-media">
-        <img src="{{ i.product.image1.url }}" alt="{{ i.product.name }}" class="product-image">
-    </div>
-    <div class="product-details" style="display:flex ; justify-content:space-around" >
-        <div>
-        <h3 class="product-title">{{ i.product.name }}</h3>
-        <p class="product-price">₹ {{ i.product.price }}</p>
-        <a href="{% url 'productdetail:productdetails' i.product.id %}" class="btn btn-outline-primary">View Details</a>
-        </div>
-        <div style="margin-top:20px"> 
-        <a href="{% url 'wishlist:remove_from_wishlist' i.id  %}">Remove</a>
-    </div>
-    </div>
-</div>
-{% endfor %}
-                        
-                    </div><!-- End .product-list -->
+            	<div class="dashboard">
+	                <div class="container ">
+	                	<div class="row">
+	                		<aside class="col-md-4 col-lg-3">
+	                			{% comment %} <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="tab-dashboard-link" data-toggle="tab" href="#tab-dashboard" role="tab" aria-controls="tab-dashboard">Dashboard</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tab-orders-link" data-toggle="tab" href="#tab-orders" role="tab" aria-controls="tab-orders">Orders</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tab-downloads-link" data-toggle="tab" href="#tab-downloads" role="tab" aria-controls="tab-downloads">Change Password</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tab-address-link" data-toggle="tab" href="#tab-address" role="tab" aria-controls="tab-address">Addresses</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="tab-account-link" data-toggle="tab" href="#tab-account" role="tab" aria-controls="tab-account">Wallet`</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'userprofile:signout' %}">Sign Out</a>
+                                    </li>
+                                </ul> {% endcomment %}
+                                
+	                		</aside><!-- End .col-lg-3 -->
+                            <div class="col-8 " style=" margin-left: 38px; margin-top: -20px;" id="printDiv">
+ 
+                                <div class="card mb-4">
                     
-                    <!-- Wishlist Share Section -->
-                    <div class="wishlist-share">
-                        <div class="social-icons social-icons-sm mb-2">
-                            <label class="social-label">Share on:</label>
-                            <a href="#" class="social-icon" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
-                            <a href="#" class="social-icon" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
-                            <a href="#" class="social-icon" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
-                            <a href="#" class="social-icon" title="Youtube" target="_blank"><i class="icon-youtube"></i></a>
-                            <a href="#" class="social-icon" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
-                        </div><!-- End .social-icons -->
-                    </div><!-- End .wishlist-share -->
-                </div><!-- End .container -->
+                                    <header class="card-header">
+                                        <div class="row align-items-center">
+                                            <!-- Order Details -->
+                                            <div class="col-md-4 col-6">
+                                                <div class="form-control" style="font-size: 15px;">
+                                                    <p style="margin: 0;">
+                                                        <span style="color: black; font-size: small; font-weight: bold;">Order ID:</span>
+                                                        <span>{{ all_orders.id }}</span>
+                                                    </p>
+                                                    <p style="margin: 0;">
+                                                        <span style="color: black; font-size: small; font-weight: bold;">Date:</span>
+                                                        <span>{{ all_orders.order_date }}</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        
+                                            <!-- Address Details -->
+                                            <div class="col-md-4 col-6">
+                                                <div class="form-control" style="font-size: 15px;">
+                                                    <p style="margin: 0;">
+                                                        <span style="color: black; font-size: small; font-weight: bold;">Name:</span>
+                                                        <span>{{ first_addressess.address_name }}</span>
+                                                    </p>
+                                                    <p style="margin: 0;">
+                                                        <span style="color: black; font-size: small; font-weight: bold;">Address:</span>
+                                                        <span>{{ first_addressess.Address }}</span>
+                                                    </p>
+                                                    <p style="margin: 0;">
+                                                        <span style="color: black; font-size: small; font-weight: bold;">Landmark:</span>
+                                                        <span>{{ first_addressess.landmark }}</span>
+                                                    </p>
+                                                    <p style="margin: 0;">
+                                                        <span style="color: black; font-size: small; font-weight: bold;">State:</span>
+                                                        <span>{{ first_addressess.state }}</span>
+                                                    </p>
+                                                {% comment %} </div> {% endcomment %}
+                                            {% comment %} </div> {% endcomment %}
+                                        
+                                            <!-- Contact Details -->
+                                            {% comment %} <div class="col-md-4 col-6"> {% endcomment %}
+                                                {% comment %} <div class="form-control" style="font-size: 15px;"> {% endcomment %}
+                                                    <p style="margin: 0;">
+                                                        <span style="color: black; font-size: small; font-weight: bold;">Email:</span>
+                                                        <span>{{ first_addressess.address_Email }}</span>
+                                                    </p>
+                                                    <p style="margin: 0;">
+                                                        <span style="color: black; font-size: small; font-weight: bold;">Phone:</span>
+                                                        <span>{{ first_addressess.address_Phone }}</span>
+                                                    </p>
+                                                    <p style="margin: 0;">
+                                                        <span style="color: black; font-size: small; font-weight: bold;">Pincode:</span>
+                                                        <span>{{ first_addressess.pin }}</span>
+                                                    </p>
+                                                </div>
+                                               
+                                            {% comment %} </div> {% endcomment %}
+                                        </div>
+                                        <div style="float: right; width: fit-content; margin-top: 6rem;">
+                                            <a href="{% url 'userprofile:download_product_invoice' all_orders.id %}" class="btn btn-primary text-white" style="border-radius: 30px; color: #666666; margin-left: 1rem; cursor: pointer;">
+                                                Download Invoice
+                                            </a>
+                                        </div>
+                                        
+                                    </header>
+                                    <!-- card-header end// -->
+                                     
+                                    <div class="" style="width:100%" >  
+                                        <div style="text-align: end; padding-top: 10px; padding-right: 15%;" class="">
+                                       <button class="btn-primary" onclick="orderPlace('<%=detials._id%>','<%=detials.subtotal%>',event)" >Pay</button>
+                                    </div>
+                                      
+                                        <div class="table-responsive " style="margin-top: 80px;">
+                                        
+                                                <div id="reloadDiv">
+                                                    <h6>{{unit_prices}}</h6>
+                                                <table  class="" style="width:100%">
+                                                    <thead >
+                                                
+                                                        <tr>
+                                                           
+                                                            <th scope="col" class="text-info" style="width:200px">product</th>
+                                                            <th scope="col" class="text-info"  style="width:100px">Images</th>
+                                                            <th scope="col" class="text-info"  style="width:100px"> price</th>
+                                                            <th scope="col" class="text-info"  style="width:100px">Quantity</th>
+                                                            <th scope="col" class="text-info"  style="width:100px">Total</th>
+                                                            <th scope="col" class="text-info"  style="width:100px">Status</th>
+                                                            <th scope="col" class="text-info"  style="width:100px" >Action</th>
+                                                           
+                                                        </tr>
+                                                  
+                                                    </thead>
+                                                    <tbody> 
+                                                     <tr>
+
+                                                        {% for i in ordered_item %}
+                                                        <tr>
+                                                            <td style="font-weight: bold;">
+                                                                {{ i.product.name }}
+                                                            </td>
+                                                            <td style="width:22%;">
+                                                                <div class="col-md-6">
+                                                                    <img src="{{ i.product.image1.url }}" alt="">
+                                                                </div>
+                                                            </td>
+                                                            <!-- Simplified unit_prices access -->
+                                                            <td>{{ unit_price|slice:forloop.counter|last|floatformat:2 }}</td>
+
+                                                            <td style="font-weight: bold;">
+                                                                {{ i.product_qty }}
+                                                            </td>
+                                                            <td>{{ total_amounts|slice:forloop.counter|last|floatformat:2 }}</td>
+                                                            {% comment %} <td>{{ unit_prices|slice:forloop.counter0|floatformat:2 }} * {{ i.product_qty }} = {{ unit_prices|slice:forloop.counter0|floatformat:2|add:i.product_qty|floatformat:2 }}</td> {% endcomment %}
+
+                                                            <td style="color: red;">
+                                                                {{ i.status }}
+                                                            </td>
+                                                            {% if i.status != "Cancelled" and i.status != "Returned" %}
+                                                            <td style="font-weight: bold;">
+                                                                {% if i.status == "Delivered" %}
+                                                                <a href="" onclick="returnOrder('{{ i.id }}', event)" style="font-weight: bolder; color: darkred;">Return</a>
+                                                                {% else %}
+                                                                <a href="" onclick="cancelOrder({{ i.id }}, event)" style="font-weight: bolder; color: darkred;">Cancel</a>
+                                                                {% endif %}
+                                                            </td>
+                                                            {% endif %}
+                                                        </tr>
+                                                        
+                                                            {% endfor %}
+                                                            
+                                               
+                                                    
+                                                </table>
+                                           
+                                                </div>
+                                                
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- card-body end// -->
+                                </div>
+                                <div style="justify-content:flex-end;display:flex; margin-right:200px;">
+                                <h6 style:"">Total Price: {{all_orders.total_amount}}</h6>
+                                </div> 
+                                <!-- card end// -->
+                            </div>
+	                	</div><!-- End .row -->
+	                </div><!-- End .container -->
+                </div><!-- End .dashboard -->
             </div><!-- End .page-content -->
-            
-            
-            
+        </main><!-- End .main -->
 
         <footer class="footer">
         	<div class="footer-middle">
@@ -778,48 +703,12 @@
                     <li class="active">
                         <a href="index.html">Home</a>
 
-                        <ul>
-                            <li><a href="index-1.html">01 - furniture store</a></li>
-                            <li><a href="index-2.html">02 - furniture store</a></li>
-                            <li><a href="index-3.html">03 - electronic store</a></li>
-                            <li><a href="index-4.html">04 - electronic store</a></li>
-                            <li><a href="index-5.html">05 - fashion store</a></li>
-                            <li><a href="index-6.html">06 - fashion store</a></li>
-                            <li><a href="index-7.html">07 - fashion store</a></li>
-                            <li><a href="index-8.html">08 - fashion store</a></li>
-                            <li><a href="index-9.html">09 - fashion store</a></li>
-                            <li><a href="index-10.html">10 - shoes store</a></li>
-                        </ul>
+                       
                     </li>
-                    <li>
-                        <a href="category.html">Shop</a>
-                        <ul>
-                            <li><a href="category-list.html">Shop List</a></li>
-                            <li><a href="category-2cols.html">Shop Grid 2 Columns</a></li>
-                            <li><a href="category.html">Shop Grid 3 Columns</a></li>
-                            <li><a href="category-4cols.html">Shop Grid 4 Columns</a></li>
-                            <li><a href="category-boxed.html"><span>Shop Boxed No Sidebar<span class="tip tip-hot">Hot</span></span></a></li>
-                            <li><a href="category-fullwidth.html">Shop Fullwidth No Sidebar</a></li>
-                            <li><a href="product-category-boxed.html">Product Category Boxed</a></li>
-                            <li><a href="product-category-fullwidth.html"><span>Product Category Fullwidth<span class="tip tip-new">New</span></span></a></li>
-                            <li><a href="cart.html">Cart</a></li>
-                            <li><a href="checkout.html">Checkout</a></li>
-                            <li><a href="wishlist.html">Wishlist</a></li>
-                            <li><a href="#">Lookbook</a></li>
-                        </ul>
-                    </li>
+                
                     <li>
                         <a href="product.html" class="sf-with-ul">Product</a>
-                        <ul>
-                            <li><a href="product.html">Default</a></li>
-                            <li><a href="product-centered.html">Centered</a></li>
-                            <li><a href="product-extended.html"><span>Extended Info<span class="tip tip-new">New</span></span></a></li>
-                            <li><a href="product-gallery.html">Gallery</a></li>
-                            <li><a href="product-sticky.html">Sticky Info</a></li>
-                            <li><a href="product-sidebar.html">Boxed With Sidebar</a></li>
-                            <li><a href="product-fullwidth.html">Full Width</a></li>
-                            <li><a href="product-masonry.html">Masonry Sticky Info</a></li>
-                        </ul>
+                      
                     </li>
                     <li>
                         <a href="#">Pages</a>
@@ -1034,15 +923,162 @@
 
     <!-- Plugins JS File -->
     <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'js/jquery.hoverIntent.min.js' %}"></script>
-    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
-    <script src="{% static 'js/superfish.min.js' %}"></script>
-    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/jquery.hoverIntent.min.js' %}"></script>
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/superfish.min.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+
+<!-- External JS Files -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <!-- Main JS File -->
-    <script src="{% static 'js/main.js' %}"></script>
+<script src="static/js/main.js"></script>
+<script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue; // Return the found cookie value
+    }
+
+    function cancelOrder(orderId, e) {
+        e.preventDefault();
+        console.log(orderId, "order ID");
+
+        Swal.fire({
+            title: 'Enter Cancel reason',
+            input: 'text',
+            inputLabel: "Cancel Reason",
+            inputPlaceholder: 'Please enter the Cancel reason',
+            showCancelButton: true,
+            confirmButtonText: 'Cancel Order',
+            cancelButtonText: 'Cancel',
+            preConfirm: (cancelReason) => {
+                if (!cancelReason) {
+                    Swal.showValidationMessage('Cancel reason is required');
+                }
+                return cancelReason;
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let formData = new FormData();
+                formData.append('orderId', orderId); 
+                formData.append('cancelReason', result.value);  
+
+                const csrftoken = getCookie('csrftoken');
+
+                fetch('{% url "userprofile:cancelOrder" %}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrftoken,  
+                    },
+                    body: formData  
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.cancel) {
+                        Swal.fire({
+                            title: "Success!",
+                            text: "The order has been successfully cancelled.",
+                            icon: "success"
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>
+
+
+<script>
+    function returnOrder(ord_id, e) {
+        e.preventDefault();
+        console.log(ord_id, "ord ID");
+
+        Swal.fire({
+            title: 'Enter Return reason',
+            input: 'text',
+            inputLabel: "Return Reason",
+            inputPlaceholder: 'Please enter the reason for Return',
+            showCancelButton: true,
+            confirmButtonText: 'Return Order',
+            cancelButtonText: 'Cancel',
+            preConfirm: (returnReason) => {
+                if (!returnReason) {
+                    Swal.showValidationMessage('Return reason is required');
+                }
+                return returnReason;
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {  // Corrected the condition
+                let formData = new FormData();
+                formData.append('orderId', ord_id);
+                formData.append('returnReason', result.value);  // Added returnReason to formData
+
+                const csrftoken = getCookie('csrftoken'); // Ensure getCookie function is defined
+
+                fetch('{% url "userprofile:returnOrder" %}', {
+                    method: 'POST',  // Fixed method syntax
+                    headers: {
+                        'X-CSRFToken': csrftoken,
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {  // Adjust according to your response
+                        Swal.fire({
+                            title: "Success!",
+                            text: "The order has been successfully returned.",
+                            icon: "success"
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>
+<script>
+    function downloadPdf() {
+        console.log("reached")
+              const printContents = document.getElementById('printDiv').innerHTML;
+        
+              const originalContents = document.body.innerHTML;
+        
+              document.body.innerHTML = printContents;
+        
+              window.print();
+        
+              document.body.innerHTML = originalContents;
+        
+          }
+</script>
+
+
+  
 </body>
 
 
-<!-- molla/wishlist.html  22 Nov 2019 09:55:06 GMT -->
-</html>
+<!-- molla/dashboard.html  22 Nov 2019 10:03:13 GMT -->
+</html> 

@@ -23,7 +23,6 @@ urlpatterns = [
     
     path('admin/', admin.site.urls),
     path('adminside/', include('adminside.urls')),
-    path('cartapp/', include('cartapp.urls')),
     path('category/', include('category.urls')),
     path('checkout/', include('checkout.urls')),
     path('', include('logintohome.urls')),
@@ -35,7 +34,7 @@ urlpatterns = [
     path('offermanagement/', include('offermanagement.urls')),
     path('couponmanagement/', include('couponmanagement.urls')),
     path('wishlist/', include('wishlist.urls')),
-    
+    path('newcart/', include('newcart.urls')),
     
     
     

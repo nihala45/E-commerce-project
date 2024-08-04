@@ -52,13 +52,13 @@
 </head>
 
 <body>
-    <div class="page-wrapper">
+  <div class="page-wrapper">
         <header class="header">
             <div class="header-top">
-                <div class="container">
+                <div class="container" style="display:flex; justify-content:flex-end;" >
                     <div class="header-left">
                         <div class="header-dropdown">
-                            <a href="#">Usd</a>
+                            {% comment %} <a href="#">Usd</a> {% endcomment %}
                             <div class="header-menu">
                                 <ul>
                                     <li><a href="#">Eur</a></li>
@@ -68,7 +68,7 @@
                         </div><!-- End .header-dropdown -->
 
                         <div class="header-dropdown">
-                            <a href="#">Eng</a>
+                            {% comment %} <a href="#">Eng</a> {% endcomment %}
                             <div class="header-menu">
                                 <ul>
                                     <li><a href="#">English</a></li>
@@ -76,7 +76,7 @@
                                     <li><a href="#">Spanish</a></li>
                                 </ul>
                             </div><!-- End .header-menu -->
-                        </div><!-- End .header-dropdown -->
+                        </div><!-- End .header-dropdown --
                     </div><!-- End .header-left -->
 
                     <div class="header-right">
@@ -86,6 +86,13 @@
                                  <ul>
                                     
                                     <li><a href="{% url 'wishlist:Wishlist' %}"><i class="icon-heart-o"></i>Wishlist <span>(3)</span></a></li> 
+                                    <ul style="margin-top: 15px; margin-right: 15px;">
+                        
+            
+                                    
+                                        
+                                    </ul>
+                                    <li ><a href="{% url 'userprofile:userdashboard' %}"><i class="icon-user"></i>profile</a></li>
 
                                     
                                 </ul> 
@@ -368,7 +375,7 @@
                         </div><!-- End .header-search -->
                         <div class="dropdown compare-dropdown">
                             <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static" title="Compare Products" aria-label="Compare Products">
-                                <i class="icon-random"></i>
+                                {% comment %} <i class="icon-random"></i> {% endcomment %}
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right">
@@ -446,7 +453,7 @@
                                 </div><!-- End .dropdown-cart-total -->
 
                                 <div class="dropdown-cart-action">
-                                    <a href="{% url 'cartapp:show_cart' %}" class="btn btn-primary">View Cart</a>
+                                    <a href="{% url 'newcart:show_cart' %}" class="btn btn-primary">View Cart</a>
                                     <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
                                 </div><!-- End .dropdown-cart-total -->
                             </div><!-- End .dropdown-menu -->
@@ -467,17 +474,18 @@
 
                     <nav class="product-pager ml-auto" aria-label="Product">
                         <a class="product-pager-link product-pager-prev" href="#" aria-label="Previous" tabindex="-1">
-                            <i class="icon-angle-left"></i>
-                            <span>Prev</span>
+                            {% comment %} <i class="icon-angle-left"></i>
+                            <span>Prev</span> {% endcomment %}
                         </a>
 
                         <a class="product-pager-link product-pager-next" href="#" aria-label="Next" tabindex="-1">
-                            <span>Next</span>
-                            <i class="icon-angle-right"></i>
+                            {% comment %} <span>Next</span>
+                            <i class="icon-angle-right"></i> {% endcomment %}
                         </a>
                     </nav><!-- End .pager-nav -->
                 </div><!-- End .container -->
             </nav><!-- End .breadcrumb-nav -->
+            
 
             <div class="page-content">
                 <div class="container">
@@ -487,12 +495,22 @@
                                 <div class="product-gallery product-gallery-vertical">
                                     <div class="row">
                                         <figure class="product-main-image">
-                                            <a href="{{ product.image1.url }}" data-lightbox="product-zoom-gallery" data-title="{{ product.name }}">
+                                           
+                                                
+                                            
+                                            <a style="" href="{{ product.image1.url }}" data-lightbox="product-zoom-gallery" data-title="{{ product.name }}">
+                                               
                                                 <img id="product-zoom" src="{{ product.image1.url }}" alt="{{ product.name }}" width="400" height="400">
+                                                
                                             </a>
+                                            
+                                            
+                                    
+                                            
                                             <a href="#" id="btn-product-gallery" class="btn-product-gallery">
                                                 <i class="icon-arrows"></i>
                                             </a>
+                                        
                                         </figure><!-- End .product-main-image -->
                             
                                         <div id="product-zoom-gallery" class="product-image-gallery">
@@ -589,14 +607,14 @@
             <button type="submit" id="add-to-cart-btn" class="btn-product btn-cart"><span>Add to Cart</span></button>
         </div><!-- End .product-details-action -->
     </form>
+    
 {% endif %}
 
                                     <div class="product-details-footer">
                                         <div class="product-cat">
                                             <span>Category:</span>
-                                            <a href="#">Women</a>,
-                                            <a href="#">Dresses</a>,
-                                            <a href="#">Yellow</a>
+                                            <a href="#">{{categoryy.category_name}}</a>
+                                            
                                         </div><!-- End .product-cat -->
 
                                         <div class="social-icons social-icons-sm">
@@ -1035,7 +1053,7 @@
     <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
 
     <!-- Sticky Bar -->
-    <div class="sticky-bar">
+    {% comment %} <div class="sticky-bar">
         <div class="container">
             <div class="row">
                 <div class="col-6">
@@ -1062,7 +1080,7 @@
                 </div><!-- End .col-6 -->
             </div><!-- End .row -->
         </div><!-- End .container -->
-    </div><!-- End .sticky-bar -->
+    </div><!-- End .sticky-bar --> {% endcomment %}
 
     <!-- Mobile Menu -->
     <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
@@ -1395,7 +1413,7 @@
             formData.append('quantity', quantity);
             formData.append('size', size);
         console.log(formData,"sdfsdfhksdzf",product_id,quantity,size)
-            fetch("{% url 'cartapp:add_to_cart' %}", {
+            fetch("{% url 'newcart:add_to_cart' %}", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -1432,7 +1450,7 @@
                         if (result.isConfirmed) {
                         location.reload()
                         } else  {
-                           location.href=" {% url 'cartapp:show_cart' %}"
+                           location.href=" {% url 'newcart:show_cart' %}"
                         }
                       });
                       

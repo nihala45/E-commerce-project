@@ -9,6 +9,7 @@ from category.models import categories
 from django.http import JsonResponse
 from django.urls import reverse
 from wishlist.models import WishlistProduct
+from django.db.models import Q
 
 
 
@@ -154,11 +155,7 @@ def filterProduct(request):
             search_pro=newproducts.objects.filter(name__icontains=search_item)
             products=products.union(search_pro)
         
-        
-        
-        # search_item=request.GET.get('q')
-        # search_pro=newproducts.objects.filter(name__icontains=search_item)
-        # products=products.union(search_pro)
+
         
         
     else:
@@ -167,15 +164,24 @@ def filterProduct(request):
     return render(request, 'userside/shop.html', {'products': products, 'category': category1})
 
 
+
 def shop_to_home(request):
     return redirect('logintohome:homee')
 
 
 def shop(request):
+    user_eamil=request.session.get('email')
+    user=CustomUser.objects.get(email=user_eamil)
     category1 = categories.objects.all()
     products = newproducts.objects.all().order_by('-id')
-    wishlist_items=WishlistProduct.objects.all()
-    return render(request, 'userside/shop.html', {'products': products, 'category': category1,'wishlist_item':wishlist_items})
+    # wishlist_items=WishlistProduct.objects.all()
+    wishlist_items = WishlistProduct.objects.filter(user_id=user)
+    wish=[]
+    for i in wishlist_items:
+        wish.append(i.product.id)
+    
+
+    return render(request, 'userside/shop.html', {'products': products, 'category': category1,'wish_item':wish})
 
 
 
