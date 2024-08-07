@@ -255,18 +255,28 @@ def cancelOrder(request):
         ord.status = "Cancelled"
         ord.save()
         
+        if ord.product_size == 's':
+            ord.product.small = str(int(ord.product.small) + ord.product_qty)
+
+        if ord.product_size == 'm':
+            ord.product.medium = str(int(ord.product.medium) + ord.product_qty)
+
+        if ord.product_size == 'l':
+            ord.product.large = str(int(ord.product.large) + ord.product_qty)
+
+        ord.product.save()
         
         main_order=AllOrder.objects.get(id=ord.order_id)
-        print(main_order,'asdfkjafhoiahgiua')
+        
         items=Ordered_item.objects.filter(order_id=main_order)
-        print(items,'this is itemsssssssssssssssssssssssssssssssss vvvvvvvv')
-        print(vars(items),'this is itemsssssssssssssssssssssssssssssssss vvvvvvvv')
+        
         
         
         product_quantity = sum(item.product_qty for item in items)
-        print(product_quantity,'nihala is a perfect thing in everyone lifeeeeeeeeeeeeeeeeeeeee')
         discount_price = Decimal(main_order.discount_amount) / Decimal(product_quantity) if product_quantity > 0 else Decimal(0)
-        print(discount_price,'hello this discounr pricee guyssss')
+        
+        
+        
         if ord.product.offer:
             amount = Decimal(ord.product.price) - Decimal(ord.product.offer.discount)
         else:
@@ -305,16 +315,24 @@ def returnOrder(request):
         
      
     main_order=AllOrder.objects.get(id=ord.order_id)
-    print(main_order,'asdfkjafhoiahgiua')
+    
     items=Ordered_item.objects.filter(order_id=main_order)
-    print(items,'this is itemsssssssssssssssssssssssssssssssss vvvvvvvv')
-    print(vars(items),'this is itemsssssssssssssssssssssssssssssssss vvvvvvvv')
+    if ord.product_size == 's':
+        ord.product.small = str(int(ord.product.small) + ord.product_qty)
+
+    if ord.product_size == 'm':
+        ord.product.medium = str(int(ord.product.medium) + ord.product_qty)
+
+    if ord.product_size == 'l':
+        ord.product.large = str(int(ord.product.large) + ord.product_qty)
+
+    ord.product.save()
         
         
     product_quantity = sum(item.product_qty for item in items)
-    print(product_quantity,'nihala is a perfect thing in everyone lifeeeeeeeeeeeeeeeeeeeee')
+    
     discount_price = Decimal(main_order.discount_amount) / Decimal(product_quantity) if product_quantity > 0 else Decimal(0)
-    print(discount_price,'hello this discounr pricee guyssss')
+    
     if ord.product.offer:
         amount = Decimal(ord.product.price) - Decimal(ord.product.offer.discount)
     else:
@@ -361,7 +379,7 @@ def download_product_invoice(request, order_id):
         
             total_amount = unit_price * Decimal(item.product_qty)
             total_amounts.append(total_amount)
-            print(total_amounts,'this is total amountttttttttttttttt')
+            
         
     except AllOrder.DoesNotExist:
         return HttpResponse("Order not found", status=404)

@@ -51,3 +51,4 @@ class Ordered_item(models.Model):
     product_qty = models.PositiveIntegerField()
     product_size=models.CharField(max_length=10)
     
+    

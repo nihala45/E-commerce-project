@@ -536,8 +536,10 @@
                                                     <thead >
                                                 
                                                         <tr>
-                                                           {% comment %} <th scope="col" class="text-info" style="width:200px">No<th> {% endcomment %}
+                                                           <th scope="col" class="text-info" style="width:200px">No</th>
                                                             <th scope="col" class="text-info" style="width:200px">product</th>
+                                                            <th scope="col" class="text-info"  style="width:100px" >size</th>
+
                                                             <th scope="col" class="text-info"  style="width:100px">Images</th>
                                                             <th scope="col" class="text-info"  style="width:100px"> price</th>
                                                             <th scope="col" class="text-info"  style="width:100px">Quantity</th>
@@ -553,10 +555,13 @@
 
                                                         {% for i in ordered_item %}
                                                         <tr>
-                                                            {% comment %} <td>{{forloop.counter}}</td> {% endcomment %}
+                                                            <td>{{forloop.counter}}</td>
                                                             <td style="font-weight: bold;">
                                                                 {{ i.product.name }}
                                                             </td>
+                                                            <td style="font-weight: bold;">
+                                                                {{ i.product_size }}
+                                                            </td> 
                                                             <td style="width:22%;">
                                                                 <div class="col-md-6">
                                                                     <img src="{{ i.product.image1.url }}" alt="">
