@@ -131,7 +131,11 @@
                                     
                                         
                                     </ul>
-                                    <li ><a href="{% url 'userprofile:userdashboard' %}"><i class="icon-user"></i>profile</a></li>
+                                    {% if user_eamil %}
+                                <li ><a href="{% url 'userprofile:userdashboard' %}"><i class="icon-user"></i>profile</a></li>
+                            {% else %}
+                                <li><a href="#signin-modal" data-toggle="modal"><i class="icon-user"></i>Login</a></li>
+                            {% endif %}
 
                                 </ul> 
                                 {% comment %} <li><a href="{% url 'wishlist:Wishlist' %}"><i class="icon-heart-o"></i>Wishlist <span>(3)</span></a></li>  {% endcomment %}
@@ -448,11 +452,11 @@
 
                             <div class="dropdown-menu dropdown-menu-right">
                                 <div class="dropdown-cart-products">
-                                    <div class="product">
-                                        <div class="product-cart-details">
-                                            <h4 class="product-title">
+                                  <div class="product">
+                                        <div class="product-cart-details"> 
+                                           <h4 class="product-title">
                                                 <a href="product.html">Beige knitted elastic runner shoes</a>
-                                            </h4>
+                                            </h4> 
 
                                             <span class="cart-product-info">
                                                 <span class="cart-product-qty">1</span>
@@ -461,9 +465,9 @@
                                         </div><!-- End .product-cart-details -->
 
                                         <figure class="product-image-container">
-                                            <a href="product.html" class="product-image">
+                                            {% comment %} <a href="product.html" class="product-image">
                                                 <img src="static/images/products/cart/product-1.jpg" alt="product">
-                                            </a>
+                                            </a> {% endcomment %}
                                         </figure>
                                         <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
                                     </div><!-- End .product -->
@@ -496,8 +500,12 @@
                                 </div><!-- End .dropdown-cart-total -->
 
                                 <div class="dropdown-cart-action">
+                                    {% if user_eamil %}
                                     <a href="{% url 'newcart:show_cart' %}" class="btn btn-primary">View Cart</a>
                                     <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
+                            {% else %}
+                                <p>Please Login </p>
+                            {% endif %}
                                 </div><!-- End .dropdown-cart-total -->
                             </div><!-- End .dropdown-menu -->
                         </div><!-- End .cart-dropdown -->
@@ -1180,7 +1188,7 @@
 
                     <div class="form-box">
                         <div class="form-tab">
-                            <ul class="nav nav-pills nav-fill" role="tablist">
+                            <ul class="nav nav-pills nav-fill nav-border-anim" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin" role="tab" aria-controls="signin" aria-selected="true">Sign In</a>
                                 </li>
@@ -1190,31 +1198,32 @@
                             </ul>
                             <div class="tab-content" id="tab-content-5">
                                 <div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
-                                    <form action="#">
-                                        <div class="form-group">
-                                            <label for="singin-email">Username or email address *</label>
-                                            <input type="text" class="form-control" id="singin-email" name="singin-email" required>
-                                        </div><!-- End .form-group -->
-
-                                        <div class="form-group">
-                                            <label for="singin-password">Password *</label>
-                                            <input type="password" class="form-control" id="singin-password" name="singin-password" required>
-                                        </div><!-- End .form-group -->
-
-                                        <div class="form-footer">
-                                            <button type="submit" class="btn btn-outline-primary-2">
-                                                <span>LOG IN</span>
-                                                <i class="icon-long-arrow-right"></i>
-                                            </button>
-
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="signin-remember">
-                                                <label class="custom-control-label" for="signin-remember">Remember Me</label>
-                                            </div><!-- End .custom-checkbox -->
-
-                                            <a href="#" class="forgot-link">Forgot Your Password?</a>
-                                        </div><!-- End .form-footer -->
+                                    <form id="signin-form" onsubmit="SignIn(event)">
+                                        {% csrf_token %}
+                                        {% if messages %}
+                                            <ul class="messages">
+                                                {% for message in messages %}
+                                                    <li>{{ message }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                        <p id="error-message" class="text-danger"></p>
+                                    
+                                        <label for="singin-email">Email address *</label>
+                                        <input type="email" class="form-control" id="signin-email" name="singin-email" required>
+                                    
+                                        <label for="singin-password">Password *</label>
+                                        <input type="password" class="form-control" id="signin-password" name="singin-password" required>
+                                    
+                                        <button type="submit" class="btn btn-outline-primary-2">
+                                            <span>LOG IN</span>
+                                            <i class="icon-long-arrow-right"></i>
+                                        </button>
+                                    
+                                    
+                                        <a href="#" class="forgot-link">   Forgot Your Password?</a>
                                     </form>
+                                    
                                     <div class="form-choice">
                                         <p class="text-center">or sign in with</p>
                                         <div class="row">
@@ -1234,27 +1243,44 @@
                                     </div><!-- End .form-choice -->
                                 </div><!-- .End .tab-pane -->
                                 <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
-                                    <form action="#">
+                                    <form id="register-form" onsubmit="RegisterValidation(event)">
+                                        {% csrf_token %}
                                         <div class="form-group">
-                                            <label for="register-email">Your email address *</label>
+                                            <p id="error-username" class="text-danger"></p>
+
+                                            <label for="register-username">Username*</label>
+                                            <input type="text" class="form-control" id="register-username" name="register-username" required>
+                                        </div><!-- End .form-group -->
+                                
+                                        <div class="form-group">
+                                            <p id="error-email" class="text-danger"></p>
+                                            <label for="register-email">Your email address*</label>
                                             <input type="email" class="form-control" id="register-email" name="register-email" required>
                                         </div><!-- End .form-group -->
-
+                                
                                         <div class="form-group">
+                                            <p id="error-phone" class="text-danger"></p>
+                                            <label for="register-phone">Phone number *</label>
+                                            <input type="text" class="form-control" id="register-phone" name="register-phone" required>
+                                        </div><!-- End .form-group -->
+                                
+                                        <div class="form-group">
+                                            <p id="error-password" class="text-danger"></p>
                                             <label for="register-password">Password *</label>
                                             <input type="password" class="form-control" id="register-password" name="register-password" required>
                                         </div><!-- End .form-group -->
-
+                                
+                                        <div class="form-group">
+                                            <p id="error-confirm" class="text-danger"></p>
+                                            <label for="register-confirm-password">Confirm Password *</label>
+                                            <input type="password" class="form-control" id="register-confirm-password" name="register-confirm-password" required>
+                                        </div><!-- End .form-group -->
+                                
                                         <div class="form-footer">
                                             <button type="submit" class="btn btn-outline-primary-2">
                                                 <span>SIGN UP</span>
                                                 <i class="icon-long-arrow-right"></i>
                                             </button>
-
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="register-policy" required>
-                                                <label class="custom-control-label" for="register-policy">I agree to the <a href="#">privacy policy</a> *</label>
-                                            </div><!-- End .custom-checkbox -->
                                         </div><!-- End .form-footer -->
                                     </form>
                                     <div class="form-choice">
@@ -1276,12 +1302,12 @@
                                     </div><!-- End .form-choice -->
                                 </div><!-- .End .tab-pane -->
                             </div><!-- End .tab-content -->
-                        </div><!-- End .form-tab -->    
+                        </div><!-- End .form-tab -->
                     </div><!-- End .form-box -->
                 </div><!-- End .modal-body -->
             </div><!-- End .modal-content -->
         </div><!-- End .modal-dialog -->
-    </div><!-- End .modal -->
+    </div><!-- End .modal --><!-- End .modal -->
 
     <!-- Plugins JS File -->
     <script src="{% static 'js/jquery.min.js' %}"></script>
@@ -1363,7 +1389,144 @@
             });
         }
     </script>
+    <script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
     
+    function SignIn(e) {
+        e.preventDefault();
+        let user_email = document.getElementById('signin-email').value;
+        let user_password = document.getElementById('signin-password').value;
+    
+        const csrftoken = getCookie('csrftoken');
+        let formData = new URLSearchParams();
+        formData.append('user_email', user_email);
+        formData.append('user_password', user_password);
+    
+        fetch('{% url "logintohome:loginn" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrftoken
+            },
+            body: formData.toString()
+        })
+        .then(response=>response.json())
+        .then(data =>{
+            if(data.status=='block'){
+                document.getElementById('error-message').textContent=data.message
+
+            }else if(data.status=='wrong'){
+                document.getElementById('error-message').textContent=data.message
+
+            }else{
+                location.href = '{% url "logintohome:homee" %}';
+            }
+            
+        })
+    }
+  
+    function RegisterValidation(e) {
+        e.preventDefault();
+        console.log("Form submission started");
+    
+        // Reset error messages
+        document.getElementById('error-phone').textContent = '';
+        document.getElementById('error-password').textContent = '';
+        document.getElementById('error-confirm').textContent = '';
+        document.getElementById('error-email').textContent = '';
+        document.getElementById('error-username').textContent = '';
+    
+        // Retrieve form values
+        let user_username = document.getElementById('register-username').value.trim();
+        let user_email = document.getElementById('register-email').value.trim();
+        let user_phone = document.getElementById('register-phone').value.trim();
+        let user_password = document.getElementById('register-password').value;
+        let user_confirm = document.getElementById('register-confirm-password').value;
+    
+        // Regular expression for password validation
+        let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,}$/;
+    
+        // Count zeros in phone number
+        let zeroCount = (user_phone.match(/0/g) || []).length;
+    
+        // Perform validation
+        let isValid = true;
+    
+        if (user_phone.length !== 10 || zeroCount > 5) {
+            document.getElementById('error-phone').textContent = 'Please enter a valid 10-digit phone number.';
+            isValid = false;
+        }
+    
+        if (!passwordRegex.test(user_password)) {
+            document.getElementById('error-password').textContent = 'Password must include at least one uppercase letter, one lowercase letter, one number, one symbol, and be more than 8 characters long.';
+            isValid = false;
+        }
+    
+        if (user_password !== user_confirm) {
+            document.getElementById('error-confirm').textContent = 'Passwords do not match. Please try again.';
+            isValid = false;
+        }
+    
+        if (/^\d/.test(user_username)) {
+            document.getElementById('error-username').textContent = 'Username cannot start with a number.';
+            isValid = false;
+        }
+    
+        if (/^\s/.test(user_username)) {
+            document.getElementById('error-username').textContent = 'Username cannot start with a space.';
+            isValid = false;
+        }
+        if (user_username ==='') {
+            document.getElementById('error-username').textContent = 'Username cannot start with a space.';
+            isValid = false;
+        }
+    
+        // If all validations pass, submit the form
+        if (isValid) {
+            console.log("Form validation passed");
+    
+            const csrftoken = getCookie('csrftoken');
+            let formData = new URLSearchParams();
+            formData.append('user_username', user_username);
+            formData.append('user_email', user_email);
+            formData.append('user_phone', user_phone);
+            formData.append('user_password', user_password);
+            formData.append('user_confirm', user_confirm);
+    
+            fetch("{% url 'logintohome:Signup' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrftoken
+                },
+                body: formData.toString()
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'already') {
+                    document.getElementById('error-email').textContent = data.message;
+                } else if (data.status === 'success') {
+                    window.location.href = data.redirect_url;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    }
+    
+</script>
 
 </body>
 

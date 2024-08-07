@@ -26,13 +26,17 @@ def add_to_cart(request):
     
     
     if request.method == 'POST':
+        user_email = request.session.get('email')
+        if not user_email:
+            print("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
+            return JsonResponse({'status': 'no user'})
+            
         product_id = request.POST.get('product_id')
         quantity = int(request.POST.get('quantity', 1))
         size = request.POST.get('size')
 
         print(f'Product ID: {product_id}, Quantity: {quantity}, Size: {size}')
 
-        user_email = request.session['email']
         user = CustomUser.objects.get(email=user_email)
         product = get_object_or_404(newproducts, id=product_id)
 
@@ -51,24 +55,34 @@ def add_to_cart(request):
     
 
 
-
+# @login_required(login_url='logintohome:loginn')
 def show_cart(request):
     user_email = request.session.get('email')
+    context={}
     if user_email:
-        user = CustomUser.objects.get(email=user_email)
-        cart_items = MyCart.objects.filter(user_id=user.id).order_by('product_id')
-        sub_total = 0
+        try:
+            user = CustomUser.objects.get(email=user_email)
+            cart_items = MyCart.objects.filter(user_id=user.id).order_by('product_id')
+            sub_total = 0
         
-        for item in cart_items:
-            if item.product.offer:
-                sub_total += (item.product.price - item.product.offer.discount)*(item.quantity)
-            else:
-                sub_total+= item.product.price * item.quantity
-        context = {
-            'cart_items': cart_items,
-            'sub_total': sub_total,
-        }
-        return render(request, 'userside/cart.html', context)
+            for item in cart_items:
+                if item.product.offer:
+                    sub_total += (item.product.price - item.product.offer.discount)*(item.quantity)
+                else:
+                    sub_total+= item.product.price * item.quantity
+            context = {
+                'cart_items': cart_items,
+                'sub_total': sub_total,
+            }
+        except CustomUser.DoesNotExist:
+            messages.error(request, "User does not exist.")
+        except Exception as e:
+            messages.error(request, f"An error occurred: {e}")
+
+    else:
+        messages.warning(request, "Please log in to view your cart.")
+        
+    return render(request, 'userside/cart.html', context)
     
 
 
@@ -162,8 +176,10 @@ def proceed_to_checkout(request):
             if final_amount > balance:
                 dis = True
             
-            
-            
+            if coupon_discount == 0:
+                coup=False
+            else:
+                coup=True
             context = {
                 'cart_items': cart_items,
                 'sub_total': sub_total,
@@ -173,7 +189,8 @@ def proceed_to_checkout(request):
                 'discount': discount,
                 'final_amount': final_amount,
                 'balance_amount': balance,
-                'disabled_content': dis
+                'disabled_content': dis,
+                'coup':coup
             }
             return render(request, 'userside/checkout.html', context)
     except CustomUser.DoesNotExist:
@@ -197,37 +214,32 @@ def apply_coupon(request):
         coupon_id = request.POST.get('coupon_id')
         
         coupon = get_object_or_404(Coupon, id=coupon_id)
-    
-
-    
-    
         
+        # Retrieve all items in the user's cart
+        current_cart = MyCart.objects.filter(user=user)
         
-    current_cart = MyCart.objects.filter(user=user) 
-        
-        
-    for item in current_cart:
-        item.discount_percentage = coupon.percentage
-        item.coupon=coupon
-        item.save()
+        # Loop through each item in the cart and apply the coupon
+        for item in current_cart:
+            item.discount_percentage = coupon.percentage
+            item.coupon = coupon  # Assign the coupon to the cart item
+            item.save() 
         
     
         
         return JsonResponse({'status': 'success', 'message': 'Coupon added successfully.'})
 
 def none_coupon(request):
+    print('sooooooooooooooooooooooooooooo')
     user_email = request.session.get('email')
 
     user = get_object_or_404(CustomUser, email=user_email)
     cart_items = MyCart.objects.filter(user=user)
-    couponuser=CouponUsage.objects.get(user=user)
-    couponuser.delete()
     for item in cart_items:
         item.discount_percentage = 0  
-        item.coupon=0
+        item.coupon=None
         item.save()
     
-    return redirect('newcart:proceed_to_checkout')
+    return JsonResponse({'status':'success'})
         
     
 

@@ -7,7 +7,9 @@ from decimal import Decimal, ROUND_HALF_UP
 from django.utils import timezone
 from datetime import timedelta
 from datetime import datetime, date
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='adminside:adminlogin')
 def salesReport(request):
     delivered_items = Ordered_item.objects.filter(status="Delivered")
     if request.method == 'GET':

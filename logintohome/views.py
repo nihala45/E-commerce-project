@@ -163,18 +163,31 @@ def shop_to_home(request):
 
 
 def shop(request):
-    user_eamil=request.session.get('email')
-    user=CustomUser.objects.get(email=user_eamil)
-    category1 = categories.objects.all()
+    
+    user_email = request.session.get('email')
     products = newproducts.objects.all().order_by('-id')
-    # wishlist_items=WishlistProduct.objects.all()
-    wishlist_items = WishlistProduct.objects.filter(user_id=user)
-    wish=[]
-    for i in wishlist_items:
-        wish.append(i.product.id)
+    category1 = categories.objects.all()
+    wish = []
+    user=False
+    
+    
+    if user_email:
+        try:
+            user =True
+            user_eamil=request.session.get('email')
+            user=CustomUser.objects.get(email=user_eamil)
+            category1 = categories.objects.all()
+            products = newproducts.objects.all().order_by('-id')
+            # wishlist_items=WishlistProduct.objects.all()
+            wishlist_items = WishlistProduct.objects.filter(user_id=user)
+            wish=[]
+            for i in wishlist_items:
+                wish.append(i.product.id)
+        except:
+            pass
     
 
-    return render(request, 'userside/shop.html', {'products': products, 'category': category1,'wish_item':wish})
+    return render(request, 'userside/shop.html', {'products': products, 'category': category1,'wish_item':wish ,'user_eamil':user})
 
 
 

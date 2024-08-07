@@ -10,8 +10,15 @@ from django.template.loader import render_to_string
 
 
 def Wishlist(request):
-    wishlist_items=WishlistProduct.objects.all().order_by('id')
-    return render(request,'userside/wishlist.html',{'wishlist_item':wishlist_items})
+    wishlist_items=[]
+    user_email=request.session.get('email')
+    if user_email:
+        try:
+            wishlist_items=WishlistProduct.objects.all().order_by('id')
+            
+        except:
+            pass
+    return render(request,'userside/wishlist.html',{'wishlist_item':wishlist_items,'user_email':user_email})
 
 def add_to_wishlist(request):
     email = request.session.get('email')

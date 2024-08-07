@@ -116,10 +116,15 @@
     <div class="page-wrapper">
         <header class="header">
             <div class="header-top">
-                <div class="container">
+                <div class="container" style="display-flex; justify-content:flex-end;">
                     <div class="header-left">
                         <div class="header-dropdown">
-                            <a href="#">Usd</a>
+                            {% if user_email %}
+                                <li ><a href="{% url 'userprofile:userdashboard' %}"><i class="icon-user"></i>profile</a></li>
+                            {% else %}
+                                <li><a href="#signin-modal" data-toggle="modal"><i class="icon-user"></i>Login</a></li>
+                            {% endif %}
+                            
                             <div class="header-menu">
                                 <ul>
                                     <li><a href="#">Eur</a></li>
@@ -129,7 +134,7 @@
                         </div><!-- End .header-dropdown -->
 
                         <div class="header-dropdown">
-                            <a href="#">Eng</a>
+                            {% comment %} <a href="#">Eng</a> {% endcomment %}
                             <div class="header-menu">
                                 <ul>
                                     <li><a href="#">English</a></li>
@@ -401,7 +406,7 @@
                                     </div><!-- End .megamenu megamenu-md -->
                                 </li>
                                 <li>
-                                    <a href="product.html" class="sf-with-ul">Product</a>
+                                    {% comment %} <a href="product.html" class="sf-with-ul">Product</a> {% endcomment %}
 
                                     <div class="megamenu megamenu-sm">
                                         <div class="row no-gutters">
@@ -436,7 +441,7 @@
                                     </div><!-- End .megamenu megamenu-sm -->
                                 </li>
                                 <li>
-                                    <a href="#" class="sf-with-ul">Pages</a>
+                                    {% comment %} <a href="#" class="sf-with-ul">Pages</a> {% endcomment %}
 
                                     <ul>
                                         <li>
@@ -462,7 +467,7 @@
                                     </ul>
                                 </li>
                                 <li>
-                                    <a href="blog.html" class="sf-with-ul">Blog</a>
+                                    {% comment %} <a href="blog.html" class="sf-with-ul">Blog</a> {% endcomment %}
 
                                     <ul>
                                         <li><a href="blog.html">Classic</a></li>
@@ -503,7 +508,7 @@
                                     </ul>
                                 </li>
                                 <li>
-                                    <a href="elements-list.html" class="sf-with-ul">Elements</a>
+                                    {% comment %} <a href="elements-list.html" class="sf-with-ul">Elements</a> {% endcomment %}
 
                                     <ul>
                                         <li><a href="elements-products.html">Products</a></li>
@@ -528,7 +533,7 @@
 
                     <div class="header-right">
                         <div class="header-search">
-                            <a href="#" class="search-toggle" role="button" title="Search"><i class="icon-search"></i></a>
+                            {% comment %} <a href="#" class="search-toggle" role="button" title="Search"><i class="icon-search"></i></a> {% endcomment %}
                             <form action="#" method="get">
                                 <div class="header-search-wrapper">
                                     <label for="q" class="sr-only">Search</label>
@@ -538,7 +543,7 @@
                         </div><!-- End .header-search -->
                         <div class="dropdown compare-dropdown">
                             <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static" title="Compare Products" aria-label="Compare Products">
-                                <i class="icon-random"></i>
+                                {% comment %} <i class="icon-random"></i> {% endcomment %}
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right">
@@ -569,55 +574,59 @@
                             <div class="dropdown-menu dropdown-menu-right">
                                 <div class="dropdown-cart-products">
                                     <div class="product">
-                                        <div class="product-cart-details">
-                                            <h4 class="product-title">
-                                                <a href="product.html">Beige knitted elastic runner shoes</a>
-                                            </h4>
+                                        {% comment %} <div class="product-cart-details">
+                                            <h4 class="product-title"> {% endcomment %}
+                                                {% comment %} <a href="product.html">Beige knitted elastic runner shoes</a> {% endcomment %}
+                                            {% comment %} </h4> {% endcomment %}
 
-                                            <span class="cart-product-info">
+                                            {% comment %} <span class="cart-product-info">
                                                 <span class="cart-product-qty">1</span>
                                                 x $84.00
-                                            </span>
-                                        </div><!-- End .product-cart-details -->
+                                            </span> {% endcomment %}
+                                        {% comment %} </div><!-- End .product-cart-details --> {% endcomment %}
 
-                                        <figure class="product-image-container">
-                                            <a href="product.html" class="product-image">
-                                                <img src="static/images/products/cart/product-1.jpg" alt="product">
-                                            </a>
-                                        </figure>
-                                        <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                                    </div><!-- End .product -->
+                                        {% comment %} <figure class="product-image-container">
+                                            <a href="product.html" class="product-image"> {% endcomment %}
+                                                {% comment %} <img src="static/images/products/cart/product-1.jpg" alt="product"> {% endcomment %}
+                                            {% comment %} </a>
+                                        </figure> {% endcomment %}
+                                        {% comment %} <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a> {% endcomment %}
+                                    {% comment %} </div><!-- End .product --> {% endcomment %}
 
-                                    <div class="product">
+                                    {% comment %} <div class="product">
                                         <div class="product-cart-details">
-                                            <h4 class="product-title">
-                                                <a href="product.html">Blue utility pinafore denim dress</a>
-                                            </h4>
-
+                                            <h4 class="product-title"> {% endcomment %}
+                                                {% comment %} <a href="product.html">Blue utility pinafore denim dress</a> {% endcomment %}
+                                            {% comment %} </h4> {% endcomment %}
+{% comment %} 
                                             <span class="cart-product-info">
                                                 <span class="cart-product-qty">1</span>
                                                 x $76.00
-                                            </span>
-                                        </div><!-- End .product-cart-details -->
+                                            </span> {% endcomment %}
+                                        {% comment %} </div><!-- End .product-cart-details --> {% endcomment %}
 
-                                        <figure class="product-image-container">
-                                            <a href="product.html" class="product-image">
-                                                <img src="static/images/products/cart/product-2.jpg" alt="product">
-                                            </a>
-                                        </figure>
-                                        <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                                    </div><!-- End .product -->
-                                </div><!-- End .cart-product -->
+                                        {% comment %} <figure class="product-image-container"> {% endcomment %}
+                                            {% comment %} <a href="product.html" class="product-image"> {% endcomment %}
+                                                {% comment %} <img src="static/images/products/cart/product-2.jpg" alt="product"> {% endcomment %}
+                                            {% comment %} </a> {% endcomment %}
+                                        {% comment %} </figure> {% endcomment %}
+                                        {% comment %} <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a> {% endcomment %}
+                                    {% comment %} </div><!-- End .product --> {% endcomment %}
+                                {% comment %} </div><!-- End .cart-product --> {% endcomment %}
 
-                                <div class="dropdown-cart-total">
+                                {% comment %} <div class="dropdown-cart-total">
                                     <span>Total</span>
 
                                     <span class="cart-total-price">$160.00</span>
-                                </div><!-- End .dropdown-cart-total -->
+                                </div><!-- End .dropdown-cart-total --> {% endcomment %}
 
                                 <div class="dropdown-cart-action">
+                                    {% if user_email %}
                                     <a href="{% url 'newcart:show_cart' %}" class="btn btn-primary">View Cart</a>
                                     <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
+                            {% else %}
+                                <p>Please Login </p>
+                            {% endif %}
                                 </div><!-- End .dropdown-cart-total -->
                             </div><!-- End .dropdown-menu -->
                         </div><!-- End .cart-dropdown -->
@@ -625,7 +634,7 @@
                 </div><!-- End .container -->
             </div><!-- End .header-middle -->
         </header><!-- End .header -->
-
+       
         <main class="main">
         	<div class="page-header text-center" style="background-image: url('static/images/page-header-bg.jpg')">
         		<div class="container">
@@ -669,12 +678,12 @@
                     <!-- Wishlist Share Section -->
                     <div class="wishlist-share">
                         <div class="social-icons social-icons-sm mb-2">
-                            <label class="social-label">Share on:</label>
-                            <a href="#" class="social-icon" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
+                            {% comment %} <label class="social-label">Share on:</label> {% endcomment %}
+                            {% comment %} <a href="#" class="social-icon" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
                             <a href="#" class="social-icon" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
                             <a href="#" class="social-icon" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
                             <a href="#" class="social-icon" title="Youtube" target="_blank"><i class="icon-youtube"></i></a>
-                            <a href="#" class="social-icon" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
+                            <a href="#" class="social-icon" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a> {% endcomment %}
                         </div><!-- End .social-icons -->
                     </div><!-- End .wishlist-share -->
                 </div><!-- End .container -->
@@ -1041,6 +1050,148 @@
     <script src="{% static 'js/owl.carousel.min.js' %}"></script>
     <!-- Main JS File -->
     <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+<!-- Main JS File -->
+<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/demos/demo-17.js' %}"></script>
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        
+        function SignIn(e) {
+            e.preventDefault();
+            let user_email = document.getElementById('signin-email').value;
+            let user_password = document.getElementById('signin-password').value;
+        
+            const csrftoken = getCookie('csrftoken');
+            let formData = new URLSearchParams();
+            formData.append('user_email', user_email);
+            formData.append('user_password', user_password);
+        
+            fetch('{% url "logintohome:loginn" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': csrftoken
+                },
+                body: formData.toString()
+            })
+            .then(response=>response.json())
+            .then(data =>{
+                if(data.status=='block'){
+                    document.getElementById('error-message').textContent=data.message
+    
+                }else if(data.status=='wrong'){
+                    document.getElementById('error-message').textContent=data.message
+    
+                }else{
+                    location.href = '{% url "logintohome:homee" %}';
+                }
+                
+            })
+        }
+      
+        function RegisterValidation(e) {
+            e.preventDefault();
+            console.log("Form submission started");
+        
+            // Reset error messages
+            document.getElementById('error-phone').textContent = '';
+            document.getElementById('error-password').textContent = '';
+            document.getElementById('error-confirm').textContent = '';
+            document.getElementById('error-email').textContent = '';
+            document.getElementById('error-username').textContent = '';
+        
+            // Retrieve form values
+            let user_username = document.getElementById('register-username').value.trim();
+            let user_email = document.getElementById('register-email').value.trim();
+            let user_phone = document.getElementById('register-phone').value.trim();
+            let user_password = document.getElementById('register-password').value;
+            let user_confirm = document.getElementById('register-confirm-password').value;
+        
+            // Regular expression for password validation
+            let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>]).{8,}$/;
+        
+            // Count zeros in phone number
+            let zeroCount = (user_phone.match(/0/g) || []).length;
+        
+            // Perform validation
+            let isValid = true;
+        
+            if (user_phone.length !== 10 || zeroCount > 5) {
+                document.getElementById('error-phone').textContent = 'Please enter a valid 10-digit phone number.';
+                isValid = false;
+            }
+        
+            if (!passwordRegex.test(user_password)) {
+                document.getElementById('error-password').textContent = 'Password must include at least one uppercase letter, one lowercase letter, one number, one symbol, and be more than 8 characters long.';
+                isValid = false;
+            }
+        
+            if (user_password !== user_confirm) {
+                document.getElementById('error-confirm').textContent = 'Passwords do not match. Please try again.';
+                isValid = false;
+            }
+        
+            if (/^\d/.test(user_username)) {
+                document.getElementById('error-username').textContent = 'Username cannot start with a number.';
+                isValid = false;
+            }
+        
+            if (/^\s/.test(user_username)) {
+                document.getElementById('error-username').textContent = 'Username cannot start with a space.';
+                isValid = false;
+            }
+            if (user_username ==='') {
+                document.getElementById('error-username').textContent = 'Username cannot start with a space.';
+                isValid = false;
+            }
+        
+            // If all validations pass, submit the form
+            if (isValid) {
+                console.log("Form validation passed");
+        
+                const csrftoken = getCookie('csrftoken');
+                let formData = new URLSearchParams();
+                formData.append('user_username', user_username);
+                formData.append('user_email', user_email);
+                formData.append('user_phone', user_phone);
+                formData.append('user_password', user_password);
+                formData.append('user_confirm', user_confirm);
+        
+                fetch("{% url 'logintohome:Signup' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: formData.toString()
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'already') {
+                        document.getElementById('error-email').textContent = data.message;
+                    } else if (data.status === 'success') {
+                        window.location.href = data.redirect_url;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        }
+        
+    </script>
 </body>
 
 

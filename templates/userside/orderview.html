@@ -536,7 +536,7 @@
                                                     <thead >
                                                 
                                                         <tr>
-                                                           <th scope="col" class="text-info" style="width:200px">No<th>
+                                                           {% comment %} <th scope="col" class="text-info" style="width:200px">No<th> {% endcomment %}
                                                             <th scope="col" class="text-info" style="width:200px">product</th>
                                                             <th scope="col" class="text-info"  style="width:100px">Images</th>
                                                             <th scope="col" class="text-info"  style="width:100px"> price</th>
@@ -553,7 +553,7 @@
 
                                                         {% for i in ordered_item %}
                                                         <tr>
-                                                            <td>{{forloop.counter}}</td>
+                                                            {% comment %} <td>{{forloop.counter}}</td> {% endcomment %}
                                                             <td style="font-weight: bold;">
                                                                 {{ i.product.name }}
                                                             </td>
