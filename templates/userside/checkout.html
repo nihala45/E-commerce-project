@@ -1123,6 +1123,7 @@
                               id="address{{ forloop.counter }}"
                               name="selected_address"
                               value="{{ address.id }}"
+                               data-address-id="{{ address.id }}"
                               {%
                               if
                               forloop.first
@@ -2205,36 +2206,35 @@
       }
     </script>
 
-   
     <script>
+      // Function to handle the order placement
       function placeOrder(e) {
           e.preventDefault();
           console.log("Order placement initiated");
   
-          let selectedAddress = document.querySelector(
-              'input[name="selected_address"]:checked'
-          ).value;
+          // Get selected address and payment method
+          const selectedAddress = document.querySelector('input[name="selected_address"]:checked')?.value;
+          const selectedPaymentMethod = document.querySelector('input[name="payment_method"]:checked')?.value;
   
-          let selectedPaymentMethod = document.querySelector(
-              'input[name="payment_method"]:checked'
-          ).value;
-
+          if (!selectedAddress || !selectedPaymentMethod) {
+              console.error("Address or Payment Method not selected");
+              return;
+          }
   
           console.log("Selected Address ID:", selectedAddress);
           console.log("Selected Payment Method:", selectedPaymentMethod);
-         
-
   
-          let formData = new FormData();
+          // Prepare form data
+          const formData = new FormData();
           formData.append("selectedAddress", selectedAddress);
           formData.append("selectedPaymentMethod", selectedPaymentMethod);
-          
-
   
+          // Log form data for debugging
           for (let pair of formData.entries()) {
               console.log(pair[0] + ": " + pair[1]);
           }
   
+          // Send form data to server
           fetch("{% url 'newcart:place_order' %}", {
               method: "POST",
               body: formData,
@@ -2242,8 +2242,8 @@
                   "X-CSRFToken": getCookie("csrftoken"),
               },
           })
-          .then((response) => response.json())
-          .then((data) => {
+          .then(response => response.json())
+          .then(data => {
               console.log("Response Data:", data);
   
               if (data.status === "success") {
@@ -2251,23 +2251,23 @@
               } else if (data.status === "razorpay") {
                   console.log("Razorpay order data:", data);
                   razorPay(data.payment_order, data.key);
-                  console.log(data.payment_order,'helloooo',data.key,'h8888')
               } else {
                   console.error("Order failed:", data);
               }
           })
-          .catch((error) => {
+          .catch(error => {
               console.error("Error:", error);
           });
       }
   
+      // Function to handle Razorpay payment integration
       async function razorPay(order, key_id) {
-        console.log(order, 'Received order data for Razorpay integration');
-        console.log(order.amount, 'Order amount for Razorpay');
-
-          var options = {
+          console.log("Received order data for Razorpay integration:", order);
+  
+          // Setup Razorpay options
+          const options = {
               key: key_id,
-              amount: order.amount,  
+              amount: order.amount, // Ensure amount is in the smallest currency unit (e.g., paise for INR)
               currency: "INR",
               name: "Fashion Store",
               description: "Test Transaction",
@@ -2286,50 +2286,70 @@
               },
               theme: {
                   color: "#3399cc",
+              },
+              modal: {
+                  ondismiss: function () {
+                      console.log("Payment popup closed by the user.",order);
+                      handlePaymentFailure(order.amount / 100); 
+                  }
               }
           };
-          let rzp1 = new Razorpay(options);
+  
+          // Create and open Razorpay instance
+          const rzp1 = new Razorpay(options);
           rzp1.open();
       }
   
-      function verifyPayment(e) {
-    
-        console.log('hellooo guyssss');
-    
-        let selectedAddress = document.querySelector(
-            'input[name="selected_address"]:checked'
-        ).value;
-    
-        let selectedPaymentMethod = document.querySelector(
-            'input[name="payment_method"]:checked'
-        ).value;
-    
-        let formData = new FormData();
-        formData.append("selectedAddress", selectedAddress);
-        formData.append("selectedPaymentMethod", selectedPaymentMethod);
-    
-        console.log(selectedPaymentMethod, selectedAddress, 'selectedaddresssssssselectedPaumentmethodddddddddddddddddddd');
-    
-        fetch("{% url 'newcart:razor_save' %}", {
-            method: "POST",
-            body: formData,
-            headers: {
-                "X-CSRFToken": getCookie("csrftoken"),
-            },
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            console.log("Response Data:", data);
-            if (data.status === "success") {
-                location.href = "{% url 'newcart:successpage' %}";
-            }
-        })
-        .catch((error) => {
-            console.error("Error:", error);
-        });
-    }
-    
+      // Function to verify payment with server
+      function verifyPayment(response, order) {
+          console.log('Verifying payment');
   
+          // Prepare form data for verification
+          const selectedAddress = document.querySelector('input[name="selected_address"]:checked')?.value;
+          const selectedPaymentMethod = document.querySelector('input[name="payment_method"]:checked')?.value;
+  
+          const formData = new FormData();
+          formData.append("selectedAddress", selectedAddress);
+          formData.append("selectedPaymentMethod", selectedPaymentMethod);
+          formData.append("razorpay_payment_id", response.razorpay_payment_id);
+          formData.append("razorpay_order_id", response.razorpay_order_id);
+          formData.append("razorpay_signature", response.razorpay_signature);
+  
+          // Send verification data to server
+          fetch("{% url 'newcart:razor_save' %}", {
+              method: "POST",
+              body: formData,
+              headers: {
+                  "X-CSRFToken": getCookie("csrftoken"),
+              },
+          })
+          .then(response => response.json())
+          .then(data => {
+              console.log("Response Data:", data);
+              if (data.status === "success") {
+                  location.href = "{% url 'newcart:successpage' %}";
+              } else {
+                  handlePaymentFailure(order.amount / 100); 
+              }
+          })
+          .catch(error => {
+              console.error("Error:", error);
+              handlePaymentFailure(order.amount / 100); 
+          });
+      }
+  
+      // Function to handle payment failure
+      function handlePaymentFailure(amount) {
+        const selectedAddressInput = document.querySelector('input[name="selected_address"]:checked');
+   
+        const selectedAddressId = selectedAddressInput.value;
+        console.log("Selected address ID:", selectedAddressId);
+          console.log("Handling payment failure...");
+          location.href = "{% url 'newcart:failurepage' %}?amount=" + amount + "&address=" + selectedAddressId;
+  
+      }
+  
+      // Function to get CSRF token from cookies
       function getCookie(name) {
           let cookieValue = null;
           if (document.cookie && document.cookie !== "") {
@@ -2344,10 +2364,9 @@
           }
           return cookieValue;
       }
-  
-      
   </script>
-
+  
+  
 
   <!--coupon apply-->
   <script>
@@ -2414,10 +2433,10 @@
         return cookieValue;
     }
 </script>
-oceeding with the fetch request:
 
-html
-Copy code
+
+
+
 <script>
   function removeCoupon(e) {
     e.preventDefault();

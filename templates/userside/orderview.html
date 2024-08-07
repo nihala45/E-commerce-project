@@ -39,7 +39,7 @@
                 <div class="container">
                     <div class="header-left">
                         <div class="header-dropdown">
-                            <a href="#">Usd</a>
+                            {% comment %} <a href="#">Usd</a> {% endcomment %}
                             <div class="header-menu">
                                 <ul>
                                     <li><a href="#">Eur</a></li>
@@ -49,7 +49,7 @@
                         </div><!-- End .header-dropdown -->
 
                         <div class="header-dropdown">
-                            <a href="#">Eng</a>
+                            {% comment %} <a href="#">Eng</a> {% endcomment %}
                             <div class="header-menu">
                                 <ul>
                                     <li><a href="#">English</a></li>
@@ -92,7 +92,7 @@
                         <nav class="main-nav">
                             <ul class="menu sf-arrows">
                                 <li class="megamenu-container active">
-                                    <a href="index.html" class="sf-with-ul">Home</a>
+                                    {% comment %} <a href="index.html" class="sf-with-ul">Home</a> {% endcomment %}
 
                                     <div class="megamenu demo">
                                         <div class="menu-col">
@@ -106,7 +106,7 @@
                                     </div><!-- End .megamenu -->
                                 </li>
                                 <li>
-                                    <a href="category.html" class="sf-with-ul">Shop</a>
+                                    {% comment %} <a href="category.html" class="sf-with-ul">Shop</a> {% endcomment %}
 
                                     <div class="megamenu megamenu-md">
                                         <div class="row no-gutters">
@@ -164,7 +164,7 @@
                                     </div><!-- End .megamenu megamenu-md -->
                                 </li>
                                 <li>
-                                    <a href="product.html" class="sf-with-ul">Product</a>
+                                    {% comment %} <a href="product.html" class="sf-with-ul">Product</a> {% endcomment %}
 
                                     <div class="megamenu megamenu-sm">
                                         <div class="row no-gutters">
@@ -199,7 +199,7 @@
                                     </div><!-- End .megamenu megamenu-sm -->
                                 </li>
                                 <li>
-                                    <a href="#" class="sf-with-ul">Pages</a>
+                                    {% comment %} <a href="#" class="sf-with-ul">Pages</a> {% endcomment %}
 
                                     <ul>
                                         <li>
@@ -225,7 +225,7 @@
                                     </ul>
                                 </li>
                                 <li>
-                                    <a href="blog.html" class="sf-with-ul">Blog</a>
+                                    {% comment %} <a href="blog.html" class="sf-with-ul">Blog</a> {% endcomment %}
 
                                     <ul>
                                         <li><a href="blog.html">Classic</a></li>
@@ -266,7 +266,7 @@
                                     </ul>
                                 </li>
                                 <li>
-                                    <a href="elements-list.html" class="sf-with-ul">Elements</a>
+                                    {% comment %} <a href="elements-list.html" class="sf-with-ul">Elements</a> {% endcomment %}
 
                                     <ul>
                                         <li><a href="elements-products.html">Products</a></li>
@@ -291,7 +291,7 @@
 
                     <div class="header-right">
                         <div class="header-search">
-                            <a href="#" class="search-toggle" role="button" title="Search"><i class="icon-search"></i></a>
+                            {% comment %} <a href="#" class="search-toggle" role="button" title="Search"><i class="icon-search"></i></a> {% endcomment %}
                             <form action="#" method="get">
                                 <div class="header-search-wrapper">
                                     <label for="q" class="sr-only">Search</label>
@@ -379,7 +379,7 @@
                                 </div><!-- End .dropdown-cart-total -->
 
                                 <div class="dropdown-cart-action">
-                                    <a href="cart.html" class="btn btn-primary">View Cart</a>
+                                    <a href="{% url 'newcart:show_cart' %}" class="btn btn-primary">View Cart</a>
                                     <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
                                 </div><!-- End .dropdown-cart-total -->
                             </div><!-- End .dropdown-menu -->
@@ -522,12 +522,15 @@
                                         
                                     </header>
                                     <!-- card-header end// -->
-                                     
+                                     {% if order_status == False %}
                                     <div class="" style="width:100%" >  
                                         <div style="text-align: end; padding-top: 10px; padding-right: 15%;" class="">
-                                       <button class="btn-primary" onclick="orderPlace('<%=detials._id%>','<%=detials.subtotal%>',event)" >Pay</button>
+                                       <button class="btn-primary" onclick="orderPlace(event,{{all_orders.id}})" >Pay</button>
                                     </div>
-                                      
+                                    {% else %}
+
+                                    {% endif %}
+            
                                         <div class="table-responsive " style="margin-top: 80px;">
                                         
                                                 <div id="reloadDiv">
@@ -579,7 +582,7 @@
                                                             <td style="color: red;">
                                                                 {{ i.status }}
                                                             </td>
-                                                            {% if i.status != "Cancelled" and i.status != "Returned" %}
+                                                            {% if i.status != "Cancelled" and i.status != "Returned" and i.status != "Pending" %}
                                                             <td style="font-weight: bold;">
                                                                 {% if i.status == "Delivered" %}
                                                                 <a href="" onclick="returnOrder('{{ i.id }}', event)" style="font-weight: bolder; color: darkred;">Return</a>
@@ -1081,6 +1084,118 @@
           }
 </script>
 
+<script>
+    function orderPlace(e, orderId) {
+        e.preventDefault();
+        
+        const formData = new FormData();
+        formData.append("orderId", orderId);
+        
+        // Debugging: Print form data to the console
+        console.log("Form Data:", formData);
+        
+        fetch("{% url 'userprofile:razorPaypayment' %}", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken"),
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Response Data:", data);
+            console.log("Razorpay order data:", data);
+            razorPay(data.payment_order, data.key,data.order_id);
+        })
+        .catch(error => {
+            console.error("Error fetching order data:", error);
+        });
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== "") {
+                const cookies = document.cookie.split(";");
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === name + "=") {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        async function razorPay(order, key_id,order_id) {
+            console.log("Received order data for Razorpay integration:", order);
+            
+            const options = {
+                key: key_id,
+                amount: order.amount, // Ensure amount is in the smallest currency unit (e.g., paise for INR)
+                currency: "INR",
+                name: "Fashion Store",
+                description: "Test Transaction",
+                image: "https://example.com/your_logo",
+                order_id: order.id,
+                handler: function (response) {
+                    verifyPayment(response, order,order_id);
+                },
+                prefill: {
+                    name: "Gaurav Kumar",
+                    email: "gaurav.kumar@example.com",
+                    contact: "9000090000",
+                },
+                notes: {
+                    address: "Razorpay Corporate Office",
+                },
+                theme: {
+                    color: "#3399cc",
+                },
+            };
+            
+            // Create and open Razorpay instance
+            const rzp1 = new Razorpay(options);
+            rzp1.open();
+        }
+
+        function verifyPayment(response, order,order_id) {
+            console.log('Verifying payment');
+            
+            
+
+            const formData = new FormData();
+        
+            formData.append("order_id", order_id);
+
+
+            fetch("{% url 'userprofile:razorStatusUpdate' %}", {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-CSRFToken": getCookie("csrftoken"),
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Payment verification response:", data);
+                if (data.status === "success") {
+                    location.href = "{% url 'newcart:successpage' %}";
+                } else {
+                    handlePaymentFailure(order.amount / 100); 
+                }
+            })
+            .catch(error => {
+                console.error("Error during payment verification:", error);
+                handlePaymentFailure(order.amount / 100); 
+            });
+        }
+
+        function handlePaymentFailure(amount) {
+            alert(`Payment failed. Please try again. Amount: ${amount}`);
+            // Additional failure handling logic here
+        }
+    }
+</script>
 
   
 </body>

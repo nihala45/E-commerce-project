@@ -18,6 +18,9 @@ from django.http import HttpResponse
 from io import BytesIO
 from xhtml2pdf import pisa
 from django.template.loader import get_template
+from myproject.settings import RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET
+import razorpay
+from django.utils import timezone
 
 # Create your views here.
 
@@ -196,6 +199,11 @@ def signout(request):
 def view_details(request, ord_id):
     
     ordered_items = Ordered_item.objects.filter(order_id=ord_id)
+    order_status=True
+    for i in ordered_items:
+        if i.status=='Pending':
+            order_status=False
+            break
     all_order = AllOrder.objects.get(id=ord_id)
     unit_prices=[]
     total_amounts=[]
@@ -236,7 +244,7 @@ def view_details(request, ord_id):
     
     
 
-    return render(request, "userside/orderview.html", {'all_orders':all_order,'ordered_item':ordered_items,'unit_price':unit_prices,'total_amounts':total_amounts,'first_addressess': first_address,})
+    return render(request, "userside/orderview.html", {'all_orders':all_order,'ordered_item':ordered_items,'unit_price':unit_prices,'total_amounts':total_amounts,'first_addressess': first_address,'order_status':order_status})
 
 
 
@@ -408,4 +416,37 @@ def download_product_invoice(request, order_id):
         return HttpResponse("Error generating PDF", status=500)
     
     
+client = razorpay.Client(auth=(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET))
+def razorPaypayment(request):
+    if request.method == 'POST':
+        orderId = request.POST.get('orderId')
+        print(orderId,'this is orderid')
 
+        
+        order=AllOrder.objects.get(id=orderId)
+        amount=order.total_amount
+        DATA = {
+            "amount": int(amount * 100),
+            "currency": "INR",
+            "payment_capture": '1',
+            "receipt": "receipt_1"
+        }
+        payment_order = client.order.create(data=DATA)
+        return JsonResponse({
+            'status': 'razorpay',
+            'payment_order': payment_order,
+            'key': RAZORPAY_KEY_ID,
+            'order_id':orderId
+        })
+
+
+def razorStatusUpdate(request):
+    if request.method == "POST":   
+        order_Id = request.POST.get('order_id')
+        print(order_Id,'this is orderid')
+    deliverd_items=Ordered_item.objects.filter(order_id=order_Id)
+    print(deliverd_items,"here isfoasl")
+    for item in deliverd_items:
+        item.status = 'placed'
+        item.save()
+    return JsonResponse({"status":'success'})

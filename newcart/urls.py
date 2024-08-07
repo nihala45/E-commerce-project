@@ -17,6 +17,8 @@ urlpatterns = [
     path('razor_save/',views.razor_save,name='razor_save'),
     path('apply_coupon/', views.apply_coupon, name='apply_coupon'),
     path('none_coupon/', views.none_coupon, name='none_coupon'),
+    path('failurepage/', views.failurepage, name='failurepage'),
+
     
     
 

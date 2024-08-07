@@ -7,4 +7,6 @@ app_name = "productdetail"
 
 urlpatterns = [
     path('productdetails/<int:id>/', views.productdetails, name='productdetails'),
+    path('addToWishlist', views.addToWishlist, name='addToWishlist'),
+    
 ]

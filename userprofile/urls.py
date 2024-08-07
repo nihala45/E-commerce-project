@@ -18,6 +18,10 @@ urlpatterns = [
     # path('eachProduct/<int:product_id>/', views.eachProduct, name='eachProduct'),
     path('edit_address/', views.edit_address, name='edit_address'),
     path('download_product_invoice/<order_id>', views.download_product_invoice, name='download_product_invoice'),
+    path('razorPaypayment', views.razorPaypayment, name='razorPaypayment'),
+    path('razorStatusUpdate', views.razorStatusUpdate, name='razorStatusUpdate'),
+    
+    
     
     
     

@@ -11,7 +11,7 @@ from decimal import Decimal
 
 @login_required(login_url='adminside:adminlogin')
 def order_management(request):
-    ordered_items = AllOrder.objects.all()
+    ordered_items = AllOrder.objects.all().order_by('id')
     context = {
         'ordered_items': ordered_items
     }

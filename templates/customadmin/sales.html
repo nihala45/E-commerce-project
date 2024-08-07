@@ -96,7 +96,7 @@
     </div>
     
     <!-- Main Content -->
-    <div class="container table-container">     
+    <div class="container table-container" id='printDiv'>     
         <h1>Sales Report</h1>
         
         <!-- Filter Forms -->
@@ -162,11 +162,31 @@
             </div>
         </div>
     </div>
-    
+    <div style="float: right; width: fit-content; margin-top: 6rem;">
+        <a onClick="downloadPdf()" class="btn btn-primary text-white" style="border-radius: 30px; color: #666666; margin-left: 1rem; cursor: pointer;">
+            Download Invoice
+        </a>
+    </div>
     <!-- Include Bootstrap and jQuery scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        function downloadPdf() {
+            console.log("reached")
+                  const printContents = document.getElementById('printDiv').innerHTML;
+            
+                  const originalContents = document.body.innerHTML;
+            
+                  document.body.innerHTML = printContents;
+            
+                  window.print();
+            
+                  document.body.innerHTML = originalContents;
+            
+              }
+    </script>
 </body>
 </html>

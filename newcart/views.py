@@ -18,7 +18,7 @@ from userprofile.models import Wallet
 from django.utils import timezone
 from newcart.models import AllOrder
 from newcart.models import Ordered_item
-
+from django.views.decorators.cache import never_cache
 
 
 
@@ -136,7 +136,7 @@ def quantity_upadate(request):
     
     
     
-
+@never_cache
 def proceed_to_checkout(request):
     try:
         user_email = request.session.get('email')
@@ -452,16 +452,79 @@ def razor_save(request):
     cartItems.delete()
     return JsonResponse({'status': 'success'}) 
 
-                
-            
-            
-        
-       
 
+from django.db import transaction
+
+
+def failurepage(request):
+    user_email = request.session.get('email')
+    user = get_object_or_404(CustomUser, email=user_email)
     
-
-
+    cartItems = MyCart.objects.filter(user=user)
+    
+    total_price = Decimal(0)
+    discount_prg = 0
+    
+    # Calculate total price and discount percentage
+    for item in cartItems:
+        discount_prg = item.discount_percentage
+        if item.product.offer:
+            total_price += (item.product.price - item.product.offer.discount) * item.quantity
+        else:
+            total_price += item.product.price * item.quantity
+    
+    # Calculate discount
+    discount = (total_price * discount_prg) / 100
+    total_price -= discount
+    
+    # Get amount and address from request
+    amount = Decimal(request.GET.get('amount', 0))
+    address_id = request.GET.get('address')
+    address = get_object_or_404(UserAddress, id=address_id)
+    
+    # Create an order
+    ordered_date = date.today()
+    total_order = AllOrder(
+        user=user,
+        order_date=ordered_date,
+        payment_method='razor_pay',
+        total_amount=amount,
+        discount_amount=discount,
+    )
+    total_order.save()
+    
+    # Create ordered items
+    for item in cartItems:
+        Ordered_item.objects.create(
+            order=total_order,
+            address=address,
+            status='Pending',
+            product=item.product,
+            product_qty=item.quantity,
+            product_size=item.size,
+        )
         
+        # Update product quantities
+        pro = newproducts.objects.get(id=item.product_id)
+        if item.size == 's':
+            pro.small = int(pro.small) - item.quantity
+        elif item.size == 'm':
+            pro.medium = int(pro.medium) - item.quantity
+        else:
+            pro.large = int(pro.large) - item.quantity
+        pro.save()
+    
+    # Handle coupon usage
+    if cartItems and cartItems[0].coupon:
+        CouponUsage.objects.create(
+            user=user,
+            coupon=cartItems[0].coupon
+        )
+    
+    # Clear cart items
+    cartItems.delete()
+    
+    return render(request, 'userside/failurepage.html', {'amount': amount})
 
 def continue_shopping(request):
     return redirect('logintohome:shop')
