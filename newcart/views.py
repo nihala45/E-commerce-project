@@ -74,8 +74,7 @@ def show_cart(request):
 
 
 
-# def proceed(request):
-#     return render(request,'userside/checkout.html')
+
 
 
 
@@ -163,6 +162,8 @@ def proceed_to_checkout(request):
             if final_amount > balance:
                 dis = True
             
+            
+            
             context = {
                 'cart_items': cart_items,
                 'sub_total': sub_total,
@@ -194,7 +195,7 @@ def apply_coupon(request):
         user_email = request.session.get('email')
         user = get_object_or_404(CustomUser, email=user_email)
         coupon_id = request.POST.get('coupon_id')
-        print(coupon_id)
+        
         coupon = get_object_or_404(Coupon, id=coupon_id)
     
 
@@ -209,7 +210,7 @@ def apply_coupon(request):
         item.discount_percentage = coupon.percentage
         item.coupon=coupon
         item.save()
-        print("Coupon applied to item:", item)
+        
     
         
         return JsonResponse({'status': 'success', 'message': 'Coupon added successfully.'})
@@ -256,7 +257,7 @@ def place_order(request):
                 total_price += item.product.price * item.quantity
     discount = (total_price*discount_prg)/100
     total_price =total_price-discount
-    print(discount_prg,total_price,discount,"kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
+    
     
     if request.method == 'POST':
         address_id = request.POST.get('selectedAddress')
@@ -396,32 +397,32 @@ def razor_save(request):
         ordered_date = date.today()
         address = UserAddress.objects.get(id=address_id)
 
-    total_order = AllOrder(
-                user=user,
-                order_date=ordered_date,
-                payment_method=payment_method,
-                total_amount=total_price,
-                discount_amount=discount,
-            )
-    total_order.save()  
+        total_order = AllOrder(
+            user=user,
+            order_date=ordered_date,
+            payment_method=payment_method,
+            total_amount=total_price,
+            discount_amount=discount,
+        )
+        total_order.save()  
         
     for item in cartItems:
-            Ordered_item.objects.create(
-                order=total_order, 
-                address=address,
-                status='placed',
-                product=item.product,
-                product_qty=item.quantity,
-                product_size=item.size,
-            )         
+        Ordered_item.objects.create(
+            order=total_order, 
+            address=address,
+            status='placed',
+            product=item.product,
+            product_qty=item.quantity,
+            product_size=item.size,
+        )         
 
             
     if cartItems and cartItems[0].coupon:
-            coupon_use = CouponUsage(
-                user=user,
-                coupon=cartItems[0].coupon
-            )
-            coupon_use.save()
+        coupon_use = CouponUsage(
+        user=user,
+        coupon=cartItems[0].coupon
+        )
+        coupon_use.save()
     
 
             

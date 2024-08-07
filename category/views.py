@@ -11,8 +11,8 @@ from django.http import JsonResponse
 @login_required(login_url='adminside:adminlogin')
 def categorymanagement(request):
     category = categories.objects.all()
-    categories_json = serialize('json', category)  # Serialize QuerySet to JSON
-    categories_list = list(category.values())     # Convert QuerySet to list of dictionaries
+    categories_json = serialize('json', category) 
+    categories_list = list(category.values())    
     return render(request, 'customadmin/category.html', {'category': categories_list})
 
 @login_required(login_url='adminside:adminlogin')
@@ -23,7 +23,7 @@ def addcategory(request):
 def savecategory(request):
     if request.method == 'POST':
         name = request.POST['category']
-        print('CATEGORYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY')
+        
         
         
         if not re.match("^[A-Za-z][A-Za-z]*$", name):
@@ -59,6 +59,7 @@ def edit_savecategory(request):
     return redirect('category:edit_category', category_id=category_id)
 
 
+@login_required(login_url='adminside:adminlogin')
 
 def delete_category(request, category_id):
     category = get_object_or_404(categories, id=category_id)

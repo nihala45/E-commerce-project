@@ -2,9 +2,12 @@ from django.shortcuts import render,redirect
 from couponmanagement.models import Coupon
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
+@login_required(login_url='adminside:adminlogin')
+
 def coupon(request):
     coupons = Coupon.objects.all()
     return render(request, 'customadmin/couponmanagement.html', {'coupons': coupons})
@@ -45,6 +48,7 @@ def Addcoupon(request):
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=405)
 
+@login_required(login_url='adminside:adminlogin')
 def get_coupon(request,coupon_id):
     try:
         coupon=Coupon.objects.get(id=coupon_id)
@@ -59,7 +63,7 @@ def get_coupon(request,coupon_id):
         return JsonResponse(date)
     except Coupon.DoesNotExist:
         return JsonResponse({'status':'error', 'message':'Offer not found'},status=400)
-    
+@login_required(login_url='adminside:adminlogin')  
 def editCoupon(request):
     if request.method == 'POST':
         coupon_id = request.POST.get('coupon_id')
@@ -89,7 +93,7 @@ def editCoupon(request):
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
  
 
-
+@login_required(login_url='adminside:adminlogin')
 def remove_coupon(request,coupon_id):
     coupon=Coupon.objects.get(id=coupon_id)
     coupon.delete()

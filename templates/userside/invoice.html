@@ -77,7 +77,6 @@
             <thead>
                 <tr>
                     <th>Product</th>
-                    <th>Image</th>
                     <th>Price</th>
                     <th>Quantity</th>
                     <th>Total</th>
@@ -88,13 +87,11 @@
                 {% for i in ordered_item %}
                 <tr>
                     <td>{{ i.product.name }}</td>
-                    <td><img src="{{ i.product.image1.url }}" alt="{{ i.product.name }}"></td>
                     <td>{{ unit_price|slice:forloop.counter|last|floatformat:2 }}</td>
                     <td>{{ i.product_qty }}</td>
                     <td>{{ total_amounts|slice:forloop.counter|last|floatformat:2 }}</td>
                     <td>{{ i.status }}</td>
                 </tr>
-                <p>{{i}}</p>
                 {% endfor %}
             </tbody>
         </table>

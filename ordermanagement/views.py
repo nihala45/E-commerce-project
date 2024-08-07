@@ -51,18 +51,18 @@ def admin_ordered_view(request, ord_id):
     
     return render(request, 'customadmin/adminview.html',context)
 
+@login_required(login_url='adminside:adminlogin')
 
 def status_update(request):
-    print('sssdasssssssssssssssssssssssssssssfrwsdtegfcvthedffb45676555555555555555555555s')
     if request.method=='POST':
         item_id=request.POST.get('item_id')
         status=request.POST.get('status')
         ord_id=request.POST.get('ord_id')
         
         ord=Ordered_item.objects.get(id=item_id)
-        print('this is item id',item_id)
+        
         ord.status=status
         ord.save()
-        print("ffffffffffffffffffffllllllllllllllllllllllllllllllllllllllllllllllllll",ord)
+        
         return redirect(reverse('ordermanagement:admin_ordered_view', args=[ord_id]))
         

@@ -1,498 +1,313 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"> 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" rel="stylesheet"> 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" rel="stylesheet"> 
-    <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"  rel="stylesheet">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Dashboard</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-            }
-            .sidebar {
-                height: 100vh;
-                background: #343a40;
-                color: #fff;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 250px;
-                transition: all 0.3s;
-            }
-            .sidebar .nav-link {
-                color: #fff;
-                padding: 15px 20px;
-                display: block;
-                transition: background 0.3s;
-            }
-            .sidebar .nav-link:hover {
-                background: #495057;
-                text-decoration: none;
-            }
-            .sidebar .nav-logo {
-                font-size: 24px;
-                padding: 20px;
-                text-align: center;
-                border-bottom: 1px solid #495057;
-            }
-            .content {
-                margin-left: 250px;
-                padding: 20px;
-            }
-            .card {
-                border-radius: 10px;
-            }
-            .chart-container {
-                margin-top: 30px;
-            }
-            .modal-content {
-                border-radius: 10px;
-            }
-            .modal-header {
-                border-bottom: 1px solid #dee2e6;
-            }
-        </style>
-    </head>
-    <body>
-    
-        <div class="sidebar">
-            <div class="nav-logo">
-                <i class='bx bx-layer'></i> Shop
-            </div>
-            <nav class="nav flex-column">
-                <a href="{% url 'adminside:dashboard' %}" class="nav-link active"><i class='bx bx-grid-alt'></i> Dashboard</a>
-                <a href="{% url 'usermanagement:usermanagement' %}" class="nav-link"><i class='bx bx-user'></i> Users</a>
-                <a href="{% url 'products:products' %}" class="nav-link"><i class='bx bx-message-square-detail'></i> Products</a>
-                <a href="{% url 'category:categorymanagement' %}" class="nav-link"><i class='bx bx-bookmark'></i> Categories</a>
-                <a href="{% url 'ordermanagement:order_management' %}" class="nav-link"><i class='bx bx-cart'></i> Orders</a>
-                <a href="{% url 'offermanagement:offermanagement' %}" class="nav-link"><i class='bx bx-gift'></i> Offers</a>
-                <a href="{% url 'couponmanagement:coupon' %}" class="nav-link {% if request.resolver_match.url_name == 'coupon' %}active{% endif %}"><i class='bx bx-tag'></i> Coupons</a>
-                <a href="{% url 'adminside:logout_view' %}" class="nav-link"><i class='bx bx-log-out'></i> Logout</a>
-            </nav>
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .sidebar {
+            height: 100vh;
+            background: #343a40;
+            color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            transition: all 0.3s;
+        }
+        .sidebar .nav-link {
+            color: #fff;
+            padding: 15px 20px;
+            display: block;
+            transition: background 0.3s;
+        }
+        .sidebar .nav-link:hover {
+            background: #495057;
+            text-decoration: none;
+        }
+        .sidebar .nav-logo {
+            font-size: 24px;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #495057;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        .card {
+            border-radius: 10px;
+        }
+        .chart-container {
+            margin-top: 30px;
+        }
+        .modal-content {
+            border-radius: 10px;
+        }
+        .modal-header {
+            border-bottom: 1px solid #dee2e6;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="nav-logo">
+            <i class='bx bx-layer'></i> Shop
         </div>
-    
-        <div class="content">
-            <header class="d-flex justify-content-between align-items-center mb-4">
-                <h1>Dashboard</h1>
-                <div class="date-container">
-                    <h2>{{ date }}</h2>
-                </div>
-            </header>
-    
-            {% if messages %}
-            <div class="alert alert-success mt-3">
-                {% for message in messages %}
-                {{ message }}
-                {% endfor %}
+        <nav class="nav flex-column">
+            <a href="{% url 'adminside:dashboard' %}" class="nav-link active"><i class='bx bx-grid-alt'></i> Dashboard</a>
+            <a href="{% url 'salesreport:salesReport' %}" class="nav-link sales-link"><i class='bx bx-line-chart'></i> Sales</a>
+
+            <a href="{% url 'usermanagement:usermanagement' %}" class="nav-link"><i class='bx bx-user'></i> Users</a>
+            <a href="{% url 'products:products' %}" class="nav-link"><i class='bx bx-message-square-detail'></i> Products</a>
+            <a href="{% url 'category:categorymanagement' %}" class="nav-link"><i class='bx bx-bookmark'></i> Categories</a>
+            <a href="{% url 'ordermanagement:order_management' %}" class="nav-link"><i class='bx bx-cart'></i> Orders</a>
+            <a href="{% url 'offermanagement:offermanagement' %}" class="nav-link"><i class='bx bx-gift'></i> Offers</a>
+            <a href="{% url 'couponmanagement:coupon' %}" class="nav-link {% if request.resolver_match.url_name == 'coupon' %}active{% endif %}"><i class='bx bx-tag'></i> Coupons</a>
+            <a href="{% url 'adminside:logout_view' %}" class="nav-link"><i class='bx bx-log-out'></i> Logout</a>
+        </nav>
+    </div>
+
+    <div class="content">
+        <header class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Dashboard</h1>
+            <div class="date-container">
+                <h2>{{ date }}</h2>
             </div>
-            {% endif %}
-    
+        </header>
+
+        {% if messages %}
+        <div class="alert alert-success mt-3">
+            {% for message in messages %}
+            {{ message }}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card bg-primary text-white mb-3">
+                    <div class="card-body">
+                        <h3 class="card-title">₹{{ thismonth.sum }}</h3>
+                        <p class="card-text">This month sales</p>
+                        <p>{{ date }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-success text-white mb-3">
+                    <div class="card-body">
+                        <h3 class="card-title">₹{{ today.sum }}</h3>
+                        <p class="card-text">Daily sales</p>
+                        <p>{{ date }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-info text-white mb-3">
+                    <div class="card-body">
+                        <h3 class="card-title">₹{{ thisyear.sum }}</h3>
+                        <p class="card-text">Yearly sales {{cash_delevery}},{{wallet_delevery}},{{razor_delevery}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-warning text-white mb-3">
+                    <div class="card-body">
+                        <h3 class="card-title">₹{{ thisweek.sum }}</h3>
+                        <p class="card-text">Weekly sales</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+       <div style="display:flex;justify-content:space-around ">
+        <div class="chart-container" style="width:60%">
+        <h2>Monthly Sales</h2>
+
+            <canvas id="monthlySalesChart" width="400" height="200"></canvas>
+        </div>
+
+        <div class="chart-container" style="width:30% ">
+        <h4 class="mt-5">Daily Sales Report:</h4>
+
+            <canvas id="dailySalesChart" width="100" height="100"></canvas>
+        </div>
+    </div>
+    <div style="display:flex">
+    <div style="width:30%">
+        <h2>Most Selling Three Products</h2>
+        <Canvas id="MostProduct" width="100" height="100"></canvas>
+    </div>
+    <div style="width:30%">
+        <h2>Most Selling Three category</h2>
+        <Canvas id="MostCategory" width="100" height="100"></canvas>
+    </div>
+</div>
+        <h3 class="mt-5">Filter Sales Report</h3>
+        <form method="POST" action="/salesreport/">
+            {% csrf_token %}
             <div class="row">
-                <div class="col-md-3">
-                    <div class="card bg-primary text-white mb-3">
-                        <div class="card-body">
-                            <h3 class="card-title">₹{{ thismonth.sum }}</h3>
-                            <p class="card-text">This month sales</p>
-                            <p>{{ date }}</p>
-                        </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="date1" class="form-label">Start Date:</label>
+                        <input type="date" id="date1" name="date1" class="form-control" required>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="card bg-success text-white mb-3">
-                        <div class="card-body">
-                            <h3 class="card-title">₹{{ today.sum }}</h3>
-                            <p class="card-text">Daily sales</p>
-                            <p>{{ date }}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card bg-info text-white mb-3">
-                        <div class="card-body">
-                            <h3 class="card-title">₹{{ thisyear.sum }}</h3>
-                            <p class="card-text">Yearly sales</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card bg-warning text-white mb-3">
-                        <div class="card-body">
-                            <h3 class="card-title">₹{{ thisweek.sum }}</h3>
-                            <p class="card-text">Weekly sales</p>
-                        </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="date2" class="form-label">End Date:</label>
+                        <input type="date" id="date2" name="date2" class="form-control" required>
                     </div>
                 </div>
             </div>
-    
-            <h2>Monthly Sales</h2>
-            <div class="chart-container">
-                <canvas id="salesChart"></canvas>
-            </div>
-    
-            <h4 class="mt-5">Sales Report:</h4>
-            <div class="chart-container">
-                <canvas id="dailySalesChart"></canvas>
-            </div>
-    
-            <h3 class="mt-5">Filter Sales Report</h3>
-            <form method="POST" action="/salesreport/">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="date1" class="form-label">Start Date:</label>
-                            <input type="date" id="date1" name="date1" class="form-control" required>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+        <!-- Logout Modal -->
+        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="{% url 'adminside:logout_view' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="logoutModalLabel">Logout</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="date2" class="form-label">End Date:</label>
-                            <input type="date" id="date2" name="date2" class="form-control" required>
+                        <div class="modal-body">
+                            <p>Are you sure you want to logout?</p>
                         </div>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-    
-            <!-- Logout Modal -->
-            <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form action="{% url 'adminside:logout_view' %}" method="POST">
-                            {% csrf_token %}
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="logoutModalLabel">Logout</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <p>Are you sure you want to logout?</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button type="submit" class="btn btn-danger">Logout</button>
-                            </div>
-                        </form>
-                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-danger">Logout</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-    
         </div>
-    
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-        <script>
-            document.addEventListener("DOMContentLoaded", function(event) {
-                // Chart.js setup
-                const monthlySalesData = {
+    </div>
+    <script type="application/json" id="sales-data">
+        {
+            "cash_delevery": {{ cash_delevery }},
+            "wallet_delevery": {{ wallet_delevery }},
+            "razor_delevery": {{ razor_delevery }}
+        }
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function(event) {
+            // Monthly Sales Bar Chart
+            var monthlySalesCtx = document.getElementById('monthlySalesChart').getContext('2d');
+            var monthlySalesChart = new Chart(monthlySalesCtx, {
+                type: 'bar',
+                data: {
                     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                     datasets: [{
                         label: 'Monthly Sales',
                         data: [{{ jan.sum }}, {{ feb.sum }}, {{ mar.sum }}, {{ apr.sum }}, {{ may.sum }}, {{ june.sum }}, {{ july.sum }}, {{ aug.sum }}, {{ sep.sum }}, {{ oct.sum }}, {{ nov.sum }}, {{ dec.sum }}],
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
                         borderWidth: 1
                     }]
-                };
-    
-                const ctx
-    
-    </head>
-        <body id="body-pd">
-            <header class="header" id="header">
-                <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
-                <div class=""> 
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            var salesData = JSON.parse(document.getElementById('sales-data').textContent);
 
-                <div class="date-container">
-                    <h2>{{date}}</h2>
-                </div> 
-            </div>
-            </header>
-            <div class="l-navbar" id="nav-bar">
-                <nav class="nav">
-                    <div> <a href="#" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Shop </span> </a>
-                    <div class="nav_list">
-                        <a href="/adminhome/" class="nav_link active"> <i title="Dashboard" class='bx bx-grid-alt nav_icon'></i> <span class="nav_name">Dashboard</span>  </a> 
-                        <a href="{%url 'usermanagement:usermanagement' %}" class="nav_link"> <i title="Users" class='bx bx-user nav_icon'></i> <span class="nav_name">Users</span> </a>
-                        <a href="{%url 'products:products'%}" class="nav_link"> <i title="Products"  class='bx bx-message-square-detail nav_icon'></i> <span class="nav_name">Products</span> </a>
-                        <a href="{%url 'category:categorymanagement'%}" class="nav_link"> <i title="Categories" class='bx bx-bookmark nav_icon'></i> <span class="nav_name">Categories</span> </a> 
-                        <a href="{% url 'ordermanagement:order_management' %}" class="nav_link">
-                            <i title="Order" class='bx bx-cart nav_icon'></i>
-                            <span class="nav_name">Order</span>
-                        </a>
-                        <a href="{% url 'offermanagement:offermanagement' %}" class="nav_link">
-                            <i title="Offers" class='bx bx-gift nav_icon'></i>
-                            <span class="nav_name">Offers</span>
-                        </a>
-                        <a href="{% url 'couponmanagement:coupon' %}" class="nav_link {% if request.resolver_match.url_name == 'coupon' %}active{% endif %}">
-                            <i title="Coupons" class='bx bx-tag nav_icon'></i>
-                            <span class="nav_name">Coupons</span>
-                        </a>
+            // Daily Sales Line Chart
+            var dailySalesCtx = document.getElementById('dailySalesChart').getContext('2d');
+            var dailySalesChart = new Chart(dailySalesCtx, {
+                type: 'bar',
+                data: {
+                    labels: ["cashOndelevery","wallet","razorpay"],
+                    datasets: [{
+                        label: 'Daily Sales',
+                        data: [salesData.cash_delevery, salesData.wallet_delevery, salesData.razor_delevery],
+                        backgroundColor: 'skyblue',
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        borderWidth: 1,
+                        fill: true
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 
-                    
-
-
-                        <a href="{% url 'adminside:logout_view' %}" class="edit"><span>Logout</span></a>
-                </nav>
-            </div>
-            <!--Container Main start-->
-            <div class="height-100 bg-light">
-                <section id="content">
-                    {% if messages %}
-                    <div class="alert alert-success mt-3">
-                    {% for message in messages %}
-                    {{ message }}
-                    {% endfor %}
-                    </div>
-                    {% endif %}
-                    <!-- NAVBAR -->
-                    <nav class="text-center">
-                        <div>
-                            <h2>Shop</h2>
-                        </div>
-
-                    </nav>
-                    <!-- NAVBAR -->
-
-                    <!-- MAIN -->
-                    <main>
-                        <div class="head-title">
-                            <div class="left">
-                                <h1>Dashboard</h1>
-
-                            </div>
-
-                        </div>
-
-                        <ul class="box-info">
-                            <li>
-                                <i class='bx bxs-calendar-check'></i>
-                                <span class="text">
-                                    <h3>₹{{thismonth.sum}}</h3>
-                                    <p>This month sale</p>
-                                    <p>{{date }}</p>
-                                </span>
-                            </li>
-                            <li>
-                                <i class='bx bxs-calendar-check'></i>
-                                <span class="text">
-                                    <h3>₹{{today.sum}}</h3>
-                                    <p>Daily sales</p>
-                                    <p>{{ date }}</p>
-                                </span>
-                            </li>
-                            <li>
-                                <i class='bx bxs-calendar-check'></i>
-                                <span class="text">
-                                    <h3>₹{{thisyear.sum}}</h3>
-                                    <p>Yearly sales</p>
-                                </span>
-                            </li>
-                            <li>
-                                <i class='bx bxs-calendar-check'></i>
-                                <span class="text">
-                                    <h3>₹{{thisweek.sum}}</h3>
-                                    <p>weekly sales</p>
-                                </span>
-                            </li>
-                        </ul>
-
-                        <h2>Monthly sales</h2>
-                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-                        <!-- HTML canvas to render the chart -->
-                        <h4 class="mt-5"> Sales report:</h4>
-                    <div class="container">
-                        <div class="row">
-
-                        <canvas  class="col-md-3"id="salesChart" ></canvas>
-                        {% comment %} <h4 class="mt-5">daily Sales for a week :</h4> {% endcomment %}
-
-                        <canvas class="col-md-3"  id="dailySalesChart" ></canvas>
-                    </div>
-                    </div>
-                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                        <script>
-                            // Get data from Django context
-                            var dailySalesData = {{ daily_sales_data }};
-
-                            // Daily Sales Chart
-                            var dailySalesChartCtx = document.getElementById('dailySalesChart').getContext('2d');
-                            var dailySalesChart = new Chart(dailySalesChartCtx, {
-                                type: 'line',
-                                data: {
-                                    labels: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
-                                    datasets: [{
-                                        label: 'Daily Sales',
-                                        data: dailySalesData,
-                                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                                        borderColor: 'rgba(255, 99, 132, 1)',
-                                        borderWidth: 1
-                                    }]
-                                },
-                                options: {
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true
-                                        }
-                                    }
-                                }
-                            });
-                        </script>
-                        <div class="container text-center mt-5">
-                        <h3>Sales Report</h3>
-                        </div>
-                        <form method="POST" action="/salesreport/">
-                            {% csrf_token %}
-                        <div class="date-fields">
-                            <div class="date-field">
-                                <label for="date1">Start date:</label>
-                                <input type="date" id="date1" name="date1" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}">
-                            </div>
-                            <div class="date-field">
-                                <label for="date2">End date:</label>
-                                <input type="date" id="date2" name="date2" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-
-                    </form>
-
-                        <script>
-                            const jan = "{{ jan.sum }}"
-                            const feb = "{{ feb.sum }}"
-                            const mar = "{{ mar.sum }}"
-                            const apr = "{{ apr.sum }}"
-                            const may = "{{ may.sum }}"
-                            const june = "{{ june.sum }}"
-                            const july = "{{ july.sum }}"
-                            const aug = "{{ aug.sum }}"
-                            const sep = "{{ sep.sum }}"
-                            const oct = "{{ sep.sum }}"
-                            const nov = "{{ nov.sum }}"
-                            const dec = "{{ dec.sum }}"
-
-                            // Fetched sales data (replace with actual values)
-                            const salesData = {
-                                labels: ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "No", "Dec"],
-                                datasets: [{
-                                    label: 'Monthly Sales',
-                                    data: [jan, feb, mar, apr, may, june, july, aug, sep, oct, nov, dec],
-                                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                                    borderColor: 'rgba(54, 162, 235, 1)',
-                                    borderWidth: 1
-                                }]
-                            };
-
-                            // Get canvas element
-                            const ctx = document.getElementById('salesChart').getContext('2d');
-
-                            // Create chart instance
-                            const myChart = new Chart(ctx, {
-                                type: 'bar',
-                                data: salesData,
-                                options: {
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true
-                                        }
-                                    }
-                                }
-                            });
-                        </script>
-                        <div id="logout" class="modal fade">
-
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <form action="{% url 'adminside:logout_view'%}" method='POST'>
-                                        {% csrf_token%}
-                                        <div class="modal-header">
-                                            <h4 class="modal-title">Logout</h4>
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p>Are you sure you want to logout?</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                                            <button type="submit" class="btn btn-danger" value="Delete">logout</button>
-                                        </div>
-            
-                                    </form>
-                                </div>
-                            </div>
-            
-                        </div>
-            
-
-                </section>
-
-
-
-                <!-- logout modal0 -->
-
-            
-
-
-                <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-
-            </div>
-            <!--Container Main end-->
     <script>
-            document.addEventListener("DOMContentLoaded", function(event) {
-
-                const showNavbar = (toggleId, navId, bodyId, headerId) =>{
-                const toggle = document.getElementById(toggleId),
-                nav = document.getElementById(navId),
-                bodypd = document.getElementById(bodyId),
-                headerpd = document.getElementById(headerId)
-
-                // Validate that all variables exist
-                if(toggle && nav && bodypd && headerpd){
-                toggle.addEventListener('click', ()=>{
-                // show navbar
-                nav.classList.toggle('show')
-                // change icon
-                toggle.classList.toggle('bx-x')
-                // add padding to body
-                bodypd.classList.toggle('body-pd')
-                // add padding to header
-                headerpd.classList.toggle('body-pd')
-                })
+        
+            // Daily Sales Line Chart
+            var dailySalesCtx = document.getElementById('MostProduct').getContext('2d');
+            var dailySalesChart = new Chart(dailySalesCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['{{product1}}','{{product2}}','{{product3}}'],
+                    datasets: [{
+                        label: 'Daily Sales',
+                        data: [{{product1_id}},{{product2_id}},{{product3_id}}],
+                        backgroundColor: ['#3498db', '#1abc9c', '#9b59b6'], // Blue, Green, Purple
+                        borderColor: ['#2980b9', '#16a085', '#8e44ad'] ,
+                        borderWidth: 1,
+                        fill: true
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
                 }
+            });
+        
+    </script>
+
+    <script>
+        
+        // Daily Sales Line Chart
+        var dailySalesCtx = document.getElementById('MostCategory').getContext('2d');
+        var dailySalesChart = new Chart(dailySalesCtx, {
+            type: 'pie',
+            data: {
+                labels: ['{{category1}}','{{category2}}','{{category3}}'],
+                datasets: [{
+                    label: 'Daily Sales',
+                    data: [{{category1_count}},{{category2_count}},{{category3_count}}],
+                    backgroundColor: ['#3498db', '#1abc9c', '#9b59b6'], // Blue, Green, Purple
+                    borderColor: ['#2980b9', '#16a085', '#8e44ad'] ,
+                    borderWidth: 1,
+                    fill: true
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
                 }
-
-                showNavbar('header-toggle','nav-bar','body-pd','header')
-
-                /*===== LINK ACTIVE =====*/
-                const linkColor = document.querySelectorAll('.nav_link')
-
-                function colorLink(){
-                if(linkColor){
-                linkColor.forEach(l=> l.classList.remove('active'))
-                this.classList.add('active')
-                }
-                }
-                linkColor.forEach(l=> l.addEventListener('click', colorLink))
-
-                // Your code to run since DOM is loaded and ready
-                });
-            </script>
-
-            </body>
-    </html>
+            }
+        });
+    
+</script>
+ 
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9H+B70z+ylEKupRoHCECT43tMMPvkk5lujF+aj9j8Z2Vd2uDiJ1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-oBqDVmMz4fnFO9H+B70z+ylEKupRoHCECT43tMMPvkk5lujF+aj9j8Z2Vd2uDiJ1" crossorigin="anonymous"></script>
+</body>
+</html>

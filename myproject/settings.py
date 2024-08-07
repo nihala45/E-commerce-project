@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'couponmanagement',
     'wishlist',
     'newcart',
+    'salesreport',
 ]
 
 MIDDLEWARE = [
@@ -156,3 +157,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 RAZORPAY_KEY_ID='rzp_test_oevjnesbeVV1Xk'
 RAZORPAY_KEY_SECRET='tfhpyNA9jTd59Szh8z23773U'
 SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
+
+
+

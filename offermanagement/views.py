@@ -2,6 +2,9 @@ from django.shortcuts import render,redirect
 from django.http import JsonResponse
 from offermanagement.models import Offer
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
+
+
 
 # Create your views here.
 # def offermanagement(request):
@@ -11,7 +14,7 @@ from django.shortcuts import get_object_or_404
 #         'offer_details': offer_details
 #     }
 #     return render(request, 'customadmin/offermanagement.html', context)
-
+@login_required(login_url='adminside:adminlogin')
 def offermanagement(request):
     offer_details_all = Offer.objects.all()
     return render(request, 'customadmin/offermanagement.html', {'offer_details_all': offer_details_all})
@@ -25,7 +28,7 @@ def Addoffer(request):
         if Offer.objects.filter(name=offer_name).exists():
             return JsonResponse({'status': 'error', 'message': 'name already exists.'}, status=400)
 
-        # Create and save new offer
+        
         offer = Offer(
             name=offer_name,
             discount=discount,
@@ -34,9 +37,10 @@ def Addoffer(request):
         )
         offer.save()
 
-        # Return JSON response
+
         return JsonResponse({'status': 'success'})
-        
+    
+@login_required(login_url='adminside:adminlogin')     
 def get_offer(request, offer_id):
     try:
         offer = Offer.objects.get(id=offer_id)
@@ -49,7 +53,9 @@ def get_offer(request, offer_id):
         return JsonResponse(data)
     except Offer.DoesNotExist:
         return JsonResponse({'status': 'error', 'message': 'Offer not found'}, status=404)
+    
 
+@login_required(login_url='adminside:adminlogin')
 def editSubmitOffer(request):
     if request.method == 'POST':
         offer_id = request.POST.get('offer_id')
@@ -74,10 +80,10 @@ def editSubmitOffer(request):
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
 
 
+@login_required(login_url='adminside:adminlogin')
 def remove_offer(request, offer_id):
     offer = get_object_or_404(Offer, id=offer_id)
     offer.delete()
-    print(offer,'hellooo it a good function')
     return redirect('offermanagement:offermanagement')
 
         

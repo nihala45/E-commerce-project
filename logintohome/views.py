@@ -32,7 +32,7 @@ def Signup(request):
         confirm_password = request.POST['user_confirm']
         
         already = CustomUser.objects.filter(email=email) 
-        print(already,"alreadfajfbams,bvnmas")
+        
         if already:
             return JsonResponse({'status':'already','message':'There is already a Account with this Email'})   
         else:
@@ -52,7 +52,6 @@ def Signup(request):
         
 
 def loginn(request):
-    print('HELLLLOOOOOOOOOOOOOOOO')
     if request.method == 'POST':
         email = request.POST.get('user_email')
         password = request.POST.get('user_password')
@@ -69,15 +68,13 @@ def loginn(request):
 
                 
             else:
-                print("2222222222222222")
                 return JsonResponse({'status':'block','message':'Your account is blocked. Please contact support.'})
                 
                 
         except CustomUser.DoesNotExist:
-            print("3333333333333333")
             return JsonResponse({'status':'wrong','message':'Incorrect email address or password. Please try again.'})
 
-    print("444444444444444")
+
     return redirect('logintohome:homee')
 
 
@@ -86,7 +83,6 @@ def otp(request, id):
     return render(request, 'userside/otpp.html', {'id': id})
 
 def otp_varification(request,id):
-    print('hi nihala shirin it is your otp_varification')
     if request.method=='POST':
         user2 = CustomUser.objects.get(id=id)
         p=user2.otp_fld
@@ -116,7 +112,6 @@ def otp_varification(request,id):
 def filterProduct(request):
     category1 = categories.objects.all()
     products=newproducts.objects.none()
-    print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
         
     if request.method =='POST':
         selected_categories=request.POST.getlist('categories')
@@ -127,11 +122,9 @@ def filterProduct(request):
     
             
     elif request.method =='GET':
-        print("ddddddddddddddddddddddddddddddddddddddddddddddddddddddddDDDDDDDDDDDDDDDDDDDDDDDDDDD")
         s=''
         s=request.GET.get('sortby')
         if s:
-            print(s,"hhhhhhhhhhhhhhhhhhhvvvvvvvvvvvvvvvvvvvvvvvvvhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
             if s == 'Low_to_High':
                 price_low_high = newproducts.objects.all().order_by('price')
                 products=products.union(price_low_high)

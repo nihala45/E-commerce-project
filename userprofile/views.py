@@ -286,59 +286,53 @@ def cancelOrder(request):
         return JsonResponse({'cancel': True})
     
 
-#     if ord.payment_method=='razor_pay' and ord.product.offer:
-#         wallet_item = Wallet(
-#         user=user,
-#         date_time=timezone.now(),
-#         amount=ord.get_discount_cart_total_order,
-#         is_credit=True
-#         )
-#         wallet_item.save()
-#     else:
-#         wallet_item = Wallet(
-#         user=user,
-#         date_time=timezone.now(),
-#         amount=ord.total_amount_order,
-#         is_credit=True
-#         )
-#         wallet_item.save()
 
-#     return redirect(reverse('userprofile:view_details', args=[or_id]))
 
 
 
 
 def returnOrder(request):
     print('return order is workingggg')
-    if request.method == 'POST':
-        ord_id = request.POST.get('orderId')  # Ensure the key matches with JavaScript
+    user_email = request.session.get('email')
+    ord_id = request.POST.get('orderId')
+        
+    user = get_object_or_404(CustomUser, email=user_email)
+        
+    ord = get_object_or_404(Ordered_item, id=ord_id)
 
-        # Get the Ordered_item object or return a 404 error if not found
-        orders = get_object_or_404(Ordered_item, id=ord_id)
-        orders.status = "Returned"  # Corrected the status to match your intended state
-        orders.save()
-
-        return JsonResponse({'success': True})  # Changed key to 'success' for consistency
-
-
-#     if ord.payment_method=='razor_pay' and ord.product.offer:
-#         wallet_item = Wallet(
-#         user=user,
-#         date_time=timezone.now(),
-#         amount=ord.get_discount_cart_total_order,
-#         is_credit=True
-#         )
-#         wallet_item.save()
-#     else:
-#         wallet_item = Wallet(
-#         user=user,
-#         date_time=timezone.now(),
-#         amount=ord.total_amount_order,
-#         is_credit=True
-#         )
-#         wallet_item.save()
-
-    # return redirect(reverse('userprofile:view_details', args=[or_id]))
+    ord.status = "Returned"
+    ord.save()
+        
+        
+    main_order=AllOrder.objects.get(id=ord.order_id)
+    print(main_order,'asdfkjafhoiahgiua')
+    items=Ordered_item.objects.filter(order_id=main_order)
+    print(items,'this is itemsssssssssssssssssssssssssssssssss vvvvvvvv')
+    print(vars(items),'this is itemsssssssssssssssssssssssssssssssss vvvvvvvv')
+        
+        
+    product_quantity = sum(item.product_qty for item in items)
+    print(product_quantity,'nihala is a perfect thing in everyone lifeeeeeeeeeeeeeeeeeeeee')
+    discount_price = Decimal(main_order.discount_amount) / Decimal(product_quantity) if product_quantity > 0 else Decimal(0)
+    print(discount_price,'hello this discounr pricee guyssss')
+    if ord.product.offer:
+        amount = Decimal(ord.product.price) - Decimal(ord.product.offer.discount)
+    else:
+        amount = Decimal(ord.product.price)
+    last_price=(amount-discount_price)*(ord.product_qty)
+        
+    if main_order.payment_method=='razor_pay':
+        wallet_item = Wallet(
+        user=user,
+        date_time=timezone.now(),
+        amount=last_price,
+        is_credit=True
+    )
+    wallet_item.save()
+            
+        
+    return JsonResponse({'cancel': True})
+    
 
 
 
@@ -348,11 +342,39 @@ def download_product_invoice(request, order_id):
         order = AllOrder.objects.get(id=order_id)
         items=Ordered_item.objects.filter(order_id=order)
         first_address = items.first().address if items.exists() else None
+        unit_prices=[]
+        total_amounts=[]
+        total_product_quantity=0
+        for item in items:
+            total_product_quantity += item.product_qty
+        discount_price = Decimal(order.discount_amount) / Decimal(total_product_quantity) if total_product_quantity > 0 else Decimal(0)
+        for item in items:
+        
+            if item.product.offer:
+        
+                amount = Decimal(item.product.price) - Decimal(item.product.offer.discount)
+            
+            else:
+                amount = Decimal(item.product.price)
+            unit_price = amount - discount_price
+            unit_prices.append(unit_price)
+        
+            total_amount = unit_price * Decimal(item.product_qty)
+            total_amounts.append(total_amount)
+            print(total_amounts,'this is total amountttttttttttttttt')
+        
     except AllOrder.DoesNotExist:
         return HttpResponse("Order not found", status=404)
 
-    context = {"all_orders": order,"ordered_item":items,'first_addressess':first_address}
+    context = {
+    "all_orders": order,
+    "ordered_item": items,
+    "first_addressess": first_address,
+    "unit_price": unit_prices,
+    "total_amounts": total_amounts,
+    }
     template = get_template("userside/invoice.html")
+    print(context,"kkkkkkkkkkkkkkkkkkkkk")
     html = template.render(context)
 
     result = BytesIO()
@@ -366,3 +388,6 @@ def download_product_invoice(request, order_id):
         return response
     else:
         return HttpResponse("Error generating PDF", status=500)
+    
+    
+

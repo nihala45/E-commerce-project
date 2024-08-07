@@ -129,6 +129,8 @@
             </div>
             <nav class="nav flex-column">
                 <a href="{% url 'adminside:dashboard' %}" class="nav-link active"><i class='bx bx-grid-alt'></i> Dashboard</a>
+                <a href="{% url 'salesreport:salesReport' %}" class="nav-link sales-link"><i class='bx bx-line-chart'></i> Sales</a>
+
                 <a href="{% url 'usermanagement:usermanagement' %}" class="nav-link"><i class='bx bx-user'></i> Users</a>
                 <a href="{% url 'products:products' %}" class="nav-link"><i class='bx bx-message-square-detail'></i> Products</a>
                 <a href="{% url 'category:categorymanagement' %}" class="nav-link"><i class='bx bx-bookmark'></i> Categories</a>
@@ -140,7 +142,7 @@
         </div>
 
         <!-- Navbar -->
-        <h1>Offer Management</h1>
+        <h1>PRODUCT DETAILS </h1>
             {% if messages %}
             <div class="alert alert-info mt-3">
                 {% for message in messages %}

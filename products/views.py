@@ -30,7 +30,6 @@ def addproduct(request):
 @login_required(login_url='adminside:adminlogin')
 
 def saveproducts(request):
-    print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" )
     if request.method=='POST':
         print('inside of the post method')
         name=request.POST['product_name']
@@ -62,7 +61,7 @@ def saveproducts(request):
         offer_id = request.POST.get('offer', None)
         
         offer = Offer.objects.get(id=offer_id) if offer_id else None
-        print(category,"kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
+        
         products2=newproducts(
            name=name,
            category=category,
@@ -124,7 +123,6 @@ def product_editsave(request):
         
         print(editcategory, 'EDIT CATEGORUYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY')
         
-        # Fetch product and update fields
         pro = newproducts.objects.get(id=prod_id)
         pro.name = editname
         pro.description = editdescription
@@ -132,7 +130,7 @@ def product_editsave(request):
         category = categories.objects.get(id=editcategory)
         pro.category = category
         
-        # Check and assign offer
+       
         offer = Offer.objects.get(id=editoffer) if editoffer else None
         pro.offer = offer
         
