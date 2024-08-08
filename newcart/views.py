@@ -28,7 +28,6 @@ def add_to_cart(request):
     if request.method == 'POST':
         user_email = request.session.get('email')
         if not user_email:
-            print("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
             return JsonResponse({'status': 'no user'})
             
         product_id = request.POST.get('product_id')
@@ -55,14 +54,14 @@ def add_to_cart(request):
     
 
 
-# @login_required(login_url='logintohome:loginn')
+
 def show_cart(request):
     user_email = request.session.get('email')
     context={}
     if user_email:
         try:
             user = CustomUser.objects.get(email=user_email)
-            cart_items = MyCart.objects.filter(user_id=user.id).order_by('product_id')
+            cart_items = MyCart.objects.filter(user_id=user.id).order_by('id')
             sub_total = 0
         
             for item in cart_items:
@@ -200,7 +199,7 @@ def proceed_to_checkout(request):
         print(f"Error occurred: {e}")
         return redirect('newcart:show_cart') 
 
-# 
+
 
 
 
@@ -215,13 +214,13 @@ def apply_coupon(request):
         
         coupon = get_object_or_404(Coupon, id=coupon_id)
         
-        # Retrieve all items in the user's cart
+       
         current_cart = MyCart.objects.filter(user=user)
         
-        # Loop through each item in the cart and apply the coupon
+        
         for item in current_cart:
             item.discount_percentage = coupon.percentage
-            item.coupon = coupon  # Assign the coupon to the cart item
+            item.coupon = coupon 
             item.save() 
         
     
@@ -465,7 +464,6 @@ def failurepage(request):
     total_price = Decimal(0)
     discount_prg = 0
     
-    # Calculate total price and discount percentage
     for item in cartItems:
         discount_prg = item.discount_percentage
         if item.product.offer:
@@ -473,16 +471,15 @@ def failurepage(request):
         else:
             total_price += item.product.price * item.quantity
     
-    # Calculate discount
     discount = (total_price * discount_prg) / 100
     total_price -= discount
     
-    # Get amount and address from request
+
     amount = Decimal(request.GET.get('amount', 0))
     address_id = request.GET.get('address')
     address = get_object_or_404(UserAddress, id=address_id)
     
-    # Create an order
+   
     ordered_date = date.today()
     total_order = AllOrder(
         user=user,
@@ -493,7 +490,7 @@ def failurepage(request):
     )
     total_order.save()
     
-    # Create ordered items
+   
     for item in cartItems:
         Ordered_item.objects.create(
             order=total_order,
@@ -504,7 +501,7 @@ def failurepage(request):
             product_size=item.size,
         )
         
-        # Update product quantities
+     
         pro = newproducts.objects.get(id=item.product_id)
         if item.size == 's':
             pro.small = int(pro.small) - item.quantity
@@ -514,14 +511,14 @@ def failurepage(request):
             pro.large = int(pro.large) - item.quantity
         pro.save()
     
-    # Handle coupon usage
+   
     if cartItems and cartItems[0].coupon:
         CouponUsage.objects.create(
             user=user,
             coupon=cartItems[0].coupon
         )
     
-    # Clear cart items
+   
     cartItems.delete()
     
     return render(request, 'userside/failurepage.html', {'amount': amount})

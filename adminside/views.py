@@ -11,7 +11,7 @@ from products.models import newproducts
 from django.db.models import Sum
 from django.db.models import Count
 from category.models import categories
-# Create your views here.
+
 @never_cache
 def adminloginn(request):
     if 'is_superuser' in request.session:
@@ -88,13 +88,13 @@ def dashboard(request):
     
 
     delivered_items = Ordered_item.objects.filter(status='Delivered')
-     # Annotate each product with its category and count the occurrences
+    
     category_sales = (delivered_items
-                  .values('product__category__category_name')  # Group by category name
-                  .annotate(sales_count=Count('product'))  # Count products in each category
-                  .order_by('-sales_count'))  # Order by sales count descending
+                  .values('product__category__category_name')  
+                  .annotate(sales_count=Count('product'))  
+                  .order_by('-sales_count'))  
 
-# Step 3: Get top 3 categories
+
     top_3_categories = category_sales[:3]  
     category1 =top_3_categories[0]['product__category__category_name']
     category2 =top_3_categories[1]['product__category__category_name']
@@ -106,60 +106,7 @@ def dashboard(request):
     
     
     print(top_3_categories,'this is top 3 catttttttttttttttttttttttttttttttttttttttttttttttttttttt',category1,category1_count)     
-    # top_selling_categories = (
-    #     Ordered_item.objects.filter(status="Delivered")
-    #     .values("product__category")
-    #     .annotate(total_sold=Sum("product_qty"))
-    #     .order_by("-total_sold")[:3]
-    # )
     
-    # top_selling_products = (
-    #     Ordered_item.objects.filter(status="Delivered")
-    #     .values("product")
-    #     .annotate(total_sold=Sum("product_qty"))
-    #     .order_by("-total_sold")[:3]
-    # )
-    # top_products = []
-    # for item in top_selling_products:
-    #     product_id = item["product"]
-    #     product = newproducts.objects.get(id=product_id)
-    #     top_products.append({
-    #         'name': product.name,
-    #         'total_sold': item['total_sold']
-    #     })
-
-    # # Get delivered order IDs
-    # delivered_order_ids = Ordered_item.objects.filter(status="Delivered").values_list('order_id', flat=True)
-    
-    # # Get top payment methods
-    # top_payment_methods = (
-    #     AllOrder.objects.filter(id__in=delivered_order_ids)
-    #     .values('payment_method')
-    #     .annotate(count=Count('payment_method'))
-    #     .order_by('-count')[:3]
-    # )
-
-    # top_selling_categories = (
-    #     Ordered_item.objects.filter(status="Delivered")
-    #     .values("product__category")
-    #     .annotate(total_sold=Sum("product_qty"))
-    #     .order_by("-total_sold")[:3]
-    # )
-    
-    # top_categories = []
-    # for item in top_selling_categories:
-    #     category_id = item["product__category"]
-    #     category = categories.objects.get(id=category_id)
-    #     top_categories.append({
-    #         'category_name': category.category_name,
-    #         'total_sold': item['total_sold']
-    #     })
-
-    # context = {
-    #     "top_products": top_products,
-    #     "top_payment_methods": list(top_payment_methods),
-    #     "top_categories": top_categories
-    # }
     context={
         "cash_delevery":cash_delevery,
         "wallet_delevery":wallet_delevery,

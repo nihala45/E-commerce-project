@@ -141,10 +141,12 @@
                             <th>Date</th>
                             <th>Order Status</th>
                             <th>Payment Method</th>
+                            <th>Discount</th>
+
                         </tr>
                     </thead>
                     <tbody>
-                        {% for order_ids, user_ids, date_lst, amounts, item_status, payment_methods in combined_data %}
+                        {% for order_ids, user_ids, date_lst, amounts, item_status, payment_methods,discount in combined_data %}
                         <tr>
                             <td>{{ forloop.counter }}</td>
                             <td>{{ order_ids }}</td>
@@ -153,12 +155,16 @@
                             <td>{{ amounts }}</td>
                             <td>{{ item_status }}</td>
                             <td>{{ payment_methods }}</td>
+                            <td>{{ discount }}</td>
+
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
                 <p style="color: green;">Total Sale: {{ totalsales }}</p>
                 <p style="color: green;">Total Sale Amount: {{ totalamount }}</p>
+                <p style="color: green;">Total Discount Amount: {{ total_discount }}</p>
+
             </div>
         </div>
     </div>
@@ -172,21 +178,38 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-    <script>
-        function downloadPdf() {
-            console.log("reached")
-                  const printContents = document.getElementById('printDiv').innerHTML;
-            
-                  const originalContents = document.body.innerHTML;
-            
-                  document.body.innerHTML = printContents;
-            
-                  window.print();
-            
-                  document.body.innerHTML = originalContents;
-            
-              }
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
+    
+<script>
+    function downloadPdf() {
+        html2canvas(document.getElementById('printDiv'), {
+            useCORS: true,
+            scale: 2 
+        }).then(function(canvas) {
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const imgWidth = 210;
+            const pageHeight = 295;
+            const imgHeight = canvas.height * imgWidth / canvas.width;
+            let heightLeft = imgHeight;
+            let position = 0;
+    
+            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+    
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                pdf.addPage();
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
+    
+            pdf.save('download.pdf');
+        });
+    }
+    
+</script>
 </body>
 </html>

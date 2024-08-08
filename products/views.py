@@ -37,20 +37,10 @@ def saveproducts(request):
         description=request.POST['description']
         price=request.POST['price']
         
-        # if not re.match("^[A-Za-z]+$", name):
-            
-        #     messages.error(request, "Product name should only contain letters without spaces or numbers.")
-        #     return redirect('products:saveproducts') 
+        
         category = categories.objects.get(id=category_id)
         
-        
-        # if "croppedImageData" in request.POST:
-        #     img1 = request.POST["croppedImageData"]
-        #     if img1:
-        #         format, imgstr = img1.split(";base64,")
-        #         ext = re.search(r"/(.*?)$", format).group(1)    
-        #         decoded_file = base64.b64decode(imgstr)
-        #         img_file = ContentFile(decoded_file, name=f"cropped_image.{ext}")
+       
         img1 = request.FILES["img1"] if "img1" in request.FILES else None
         img2 = request.FILES["img2"] if "img2" in request.FILES else None
         img3 = request.FILES["img3"] if "img3" in request.FILES else None
@@ -154,16 +144,7 @@ def product_editsave(request):
         return redirect('products:products')
             
             
-        
-# @login_required(login_url='adminside:adminlogin')
 
-# def search_for_product(request):
-#     if request.method == 'POST':
-#         query = request.POST.get('query')
-        
-#         products = newproducts.objects.filter(name__icontains=query)
-    
-#         return render(request, 'products.html', products)
     
         
         

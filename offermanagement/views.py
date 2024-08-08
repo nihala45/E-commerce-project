@@ -6,21 +6,16 @@ from django.contrib.auth.decorators import login_required
 
 
 
-# Create your views here.
-# def offermanagement(request):
-#     offer_details_all = Offer.objects.all()
-#     offer_details=list(offer_details_all.values())
-#     context = {
-#         'offer_details': offer_details
-#     }
-#     return render(request, 'customadmin/offermanagement.html', context)
+
 @login_required(login_url='adminside:adminlogin')
 def offermanagement(request):
     offer_details_all = Offer.objects.all()
     return render(request, 'customadmin/offermanagement.html', {'offer_details_all': offer_details_all})
+
+
+@login_required(login_url='adminside:adminlogin')
 def Addoffer(request):
     if request.method == 'POST':
-        # Extract POST data
         offer_name = request.POST.get('offerName')
         discount = request.POST.get('discount')
         cash_date = request.POST.get('cashDate')

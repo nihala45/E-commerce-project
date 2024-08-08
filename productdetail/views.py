@@ -19,7 +19,7 @@ def productdetails(request, id):
         pass
     
        
-    print(wishlist_item,'hhhhhhhhhhhhhhhhhhhhhhhhhhhssssssssssssssssssssssssmmmmmmmmmmmmmmmmmmmmmmmmmm')
+
     return render(request, 'userside/productsdetails.html', {'product': product,'categoryy':category,'user_email':user_email,'wishlist_item':wishlist_item})
 
 def addToWishlist(request):

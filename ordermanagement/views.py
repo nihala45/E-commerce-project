@@ -7,7 +7,7 @@ from newcart.models import Ordered_item
 from decimal import Decimal
 
 
-# Create your views here
+
 
 @login_required(login_url='adminside:adminlogin')
 def order_management(request):
