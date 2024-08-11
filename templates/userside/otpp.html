@@ -1,16 +1,16 @@
-{%load static%}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">    
-    <style>      
+    <meta charset="UTF-8">
+    <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
         }
 
-        .otp-container {                        
-            max-width: 400px;                      
+        .otp-container {
+            max-width: 400px;
             margin: 50px auto;
             padding: 20px;
             background-color: #fff;
@@ -32,8 +32,8 @@
             box-sizing: border-box;
         }
 
-        .otp-submit {
-            width: 100%;
+        .otp-submit, .resend-submit {
+            width: 45%;
             padding: 10px;
             background-color: #007bff;
             color: #fff;
@@ -43,7 +43,11 @@
             transition: background-color 0.3s ease;
         }
 
-        .otp-submit:hover {
+        .otp-submit {
+            margin-right: 10%;
+        }
+
+        .otp-submit:hover, .resend-submit:hover {
             background-color: #0056b3;
         }
 
@@ -64,18 +68,26 @@
             color: #155724;
             border: 1px solid #c3e6cb;
         }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+        }
     </style>
 </head>
 <body>
+</div>
     <div class="otp-container">
         <h2>Enter OTP</h2>
         <form action="{% url 'logintohome:otpverification' id=id %}" method="post">
             {% csrf_token %}
-            <input name="otp" type="text" class="otp-input" placeholder="Enter OTP" >
-        
-            <button type="submit" class="otp-submit">Verify</button>
-            
-            
+            <input name="otp" type="text" class="otp-input" placeholder="Enter OTP">
+            <div style="display:flex ;">
+            <div class="button-container" style="width:150px">
+                <button type="submit" class="otp-submit">Verify</button>
+               
+            </div>
+
             {% if messages %}
                 <ul>
                     {% for message in messages %}
@@ -85,32 +97,49 @@
                     {% endfor %}
                 </ul>
             {% endif %}
-
         </form>
-     
-        {% csrf_token %}
+        
+        <form action="{% url 'logintohome:resend_otp' %}" method="POST">
+            {% csrf_token %}
+            <div class="button-container" style="width:150px;margin-left:20px">
+                <input name="userid" type="hidden" value="{{ id }}">
+                <button id="resendButton" type="submit" class="resend-submit">Resend</button>
+            </div>
+        </div>
+        <div>
+            <p id="timer"></p>
+            </div>
     </div>
-    {% comment %} <script>
-        let countdown = 30;
-        const timerElement = document.getElementById('timer');
-        const resendButton = document.querySelector('form[action="{% url 'resend_otp' id=id %}"] button');
-
-        resendButton.disabled = true;
-
-        const timerInterval = setInterval(() => {
-            countdown--;
-            if (timerElement) {
-                timerElement.textContent = countdown;
-            }
-
-            if (countdown <= 0) {
-                clearInterval(timerInterval);
-                resendButton.disabled = false;
-                if (timerElement) {
-                    timerElement.parentElement.textContent = 'You can now resend the OTP';
-                }
-            }
-        }, 1000); {% endcomment %}
-    {% comment %} </script> {% endcomment %}
-        </body>
+            </form>
+           
+            <script>
+                let time = 30; // Initial countdown time in seconds
+                const button = document.getElementById('resendButton');
+                const timerDisplay = document.getElementById('timer');
+                
+                // Disable the button initially
+                button.disabled = true;
+            
+                // Function to update the timer display
+                const updateTimer = () => {
+                    timerDisplay.textContent = `Please wait ${time} seconds before resending.`;
+                };
+            
+                // Function to handle the countdown and button re-enabling
+                const countdown = () => {
+                    if (time > 0) {
+                        time--; // Decrement the time
+                        updateTimer(); // Update the displayed time
+                    } else {
+                        button.disabled = false; // Re-enable the button
+                        timerDisplay.textContent = ''; // Clear the timer message
+                        clearInterval(interval); // Stop the countdown
+                    }
+                };
+            
+                // Start the countdown immediately
+                updateTimer(); // Show the initial countdown time
+                const interval = setInterval(countdown, 1000); // Update the timer every second
+            </script>
+</body>
 </html>

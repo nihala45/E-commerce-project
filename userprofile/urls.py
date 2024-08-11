@@ -20,6 +20,10 @@ urlpatterns = [
     path('download_product_invoice/<order_id>', views.download_product_invoice, name='download_product_invoice'),
     path('razorPaypayment', views.razorPaypayment, name='razorPaypayment'),
     path('razorStatusUpdate', views.razorStatusUpdate, name='razorStatusUpdate'),
+    path('cancelApproval', views.cancelApproval, name='cancelApproval'),
+    path('returnApproval', views.returnApproval, name='returnApproval'),
+    
+
     
     
     

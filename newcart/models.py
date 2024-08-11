@@ -50,5 +50,7 @@ class Ordered_item(models.Model):
     product = models.ForeignKey(newproducts, on_delete=models.CASCADE)
     product_qty = models.PositiveIntegerField()
     product_size=models.CharField(max_length=10)
-    
+    cancel_reason=models.TextField(blank=True, null=True)
+    return_reason=models.TextField(blank=True, null=True)
+
     

@@ -578,19 +578,45 @@
                                                             </td>
                                                             <td>{{ total_amounts|slice:forloop.counter|last|floatformat:2 }}</td>
                                                             {% comment %} <td>{{ unit_prices|slice:forloop.counter0|floatformat:2 }} * {{ i.product_qty }} = {{ unit_prices|slice:forloop.counter0|floatformat:2|add:i.product_qty|floatformat:2 }}</td> {% endcomment %}
-
+                                                            {% if i.status == 'placed' %}
+                                                            {% if i.cancel_reason %}
+                                                                <td style="color: red;">
+                                                                    <h7>Cancel Request Rejected</h7>
+                                                                </td>
+                                                          
+                                                            {% else %}
+                                                                <td style="color: red;">
+                                                                    {{ i.status }}
+                                                                </td>
+                                                            {% endif %}
+                                                            {% elif i.status == 'Delivered' %}
+                                                            {% if i.return_reason %}
+                                                            <td style="color: red;">
+                                                                <h7>Return Request Rejected</h7>
+                                                            </td>
+                                                            {%else%}
+                                                            <td style="color: red;">
+                                                                <h7>{{i.status}}</h7>
+                                                            </td>
+                                                            {%endif%}
+                                                        {% else %}
                                                             <td style="color: red;">
                                                                 {{ i.status }}
                                                             </td>
-                                                            {% if i.status != "Cancelled" and i.status != "Returned" and i.status != "Pending" %}
-                                                            <td style="font-weight: bold;">
-                                                                {% if i.status == "Delivered" %}
-                                                                <a href="" onclick="returnOrder('{{ i.id }}', event)" style="font-weight: bolder; color: darkred;">Return</a>
-                                                                {% else %}
-                                                                <a href="" onclick="cancelOrder({{ i.id }}, event)" style="font-weight: bolder; color: darkred;">Cancel</a>
-                                                                {% endif %}
-                                                            </td>
+                                                        {% endif %}
+                                                        
+                                                        {% if i.status in "Returned, ReturnRequested, Cancelled, CancelRequest, Pending" %}
+                                                        <td></td>
+                                                    {% else %}
+                                                        <td style="font-weight: bold;">
+                                                            {% if i.status == "Delivered"  %}
+                                                            <a href="" onclick="returnOrder('{{ i.id }}', event)" style="font-weight: bolder; color: darkred;">Return</a>
+                                                            {% else %}
+                                                            <a href="" onclick="cancelOrder({{ i.id }}, event)" style="font-weight: bolder; color: darkred;">Cancel</a>
                                                             {% endif %}
+                                                        </td>
+                                                    {% endif %}
+                                                    
                                                         </tr>
                                                         
                                                             {% endfor %}
@@ -999,10 +1025,13 @@
                     if (result.cancel) {
                         Swal.fire({
                             title: "Success!",
-                            text: "The order has been successfully cancelled.",
+                            text: "The cancel request has been successfully sent.",
                             icon: "success"
                         });
                     }
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2000);
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -1031,8 +1060,7 @@
             preConfirm: (returnReason) => {
                 if (!returnReason) {
                     Swal.showValidationMessage('Return reason is required');
-                }
-                return returnReason;
+                }                return returnReason;
             }
         }).then((result) => {
             if (result.isConfirmed) {  // Corrected the condition
@@ -1051,13 +1079,17 @@
                 })
                 .then(response => response.json())
                 .then(result => {
-                    if (result.success) {  // Adjust according to your response
+                    if (result.cancel) {  // Adjust according to your response
                         Swal.fire({
                             title: "Success!",
-                            text: "The order has been successfully returned.",
+                            text: "The return Request Sented Successfully.",
                             icon: "success"
                         });
+                        setTimeout(() => {
+                            location.reload();
+                        }, 2000);
                     }
+                   
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -1179,7 +1211,7 @@
             .then(data => {
                 console.log("Payment verification response:", data);
                 if (data.status === "success") {
-                    location.href = "{% url 'newcart:successpage' %}";
+                    location.reload()
                 } else {
                     handlePaymentFailure(order.amount / 100); 
                 }

@@ -168,6 +168,8 @@
            
             <p><strong>Order Date:</strong> {{ all_order.order_date }}</p>
             <p><strong>Payment Method:</strong> {{ all_order.payment_method }}</p>
+            <p><strong>Payment Method:</strong> {{ all_order.id }}</p>
+
         </div>
 		<div class="order-details " style="margin-right:200px%">
             <h3>Address Details</h3>
@@ -204,6 +206,8 @@
                             <th>Amount</th>
                             <th>Details</th>
                             <th>Status</th>
+                            <th>Reason</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -221,6 +225,15 @@
 									<h3 style="color:red;">Order Cancelled<h3>
 									{% elif i.status == 'Returned' %}
 										<h3 style="color:red;">Order Returned<h3>
+									{% elif i.status == 'CancelRequest' %}
+									<h3 style="color:red;">Cancel Requested</h3>
+									<button style="margin-top: 0px; padding: 4px 8px; font-size: 12px; line-height: 1.2; border-radius: 3px;" onClick="cancelApproval(event,{{i.id}},'approve')">Approve</button>
+									<button style="padding: 4px 8px; font-size: 12px; line-height: 1.2; border-radius: 3px;" onClick="cancelApproval(event,{{i.id}},'reject')" >Reject</button>
+									{% elif i.status == 'ReturnRequested' %}
+									<h3 style="color:red;">Return Requested</h3>
+									<button style="margin-top: 0px; padding: 4px 8px; font-size: 12px; line-height: 1.2; border-radius: 3px;" onClick="returnApproval(event,{{i.id}},'approve')">Approve</button>
+									<button style="padding: 4px 8px; font-size: 12px; line-height: 1.2; border-radius: 3px;" onClick="returnApproval(event,{{i.id}},'reject')" >Reject</button>
+									
 									{% else %}
 								<form action="{% url 'ordermanagement:status_update' %}" method="post" id="statusForm{{ forloop.counter }}">
 									{% csrf_token %}
@@ -238,6 +251,9 @@
 								</form>
 								{% endif %}
                             </td>
+							<td style="width: 200px; word-wrap: break-word; white-space: pre-line;">
+								{{ i.cancel_reason }}
+							</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -246,12 +262,131 @@
             </div>
         </div>
     </div>
-
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script>
 		function statusUpdate(formIndex) {
 			const form = document.getElementById('statusForm' + formIndex);
 			form.submit();
 		}
 		</script>
-</body>
+
+		<script>
+			function cancelApproval(e, ord_id, response) {
+				e.preventDefault();
+				console.log(ord_id);
+				console.log(response);
+			
+				let formData = new FormData();
+				formData.append("ord_id", ord_id);
+				formData.append("response", response);
+			
+				fetch('{% url "userprofile:cancelApproval" %}', {
+					method: 'POST',
+					headers: {
+						"X-CSRFToken": getCookie("csrftoken"),
+					},
+					body: formData
+				})
+				.then(response => response.json()) // Parse the response to JSON
+				.then(result => {
+					if (result.cancel == 'True') {
+						Swal.fire({
+							title: "Success!",
+							text: "The order has been successfully cancelled.",
+							icon: "success"
+						});
+					} else {
+						Swal.fire({
+							title: "success",
+							text: "The order cancellation has been rejected.",
+							icon: "success"
+						});
+					}
+				})
+				.catch(error => {
+					console.error('Error:', error);
+					Swal.fire({
+						title: "Error!",
+						text: "An error occurred while processing the request.",
+						icon: "error"
+					});
+				});
+			}
+			
+			function getCookie(name) {
+				let cookieValue = null;
+				if (document.cookie && document.cookie !== "") {
+					const cookies = document.cookie.split(";");
+					for (let i = 0; i < cookies.length; i++) {
+						const cookie = cookies[i].trim();
+						if (cookie.substring(0, name.length + 1) === name + "=") {
+							cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+							break;
+						}
+					}
+				}
+				return cookieValue;
+			}
+		</script>
+		<script>
+			function returnApproval(e, ord_id, response) {
+				console.log("return   runningggggggggggggggggggggggggggggggggggggggggggggggggggg")
+				e.preventDefault();
+				console.log(ord_id);
+				console.log(response);
+			
+				let formData = new FormData();
+				formData.append("ord_id", ord_id);
+				formData.append("response", response);
+			
+				fetch('{% url "userprofile:returnApproval" %}', {
+					method: 'POST',
+					headers: {
+						"X-CSRFToken": getCookie("csrftoken"),
+					},
+					body: formData
+				})
+				.then(response => response.json()) // Parse the response to JSON
+				.then(result => {
+					console.log("here retureadfklnadksfmkplas",result)
+					if (result.return == 'success') {
+						Swal.fire({
+							title: "Success!",
+							text: "The Return request been successfully accepted.",
+							icon: "success"
+						});
+					} else {
+						Swal.fire({
+							title: "Rejected!",
+							text: "The order return Request has been rejected.",
+							icon: "success"
+						});
+					}
+				})
+				.catch(error => {
+					console.error('Error:', error);
+					Swal.fire({
+						title: "success",
+						text: "An error occurred while processing the request.",
+						icon: "success"
+					});
+				});
+			}
+			
+			function getCookie(name) {
+				let cookieValue = null;
+				if (document.cookie && document.cookie !== "") {
+					const cookies = document.cookie.split(";");
+					for (let i = 0; i < cookies.length; i++) {
+						const cookie = cookies[i].trim();
+						if (cookie.substring(0, name.length + 1) === name + "=") {
+							cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+							break;
+						}
+					}
+				}
+				return cookieValue;
+			}
+		</script>
+		</body>
 </html>

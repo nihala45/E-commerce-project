@@ -2247,7 +2247,7 @@
               console.log("Response Data:", data);
   
               if (data.status === "success") {
-                  location.href = "{% url 'newcart:successpage' %}";
+                  location.href = "{% url 'newcart:successpage'  %}";
               } else if (data.status === "razorpay") {
                   console.log("Razorpay order data:", data);
                   razorPay(data.payment_order, data.key);

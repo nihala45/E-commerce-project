@@ -105,6 +105,8 @@ def dashboard(request):
     
     
     
+    
+    
     print(top_3_categories,'this is top 3 catttttttttttttttttttttttttttttttttttttttttttttttttttttt',category1,category1_count)     
     
     context={

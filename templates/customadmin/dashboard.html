@@ -204,12 +204,12 @@
             // Monthly Sales Bar Chart
             var monthlySalesCtx = document.getElementById('monthlySalesChart').getContext('2d');
             var monthlySalesChart = new Chart(monthlySalesCtx, {
-                type: 'bar',
+                type: 'line',
                 data: {
                     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                     datasets: [{
                         label: 'Monthly Sales',
-                        data: [{{ jan.sum }}, {{ feb.sum }}, {{ mar.sum }}, {{ apr.sum }}, {{ may.sum }}, {{ june.sum }}, {{ july.sum }}, {{ aug.sum }}, {{ sep.sum }}, {{ oct.sum }}, {{ nov.sum }}, {{ dec.sum }}],
+                        data: [0,1000,3000,5000,0,6000,200,3000,1500,3000,5000,950],
                         backgroundColor: 'rgba(75, 192, 192, 0.2)',
                         borderColor: 'rgba(75, 192, 192, 1)',
                         borderWidth: 1

@@ -141,6 +141,9 @@ def proceed_to_checkout(request):
         user_email = request.session.get('email')
         user = CustomUser.objects.get(email=user_email)
         cart_items = MyCart.objects.filter(user_id=user.id)
+        # if not cart_items.exists():
+            
+        #     return redirect()
         wallet = Wallet.objects.filter(user=user.id)
         balance = 0
         
@@ -148,7 +151,7 @@ def proceed_to_checkout(request):
             balance += i.amount
         
         if cart_items.count() == 0:
-            return redirect('newcart:show_cart')
+            return redirect('logintohome:shop')
         else:
             addresses = UserAddress.objects.filter(user_id=user.id)
             sub_total = 0
@@ -537,6 +540,8 @@ def Remove_cart_product(request,it_id):
     cart_product.delete()
     return redirect('newcart:show_cart')
 
-
+@never_cache
 def successpage(request):
+    
+    
     return render(request,'userside/success.html')

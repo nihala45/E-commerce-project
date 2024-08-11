@@ -10,7 +10,7 @@ from django.http import JsonResponse
 from django.urls import reverse
 from wishlist.models import WishlistProduct
 from django.db.models import Q
-
+import pyotp
 
 
 # Create your views here.
@@ -109,6 +109,7 @@ def otp_varification(request,id):
 
 
 
+
 def filterProduct(request):
     category1 = categories.objects.all()
     products=newproducts.objects.none()
@@ -193,3 +194,39 @@ def shop(request):
 
 
 
+def resend_otp(request):
+    print('Resend OTP function called.')
+    
+    if request.method == "POST":
+        user_id = request.POST.get('userid')
+        
+        if user_id:
+            try:
+    
+                user = CustomUser.objects.get(id=user_id)
+
+            
+                secret_key = pyotp.random_base32()
+                otp = pyotp.TOTP(secret_key)
+                otp_code = otp.now()
+                print('Generated OTP:', otp_code)
+
+                user.otp_secret = secret_key
+                user.otp_fld = otp_code
+                user.save()
+
+                print('User found:', user)
+                print('OTP saved for user:', user.otp_fld)
+
+               
+                return redirect(reverse('logintohome:otp', args=[user.id]))
+
+            except CustomUser.DoesNotExist:
+                print('User not found.')
+                
+
+        else:
+            print('User ID not provided.')
+           
+    
+    return redirect('logintohome:default_page')
