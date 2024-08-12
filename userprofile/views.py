@@ -82,7 +82,6 @@ def editprofile(request):
 
 
 def save_edit(request):
-    print('NEW USERNAME AND NEW PHONE')
     if request.method == 'POST':
         new_username = request.POST['edit-username']
         new_phone = request.POST['edit-phone']
@@ -90,17 +89,16 @@ def save_edit(request):
         
         obj= CustomUser.objects.get(email=user1)
        
-        print(obj.email,".............",obj.username)
+       
         
         obj.username = new_username
         if len(new_phone) == 10 and new_phone.isdigit() and new_phone.count('0') <= 5:
             obj.phone = new_phone
         else:
-            print("Invalid phone number:", new_phone)
             messages.error(request, "Invalid phone number. Please enter a valid 10-digit phone number.")
             return redirect('userprofile:editprofile') 
             
-        print(new_phone,new_username,'obj_username,obj_phone')
+        
         request.session['username'] = new_username
         request.session['phone'] = new_phone
         obj.save()
@@ -110,7 +108,6 @@ def save_edit(request):
 
 def add_user_address(request):
     if request.method == 'POST':
-        print("hadfsjcmnczxmvdm3456789")
         address_name = request.POST.get('name')
         address_Email = request.POST.get('Email')
         address_Phone = request.POST.get('phone')
@@ -173,7 +170,7 @@ def remove_address(request,address_id):
 
 
 def change_password(request):
-    print("helloo")
+   
     if request.method == 'POST':
         current_password = request.POST.get('current')
         new_password = request.POST.get('password')
@@ -181,7 +178,7 @@ def change_password(request):
         user_email = request.session.get('email')
         
         user = CustomUser.objects.get(email=user_email)
-        print(user_email,"ggggg",user)
+        
         if(user.password != current_password):
             return JsonResponse({'status': 'wrong', 'message': 'Password is incorrect'})
         else:
@@ -284,32 +281,25 @@ def cancelApproval(request):
             
             last_price = (amount - discount_price) * Decimal(ord.product_qty)
             
-            print("here reached finalyafjlnaldmsfnkladsm",last_price)
+            
             if main_order.payment_method == 'razor_pay':
-                print("kkkkk")
+         
                 result=Wallet.objects.create(
                     user=user,
                     date_time=timezone.now(),
                     amount=last_price,
                     is_credit=True
                 )
-                print(result,"here is result")
+                
             return JsonResponse({'cancel': True})
         
-        else:  # If cancellation is rejected
+        else:  
             ord = get_object_or_404(Ordered_item, id=ord_id)
             
-            ord.status = "placed"  # Change to a status that represents rejection
+            ord.status = "placed" 
             ord.save()
             
-            # # Update inventory
-            # if ord.product_size == 's':
-            #     ord.product.small = str(int(ord.product.small) - ord.product_qty)
-            # elif ord.product_size == 'm':
-            #     ord.product.medium = str(int(ord.product.medium) - ord.product_qty)
-            # elif ord.product_size == 'l':
-            #     ord.product.large = str(int(ord.product.large) - ord.product_qty)
-            # ord.product.save()
+            
             
             return JsonResponse({'cancel': False, 'notcancel': True})
     
@@ -352,7 +342,7 @@ def returnApproval(request):
             
             last_price = (amount - discount_price) * Decimal(ord.product_qty)
             
-            # Handle payment refund if applicable
+           
             if main_order.payment_method == 'razor_pay':
                 result=Wallet.objects.create(
                     user=user,
@@ -360,24 +350,17 @@ def returnApproval(request):
                     amount=last_price,
                     is_credit=True
                 )
-                print(result,"here is result")
+               
             
             return JsonResponse({'return': 'success'})
         
-        else:  # If cancellation is rejected
+        else:  
             ord = get_object_or_404(Ordered_item, id=ord_id)
             
-            ord.status = "Delivered"  # Change to a status that represents rejection
+            ord.status = "Delivered"  
             ord.save()
             
-            # # Update inventory
-            # if ord.product_size == 's':
-            #     ord.product.small = str(int(ord.product.small) - ord.product_qty)
-            # elif ord.product_size == 'm':
-            #     ord.product.medium = str(int(ord.product.medium) - ord.product_qty)
-            # elif ord.product_size == 'l':
-            #     ord.product.large = str(int(ord.product.large) - ord.product_qty)
-            # ord.product.save()
+            
             
             return JsonResponse({'cancel': False, 'notcancel': True})
     
@@ -390,53 +373,18 @@ def cancelOrder(request):
         user_email = request.session.get('email')
         ord_id = request.POST.get('orderId')
         reason = request.POST.get('cancelReason')
-        print(reason,'this is the reason for my order cancellation')
+        
         
         user = get_object_or_404(CustomUser, email=user_email)
         
         ord = get_object_or_404(Ordered_item, id=ord_id)
 
         ord.status = "CancelRequest"
-        print(ord,'looooooooooooooooooosonaofapijgnipoajgipoahjp')
+        
         ord.cancel_reason=reason
         ord.save()
         
-        # if ord.product_size == 's':
-        #     ord.product.small = str(int(ord.product.small) + ord.product_qty)
-
-        # if ord.product_size == 'm':
-        #     ord.product.medium = str(int(ord.product.medium) + ord.product_qty)
-
-        # if ord.product_size == 'l':
-        #     ord.product.large = str(int(ord.product.large) + ord.product_qty)
-
-        # ord.product.save()
         
-        # main_order=AllOrder.objects.get(id=ord.order_id)
-        
-        # items=Ordered_item.objects.filter(order_id=main_order)
-        
-        
-        
-        # product_quantity = sum(item.product_qty for item in items)
-        # discount_price = Decimal(main_order.discount_amount) / Decimal(product_quantity) if product_quantity > 0 else Decimal(0)
-        
-        
-        
-        # if ord.product.offer:
-        #     amount = Decimal(ord.product.price) - Decimal(ord.product.offer.discount)
-        # else:
-        #     amount = Decimal(ord.product.price)
-        # last_price=(amount-discount_price)*(ord.product_qty)
-        
-        # if main_order.payment_method=='razor_pay':
-        #     wallet_item = Wallet(
-        #     user=user,
-        #     date_time=timezone.now(),
-        #     amount=last_price,
-        #     is_credit=True
-        # )
-        # wallet_item.save()
             
         
         return JsonResponse({'cancel': True})
@@ -448,7 +396,6 @@ def cancelOrder(request):
 
 
 def returnOrder(request):
-    print('return order is workingggg')
     user_email = request.session.get('email')
     ord_id = request.POST.get('orderId')
     reason = request.POST.get('returnReason')
@@ -462,40 +409,7 @@ def returnOrder(request):
     ord.save()
         
      
-    # main_order=AllOrder.objects.get(id=ord.order_id)
     
-    # items=Ordered_item.objects.filter(order_id=main_order)
-    # if ord.product_size == 's':
-    #     ord.product.small = str(int(ord.product.small) + ord.product_qty)
-
-    # if ord.product_size == 'm':
-    #     ord.product.medium = str(int(ord.product.medium) + ord.product_qty)
-
-    # if ord.product_size == 'l':
-    #     ord.product.large = str(int(ord.product.large) + ord.product_qty)
-
-    # ord.product.save()
-        
-        
-    # product_quantity = sum(item.product_qty for item in items)
-    
-    # discount_price = Decimal(main_order.discount_amount) / Decimal(product_quantity) if product_quantity > 0 else Decimal(0)
-    
-    # if ord.product.offer:
-    #     amount = Decimal(ord.product.price) - Decimal(ord.product.offer.discount)
-    # else:
-    #     amount = Decimal(ord.product.price)
-    # last_price=(amount-discount_price)*(ord.product_qty)
-        
-    # if main_order.payment_method=='razor_pay':
-    #     wallet_item = Wallet(
-    #     user=user,
-    #     date_time=timezone.now(),
-    #     amount=last_price,
-    #     is_credit=True
-    # )
-    # wallet_item.save()
-            
         
     return JsonResponse({'cancel': True})
     
@@ -540,7 +454,6 @@ def download_product_invoice(request, order_id):
     "total_amounts": total_amounts,
     }
     template = get_template("userside/invoice.html")
-    print(context,"kkkkkkkkkkkkkkkkkkkkk")
     html = template.render(context)
 
     result = BytesIO()
@@ -560,7 +473,7 @@ client = razorpay.Client(auth=(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET))
 def razorPaypayment(request):
     if request.method == 'POST':
         orderId = request.POST.get('orderId')
-        print(orderId,'this is orderid')
+      
 
         
         order=AllOrder.objects.get(id=orderId)
@@ -583,9 +496,8 @@ def razorPaypayment(request):
 def razorStatusUpdate(request):
     if request.method == "POST":   
         order_Id = request.POST.get('order_id')
-        print(order_Id,'this is orderid')
+        
     deliverd_items=Ordered_item.objects.filter(order_id=order_Id)
-    print(deliverd_items,"here isfoasl")
     for item in deliverd_items:
         item.status = 'placed'
         item.save()

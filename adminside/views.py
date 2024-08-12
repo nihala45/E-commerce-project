@@ -170,7 +170,7 @@ def dashboard(request):
     
             sales_per_month = {calendar.month_name[i]: 0 for i in range(1, 13)}
 
-            print(monthly_sales,"monthly salesasfdnsvljknsdjklvnajlsdnvljk")
+            
             month_item=[]
             for entry in monthly_sales:
                 month_name = entry['month'].strftime('%B')
@@ -204,7 +204,7 @@ def dashboard(request):
     
             sales_per_year = {year: 0 for year in range(2022, 2025)}
 
-            print(yearly_sales, "Yearly Sales")
+            
 
     
             for entry in yearly_sales:
@@ -225,9 +225,7 @@ def dashboard(request):
     
     
         
-    print(chart_lable)
-    print(".......................................................................")
-    print(chart_value)
+    
     context={
         "cash_delevery":cash_delevery,
         "wallet_delevery":wallet_delevery,

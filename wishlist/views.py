@@ -6,7 +6,7 @@ from logintohome.models import CustomUser
 from django.http import JsonResponse
 from category.models import categories
 from django.template.loader import render_to_string
-
+from django.contrib import messages
 
 
 def Wishlist(request):
@@ -28,7 +28,7 @@ def add_to_wishlist(request):
     wishlist_item = WishlistProduct.objects.filter(user=user, product_id=prod_id).first()
     category1 = categories.objects.all()
     products = newproducts.objects.all().order_by('-id')
-    # wishlist_items=WishlistProduct.objects.all()
+   
     if wishlist_item:
         wishlist_item.delete()
         return JsonResponse({'status':'deleted'})
@@ -45,32 +45,36 @@ def add_to_cart(request):
     
 def remove_from_wishlist(request, wishlist_id):
     try:
-        print('Attempting to remove item from wishlist...', wishlist_id)
-
+      
         user_email = request.session.get('email')
+        
+       
         if not user_email:
+            messages.error(request, 'Please log in to remove items from your wishlist.')
             return redirect('wishlist:login')  
 
+        
         user = CustomUser.objects.get(email=user_email)
-        print('User ID:', user.id)
+        
         
         product = WishlistProduct.objects.filter(id=wishlist_id, user_id=user.id).first()
         
         if product:
             product.delete()
-            print('Product removed from wishlist.')
+            messages.success(request, 'Product removed from wishlist.')
         else:
-            print('Product not found in wishlist.')
+            messages.info(request, 'Product not found in wishlist.')
         
     except CustomUser.DoesNotExist:
-        print('User does not exist.')
+        messages.error(request, 'User does not exist.')
         return redirect('wishlist:login') 
 
     except WishlistProduct.DoesNotExist:
-        print('Wishlist product does not exist.')
+        messages.error(request, 'Wishlist product does not exist.')
         return redirect('wishlist:view_wishlist')  
     
     except Exception as e:
-        print(f'An unexpected error occurred: {e}')
+        messages.error(request, f'An unexpected error occurred: {e}')
         return redirect('wishlist:view_wishlist')  
-    return redirect('wishlist:Wishlist')  
+    
+    return redirect('wishlist:Wishlist')

@@ -48,8 +48,7 @@ def Signup(request):
         redirect_url = reverse('logintohome:otp', args=[user2.id])
         return JsonResponse({'status':'success','redirect_url': redirect_url})   
         
-        #return redirect('logintohome:otp', id=user2.id)
-        
+       
 
 def loginn(request):
     if request.method == 'POST':
@@ -64,7 +63,7 @@ def loginn(request):
                 request.session['username'] = user.username
                 return JsonResponse({'status':'success'})
                 
-                # return redirect('logintohome:homee')
+               
 
                 
             else:
@@ -179,7 +178,7 @@ def shop(request):
             user=CustomUser.objects.get(email=user_eamil)
             category1 = categories.objects.all()
             products = newproducts.objects.all().order_by('-id')
-            # wishlist_items=WishlistProduct.objects.all()
+            
             wishlist_items = WishlistProduct.objects.filter(user_id=user)
             wish=[]
             for i in wishlist_items:
@@ -195,38 +194,29 @@ def shop(request):
 
 
 def resend_otp(request):
-    print('Resend OTP function called.')
-    
     if request.method == "POST":
         user_id = request.POST.get('userid')
-        
+
         if user_id:
             try:
-    
                 user = CustomUser.objects.get(id=user_id)
-
-            
+                
+               
                 secret_key = pyotp.random_base32()
                 otp = pyotp.TOTP(secret_key)
                 otp_code = otp.now()
-                print('Generated OTP:', otp_code)
 
+                
                 user.otp_secret = secret_key
                 user.otp_fld = otp_code
                 user.save()
 
-                print('User found:', user)
-                print('OTP saved for user:', user.otp_fld)
-
-               
+                
                 return redirect(reverse('logintohome:otp', args=[user.id]))
 
             except CustomUser.DoesNotExist:
-                print('User not found.')
-                
-
+                messages.error(request, 'User not found.')
         else:
-            print('User ID not provided.')
-           
+            messages.error(request, 'User ID not provided.')
     
     return redirect('logintohome:default_page')

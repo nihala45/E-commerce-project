@@ -31,7 +31,6 @@ def addproduct(request):
 
 def saveproducts(request):
     if request.method=='POST':
-        print('inside of the post method')
         name=request.POST['product_name']
         category_id = request.POST['category']
         description=request.POST['description']
@@ -87,7 +86,6 @@ def product_editpage(request, prod_id):
     product = newproducts.objects.get(id=prod_id)
     catyy = categories.objects.all()
     offer_details=Offer.objects.all()
-    print(vars(product),"gjyhgbvc ",product.id,"iddddddddddddddddddd")
     return render(request, 'customadmin/editproduct.html', {'product': product, 'catyy': catyy,'offers':offer_details})
 
 
@@ -96,7 +94,6 @@ def product_editpage(request, prod_id):
 def product_editsave(request):
     if request.method == 'POST':
         prod_id = request.POST.get('product_id')
-        print(prod_id, 'niahfiahfiahfiahfiahiahfhu')
 
         editname = request.POST.get('productname')
         editdescription = request.POST.get('descri')
@@ -111,7 +108,7 @@ def product_editsave(request):
         editlarge = request.POST.get('largequantity')
         editoffer = request.POST.get('off')
         
-        print(editcategory, 'EDIT CATEGORUYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY')
+        
         
         pro = newproducts.objects.get(id=prod_id)
         pro.name = editname

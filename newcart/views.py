@@ -34,20 +34,18 @@ def add_to_cart(request):
         quantity = int(request.POST.get('quantity', 1))
         size = request.POST.get('size')
 
-        print(f'Product ID: {product_id}, Quantity: {quantity}, Size: {size}')
+        
 
         user = CustomUser.objects.get(email=user_email)
         product = get_object_or_404(newproducts, id=product_id)
 
-        print("User and product fetched successfully.")
+        
 
         try:
             cart_item = MyCart.objects.get(user=user, product=product, size=size)
-            print(f'Existing cart item: {cart_item}')
             return JsonResponse({'status': 'already'})
         except MyCart.DoesNotExist:
             MyCart.objects.create(user=user, product=product, size=size, quantity=quantity)
-            print('New cart item created.')
             return JsonResponse({'status': 'success'})
 
     return JsonResponse({'status': 'invalid request'}, status=400)
@@ -95,7 +93,6 @@ def quantity_upadate(request):
     user_email=request.session['email']
     user_id=CustomUser.objects.get(email=user_email)
     if request.method=='POST':
-        print(request.POST,"saf")
         prod_id=request.POST.get('product_id') 
         count = int(request.POST.get('count'))
         prduct_size=request.POST.get('size')
@@ -108,7 +105,7 @@ def quantity_upadate(request):
     else:
          product_quantity=int(products.large)
          
-    print(product_quantity,"gdghfahjnbwd")
+    
     
         
 
@@ -116,10 +113,8 @@ def quantity_upadate(request):
     if count==1:
         
         if (cart_product.quantity + count) > product_quantity:
-            print("out of stock")
             return JsonResponse({'status':'out'})
         else:
-            print("increasing")
             cart_product.quantity+=count 
             cart_product.save()
             return JsonResponse({'status':'success'})
@@ -141,9 +136,9 @@ def proceed_to_checkout(request):
         user_email = request.session.get('email')
         user = CustomUser.objects.get(email=user_email)
         cart_items = MyCart.objects.filter(user_id=user.id)
-        # if not cart_items.exists():
+        
             
-        #     return redirect()
+       
         wallet = Wallet.objects.filter(user=user.id)
         balance = 0
         
@@ -167,7 +162,7 @@ def proceed_to_checkout(request):
             
             discount = (sub_total * coupon_discount) / 100
             final_amount = sub_total - discount
-            print(discount, "Discount applied", coupon_discount)
+            
 
             coupons = Coupon.objects.all()
             applicable_coupons = [coupon for coupon in coupons if sub_total >= coupon.critiria_amount]
@@ -199,7 +194,7 @@ def proceed_to_checkout(request):
        
         return redirect('logintohome:homee') 
     except Exception as e:
-        print(f"Error occurred: {e}")
+        
         return redirect('newcart:show_cart') 
 
 
@@ -231,7 +226,6 @@ def apply_coupon(request):
         return JsonResponse({'status': 'success', 'message': 'Coupon added successfully.'})
 
 def none_coupon(request):
-    print('sooooooooooooooooooooooooooooo')
     user_email = request.session.get('email')
 
     user = get_object_or_404(CustomUser, email=user_email)
