@@ -94,41 +94,56 @@
             <div class="col-md-3">
                 <div class="card bg-primary text-white mb-3">
                     <div class="card-body">
-                        <h3 class="card-title">₹{{ thismonth.sum }}</h3>
-                        <p class="card-text">This month sales</p>
-                        <p>{{ date }}</p>
+                        <h3 class="card-title">₹{{ delivered_sales_total_monthly }}</h3>
+                        <p class="card-text">monthly sales</p>
+                        <p>{{ current_month_name }}</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="card bg-success text-white mb-3">
                     <div class="card-body">
-                        <h3 class="card-title">₹{{ today.sum }}</h3>
+                        <h3 class="card-title">₹{{ delivered_sales_today }}</h3>
                         <p class="card-text">Daily sales</p>
-                        <p>{{ date }}</p>
+                        <p>{{ current_date }}</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="card bg-info text-white mb-3">
                     <div class="card-body">
-                        <h3 class="card-title">₹{{ thisyear.sum }}</h3>
-                        <p class="card-text">Yearly sales {{cash_delevery}},{{wallet_delevery}},{{razor_delevery}}</p>
+                        <h3 class="card-title">₹{{ delivered_sales_total_yearly }}</h3> <!-- Formats the number to 2 decimal places -->
+                        <p class="card-text">{{ current_year }}</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card bg-warning text-white mb-3">
+                {% comment %} <div class="card bg-warning text-white mb-3">
                     <div class="card-body">
-                        <h3 class="card-title">₹{{ thisweek.sum }}</h3>
+                        <h3 class="card-title">₹{{ weekly_sales }}</h3>
                         <p class="card-text">Weekly sales</p>
                     </div>
-                </div>
+                </div> {% endcomment %}
             </div>
         </div>
        <div style="display:flex;justify-content:space-around ">
         <div class="chart-container" style="width:60%">
         <h2>Monthly Sales</h2>
+        <div class="filter-container">
+            <div class="row">
+                <div class="col-md-8">
+                    <form method="GET" action="" class="form-inline">
+                        <select name="time_range" id="time_range" class="form-control mr-2">
+                            <option value="">Select Time Range</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="yearly">Yearly</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary">Apply</button>
+                    </form>
+                </div>
+               
+            </div>
+        </div>
 
             <canvas id="monthlySalesChart" width="400" height="200"></canvas>
         </div>
@@ -199,17 +214,24 @@
         }
     </script>
 
+
+
     <script>
         document.addEventListener("DOMContentLoaded", function(event) {
             // Monthly Sales Bar Chart
+        
+            let chartthings = {{ chartLabel|safe }};
+            let chartValuesD = {{ chartValue|safe }};
+           console.log(chartthings,"helloooooooo")
+    
             var monthlySalesCtx = document.getElementById('monthlySalesChart').getContext('2d');
             var monthlySalesChart = new Chart(monthlySalesCtx, {
                 type: 'line',
                 data: {
-                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                    labels:chartthings ,
                     datasets: [{
                         label: 'Monthly Sales',
-                        data: [{{january_sales}},{{february_sales}},{{march_sales}},{{april_sales}},{{may_sales}},{{june_sales}},{{july_sales}},{{august_sales}},{{september_sales}},{{october_sales}},{{november_sales}},{{december_sales}}],
+                        data:chartValuesD,
                         backgroundColor: 'rgba(75, 192, 192, 0.2)',
                         borderColor: 'rgba(75, 192, 192, 1)',
                         borderWidth: 1

@@ -14,6 +14,10 @@ from category.models import categories
 from django.db.models import Sum
 from django.db.models.functions import TruncMonth
 import calendar
+from django.db.models.functions import TruncYear
+from django.utils.timezone import now
+from datetime import datetime
+from datetime import datetime, timedelta
 @never_cache
 def adminloginn(request):
     if 'is_superuser' in request.session:
@@ -47,6 +51,50 @@ def dashboard(request):
     razor_delevery=len(order_razor)
     
     
+    
+    current_date = now()
+    current_date = datetime.now()
+    current_year = current_date.year
+    current_month = current_date.month
+    
+    
+    
+    
+    current_date = datetime.now()
+    current_year = current_date.year
+    current_month_number = current_date.month
+    current_month_name = current_date.strftime('%B')
+    current_time = current_date.strftime('%H:%M:%S')
+    
+    total_delivered_sales_yearly = AllOrder.objects.filter(
+        id__in=Ordered_item.objects.filter(status='Delivered').values('order_id'),
+        order_date__year=current_year
+    ).aggregate(total_sales=Sum('total_amount'))
+
+    
+    delivered_sales_total_yearly = total_delivered_sales_yearly.get('total_sales', 0) or 0
+
+    
+    current_month_sales = AllOrder.objects.filter(
+        id__in=Ordered_item.objects.filter(status='Delivered').values('order_id'),
+        order_date__year=current_year,
+        order_date__month=current_month_number
+    ).aggregate(total_sales=Sum('total_amount'))
+
+    
+    delivered_sales_total_monthly = current_month_sales.get('total_sales', 0) or 0
+
+    
+
+    
+    
+    today_sales = AllOrder.objects.filter(
+        id__in=Ordered_item.objects.filter(status='Delivered').values('order_id'),
+        order_date=current_date.date()
+    ).aggregate(total_sales=Sum('total_amount'))
+
+    
+    delivered_sales_today = today_sales.get('total_sales', 0) or 0
     
     order=Ordered_item.objects.filter(status="Delivered")
     
@@ -107,40 +155,79 @@ def dashboard(request):
     delivered_orders = AllOrder.objects.filter(
         id__in=Ordered_item.objects.filter(status='Delivered').values('order_id')
     )
+    chart_value=[]
+    chart_lable=[]
+    if request.method == 'GET':
+        time_range=request.GET.get('time_range')
+        if time_range == 'monthly':
+            monthly_sales = (delivered_orders
+            .annotate(month=TruncMonth('order_date'))
+            .values('month')
+            .annotate(total_sales=Sum('total_amount'))
+            .order_by('month')
+            )
 
     
-    monthly_sales = (delivered_orders
-        .annotate(month=TruncMonth('order_date'))
-        .values('month')
-        .annotate(total_sales=Sum('total_amount'))
-        .order_by('month')
-    )
+            sales_per_month = {calendar.month_name[i]: 0 for i in range(1, 13)}
 
-    
-    sales_per_month = {calendar.month_name[i]: 0 for i in range(1, 13)}
-
-    
-    for entry in monthly_sales:
-        month_name = entry['month'].strftime('%B')
-        sales_per_month[month_name] = entry['total_sales']
+            print(monthly_sales,"monthly salesasfdnsvljknsdjklvnajlsdnvljk")
+            month_item=[]
+            for entry in monthly_sales:
+                month_name = entry['month'].strftime('%B')
+                sales_per_month[month_name] = entry['total_sales']
         
-    january_sales = sales_per_month['January']
-    february_sales = sales_per_month['February']
-    march_sales = sales_per_month['March']
-    april_sales = sales_per_month['April']
-    may_sales = sales_per_month['May']
-    june_sales = sales_per_month['June']
-    july_sales = sales_per_month['July']
-    august_sales = sales_per_month['August']
-    september_sales = sales_per_month['September']
-    october_sales = sales_per_month['October']
-    november_sales = sales_per_month['November']
-    december_sales = sales_per_month['December']
+        
+                january_sales = sales_per_month['January']
+                february_sales = sales_per_month['February']
+                march_sales = sales_per_month['March']
+                april_sales = sales_per_month['April']
+                may_sales = sales_per_month['May']
+                june_sales = sales_per_month['June']
+                july_sales = sales_per_month['July']
+                august_sales = sales_per_month['August']
+                september_sales = sales_per_month['September']
+                october_sales = sales_per_month['October']
+                november_sales = sales_per_month['November']
+                december_sales = sales_per_month['December']
+        
+            chart_value=[january_sales,february_sales,march_sales,april_sales,may_sales,june_sales,july_sales,august_sales,september_sales,october_sales,november_sales,december_sales]
+            chart_lable=['January','February','March','April','May','June','July','August','September','October','Novermber','December']
+        else:
+        
+            yearly_sales = (delivered_orders
+                .annotate(year=TruncYear('order_date'))
+                .values('year')
+                .annotate(total_sales=Sum('total_amount'))
+                .order_by('year')
+            )
+
     
+            sales_per_year = {year: 0 for year in range(2022, 2025)}
+
+            print(yearly_sales, "Yearly Sales")
+
     
+            for entry in yearly_sales:
+                year = entry['year'].year
+                sales_per_year[year] = entry['total_sales']
+
+    
+            sales_2022 = sales_per_year[2022]
+            sales_2023 = sales_per_year[2023]
+            sales_2024 = sales_per_year[2024]  
+
+    
+            chart_value = [sales_2022, sales_2023, sales_2024]
+            chart_lable = ['2022', '2023', '2024']
+
     
         
     
+    
+        
+    print(chart_lable)
+    print(".......................................................................")
+    print(chart_value)
     context={
         "cash_delevery":cash_delevery,
         "wallet_delevery":wallet_delevery,
@@ -157,21 +244,17 @@ def dashboard(request):
         'category1_count':category1_count,
         'category2_count':category2_count,
         'category3_count':category3_count,
-        'january_sales': january_sales,
-        'february_sales': february_sales,
-        'march_sales': march_sales,
-        'april_sales': april_sales,
-        'may_sales': may_sales,
-        'june_sales': june_sales,
-        'july_sales': july_sales,
-        'august_sales': august_sales,
-        'september_sales': september_sales,
-        'october_sales': october_sales,
-        'november_sales': november_sales,
-        'december_sales': december_sales,
-        
-        
-        
+        'chartValue':chart_value,
+        'chartLabel':chart_lable,
+        'current_month_name': current_month_name,
+        'current_month_sales': current_month_sales,
+        'today_sales': today_sales,
+        'current_time': current_time,
+        'delivered_sales_total_yearly': delivered_sales_total_yearly,
+        'current_year':current_year,
+        'current_date':current_date,
+        'delivered_sales_total_monthly':delivered_sales_total_monthly,
+        'delivered_sales_today':delivered_sales_today,
         
         
     }
