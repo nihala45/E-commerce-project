@@ -28,7 +28,8 @@ SECRET_KEY = 'django-insecure-a0ouwqze^o&9uvnvy5#w!ic3$ykav&g3e)=q54z&788a7%o$k4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['13.60.34.7', '0.0.0.0', '13.60.34.7']
 
 
 # Application definition
@@ -94,7 +95,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'myproject',       # Name of your PostgreSQL database
-        'USER': 'postgres',   # PostgreSQL username
+        'USER': 'myprojectuser',   # PostgreSQL username
         'PASSWORD': '1234',   # PostgreSQL password
         'HOST': 'localhost',        # PostgreSQL server hostname (default: localhost)
         'PORT': '5432',             # PostgreSQL port (default: 5432)
@@ -160,4 +161,21 @@ RAZORPAY_KEY_SECRET='tfhpyNA9jTd59Szh8z23773U'
 SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
 
 
+CORS_ALLOWED_ORIGINS = [
+    'https://13.60.34.7/',
+]
+CORS_ALLOW_HEADERS = [
+    'access-control-allow-headers',
+    'access-control-allow-methods',
+    'access-control-allow-origin',
+    'content-type',
+    'x-csrftoken'
+]
 
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+]
