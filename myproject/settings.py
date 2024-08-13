@@ -31,6 +31,12 @@ DEBUG = True
 # ALLOWED_HOSTS = ['*']
 ALLOWED_HOSTS = ['3.111.32.39', '0.0.0.0', '3.111.32.39']
 
+ALLOWED_HOSTS = ['3.111.32.39', '0.0.0.0', '3.111.32.39']
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://3.111.32.39',
+]
+
 
 # Application definition
 
@@ -162,8 +168,10 @@ SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
 
 
 CORS_ALLOWED_ORIGINS = [
-    'https://3.111.32.39/',
+    'https://3.111.32.39',
+    
 ]
+
 CORS_ALLOW_HEADERS = [
     'access-control-allow-headers',
     'access-control-allow-methods',
