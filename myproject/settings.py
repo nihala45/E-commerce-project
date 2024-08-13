@@ -29,10 +29,11 @@ SECRET_KEY = 'django-insecure-a0ouwqze^o&9uvnvy5#w!ic3$ykav&g3e)=q54z&788a7%o$k4
 DEBUG = True
 
 # ALLOWED_HOSTS = ['*']
-ALLOWED_HOSTS = ['3.111.32.39', '0.0.0.0', '3.111.32.39']
+ALLOWED_HOSTS = ['3.111.32.39', '0.0.0.0']
 
 CSRF_TRUSTED_ORIGINS = [
     'http://3.111.32.39',
+    'https://3.111.32.39'
 ]
 
 
@@ -171,11 +172,10 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_HEADERS = [
-    'access-control-allow-headers',
-    'access-control-allow-methods',
-    'access-control-allow-origin',
     'content-type',
-    'x-csrftoken'
+    'x-csrftoken',
+    'authorization',
+    'x-requested-with'
 ]
 
 CORS_ALLOW_METHODS = [
