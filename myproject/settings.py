@@ -32,7 +32,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['3.111.32.39', '0.0.0.0', '3.111.32.39']
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://3.111.32.39',
+    'http://3.111.32.39',
 ]
 
 
@@ -166,7 +166,7 @@ SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
 
 
 CORS_ALLOWED_ORIGINS = [
-    'https://3.111.32.39',
+    'http://3.111.32.39',
     
 ]
 
