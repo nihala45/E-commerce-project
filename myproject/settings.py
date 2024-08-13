@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-a0ouwqze^o&9uvnvy5#w!ic3$ykav&g3e)=q54z&788a7%o$k4
 DEBUG = True
 
 # ALLOWED_HOSTS = ['*']
-ALLOWED_HOSTS = ['13.60.34.7', '0.0.0.0', '13.60.34.7']
+ALLOWED_HOSTS = ['3.111.32.39', '0.0.0.0', '3.111.32.39']
 
 
 # Application definition
@@ -162,7 +162,7 @@ SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
 
 
 CORS_ALLOWED_ORIGINS = [
-    'https://13.60.34.7/',
+    'https://3.111.32.39/',
 ]
 CORS_ALLOW_HEADERS = [
     'access-control-allow-headers',
@@ -178,4 +178,5 @@ CORS_ALLOW_METHODS = [
     'OPTIONS',
     'PATCH',
     'POST',
+    'PUT'
 ]
