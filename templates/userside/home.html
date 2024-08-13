@@ -132,21 +132,21 @@
                     <div class="header-right">
                         <a href="{% url 'wishlist:Wishlist' %}" class="wishlist-link">
                             <i class="icon-heart-o"></i>
-                            <span class="wishlist-count">3</span>
+                            {% comment %} <span class="wishlist-count">3</span> {% endcomment %}
                             <span class="wishlist-txt">My Wishlist</span>
                         </a>
 
                         <div class="dropdown cart-dropdown">
                             <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                                 <i class="icon-shopping-cart"></i>
-                                <span class="cart-count">2</span>
-                                <span class="cart-txt">$ 164,00</span>
+                                {% comment %} <span class="cart-count">2</span>
+                                <span class="cart-txt">$ 164,00</span> {% endcomment %}
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right">
                                 <div class="dropdown-cart-products">
                                     <div class="product">
-                                        <div class="product-cart-details">
+                                        {% comment %} <div class="product-cart-details">
                                             <h4 class="product-title">
                                                 <a href="product.html">Beige knitted elastic runner shoes</a>
                                             </h4>
@@ -159,7 +159,7 @@
 
                                         <figure class="product-image-container">
                                             <a href="product.html" class="product-image">
-                                                {% comment %} <img src="{%static'images/products/cart/product-1.jpg'%}" alt="product"> {% endcomment %}
+                                                <img src="{%static'images/products/cart/product-1.jpg'%}" alt="product">
                                             </a>
                                         </figure>
                                         <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
@@ -175,26 +175,26 @@
                                                 <span class="cart-product-qty">1</span>
                                                 x $76.00
                                             </span>
-                                        </div><!-- End .product-cart-details -->
+                                        </div><!-- End .product-cart-details --> {% endcomment %}
 
                                         <figure class="product-image-container">
-                                            <a href="product.html" class="product-image">
+                                            {% comment %} <a href="product.html" class="product-image">
                                                 <img alt="product">
-                                            </a>
+                                            </a> {% endcomment %}
                                         </figure>
                                         <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
                                     </div><!-- End .product -->
                                 </div><!-- End .cart-product -->
-
+{% comment %} 
                                 <div class="dropdown-cart-total">
                                     <span>Total</span>
 
                                     <span class="cart-total-price">$160.00</span>
-                                </div><!-- End .dropdown-cart-total -->
+                                </div><!-- End .dropdown-cart-total --> {% endcomment %}
 
                                 <div class="dropdown-cart-action">
-                                    <a href="cart.html" class="btn btn-primary">View Cart</a>
-                                    <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
+                                    <a href="{% url 'newcart:show_cart' %}" class="btn btn-primary">View Cart</a>
+                                    {% comment %} <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a> {% endcomment %}
                                 </div><!-- End .dropdown-cart-total -->
                             </div><!-- End .dropdown-menu -->
                         </div><!-- End .cart-dropdown -->
@@ -210,7 +210,7 @@
                                 <li class="megamenu-container active">
                                     <a href="{% url 'logintohome:homee' %}" class="sf-with-ul">Home</a>
 
-                                    <div class="megamenu demo">
+                                    {% comment %} <div class="megamenu demo">
                                         <div class="menu-col">
                                             <div class="menu-title">Choose your demo</div><!-- End .menu-title -->
 
@@ -219,11 +219,11 @@
                                                 <a href="#" class="btn btn-outline-primary-2 view-all-demos"><span>View All Demos</span><i class="icon-long-arrow-right"></i></a>
                                             </div><!-- End .text-center -->
                                         </div><!-- End .menu-col -->
-                                    </div><!-- End .megamenu -->
+                                    </div><!-- End .megamenu --> {% endcomment %}
                                 </li>
                                 <li>
                                     <a href={% url 'logintohome:shop' %} class="sf-with-ul">Shop</a>
-
+{% comment %} 
                                     <div class="megamenu megamenu-md">
                                         <div class="row no-gutters">
                                             <div class="col-md-8">
@@ -277,7 +277,7 @@
                                                 </div><!-- End .banner banner-overlay -->
                                             </div><!-- End .col-md-4 -->
                                         </div><!-- End .row -->
-                                    </div><!-- End .megamenu megamenu-md -->
+                                    </div><!-- End .megamenu megamenu-md --> {% endcomment %}
                                 </li>
                              
                            

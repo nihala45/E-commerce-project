@@ -122,7 +122,7 @@
                                 <li class="megamenu-container active">
                                     <a href="{% url 'logintohome:shop_to_home' %}" class="sf-with-ul">Home</a>
 
-                                    <div class="megamenu demo">
+                                    {% comment %} <div class="megamenu demo">
                                         <div class="menu-col">
                                             <div class="menu-title">Choose your demo</div><!-- End .menu-title -->
 
@@ -301,11 +301,11 @@
                                                 <a href="#" class="btn btn-outline-primary-2 view-all-demos"><span>View All Demos</span><i class="icon-long-arrow-right"></i></a>
                                             </div><!-- End .text-center -->
                                         </div><!-- End .menu-col -->
-                                    </div><!-- End .megamenu -->
+                                    </div><!-- End .megamenu --> {% endcomment %}
                                 </li>
                                 <li>
                                     <a href="{% url 'logintohome:shop' %}" class="sf-with-ul">Shop</a>
-
+{% comment %} 
                                     <div class="megamenu megamenu-md">
                                         <div class="row no-gutters">
                                             <div class="col-md-8">
@@ -359,7 +359,7 @@
                                                 </div><!-- End .banner banner-overlay -->
                                             </div><!-- End .col-md-4 -->
                                         </div><!-- End .row -->
-                                    </div><!-- End .megamenu megamenu-md -->
+                                    </div><!-- End .megamenu megamenu-md --> {% endcomment %}
                                 </li>
                          
                             </ul><!-- End .menu -->
@@ -403,13 +403,13 @@
                         <div class="dropdown cart-dropdown">
                             <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                                 <i class="icon-shopping-cart"></i>
-                                <span class="cart-count">2</span>
+                                {% comment %} <span class="cart-count">2</span> {% endcomment %}
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right">
                                 <div class="dropdown-cart-products">
                                     <div class="product">
-                                        <div class="product-cart-details">
+                                        {% comment %} <div class="product-cart-details">
                                             <h4 class="product-title">
                                                 <a href="product.html">Beige knitted elastic runner shoes</a>
                                             </h4>
@@ -453,12 +453,12 @@
                                     <span>Total</span>
 
                                     <span class="cart-total-price">$160.00</span>
-                                </div><!-- End .dropdown-cart-total -->
+                                </div><!-- End .dropdown-cart-total --> {% endcomment %}
 
                                 <div class="dropdown-cart-action">
                                     {% if user_email %}
                                     <a href="{% url 'newcart:show_cart' %}" class="btn btn-primary">View Cart</a>
-                                    <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
+                                    {% comment %} <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a> {% endcomment %}
                             {% else %}
                                 <p>Please Login </p>
                             {% endif %}
@@ -545,12 +545,12 @@
                                 <div class="product-details">
                                     <h1 class="product-title">{{product.name}}</h1><!-- End .product-title -->
 
-                                    <div class="ratings-container">
+                                    {% comment %} <div class="ratings-container">
                                         <div class="ratings">
                                             <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
                                         </div><!-- End .ratings -->
                                         <a class="ratings-text" href="#product-review-link" id="review-link">( 2 Reviews )</a>
-                                    </div><!-- End .rating-container -->
+                                    </div><!-- End .rating-container --> {% endcomment %}
 
                                     <div class="product-price">
                                         {% if product.offer %}
@@ -628,14 +628,14 @@
                                             <a href="#">{{categoryy.category_name}}</a>
                                             
                                         </div><!-- End .product-cat -->
-
+{% comment %} 
                                         <div class="social-icons social-icons-sm">
                                             <span class="social-label">Share:</span>
                                             <a href="#" class="social-icon" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
                                             <a href="#" class="social-icon" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
                                             <a href="#" class="social-icon" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
                                             <a href="#" class="social-icon" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
-                                        </div>
+                                        </div> {% endcomment %}
                                     </div><!-- End .product-details-footer -->
                                 </div><!-- End .product-details -->
                             </div><!-- End .col-md-6 -->

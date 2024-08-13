@@ -113,7 +113,7 @@
                                 <li class="megamenu-container active">
                                     <a href="{% url 'logintohome:shop_to_home' %}" class="sf-with-ul">Home</a>
 
-                                    <div class="megamenu demo">
+                                    {% comment %} <div class="megamenu demo">
                                         <div class="menu-col">
                                             <div class="menu-title">Choose your demo</div><!-- End .menu-title -->
 
@@ -292,12 +292,12 @@
                                                 <a href="#" class="btn btn-outline-primary-2 view-all-demos"><span>View All Demos</span><i class="icon-long-arrow-right"></i></a>
                                             </div><!-- End .text-center -->
                                         </div><!-- End .menu-col -->
-                                    </div><!-- End .megamenu -->
+                                    </div><!-- End .megamenu --> {% endcomment %}
                                 </li>
                                 <li>
                                     <a href="{% url 'logintohome:shop' %}" class="sf-with-ul">Shop</a>
 
-                                    <div class="megamenu megamenu-md">
+                                    {% comment %} <div class="megamenu megamenu-md">
                                         <div class="row no-gutters">
                                             <div class="col-md-8">
                                                 <div class="menu-col">
@@ -350,7 +350,7 @@
                                                 </div><!-- End .banner banner-overlay -->
                                             </div><!-- End .col-md-4 -->
                                         </div><!-- End .row -->
-                                    </div><!-- End .megamenu megamenu-md -->
+                                    </div><!-- End .megamenu megamenu-md --> {% endcomment %}
                                 </li>
                               
                               
@@ -561,7 +561,7 @@
 			            				</form>
 			            			</div><!-- End .cart-discount -->
 
-			            			<a href="#" class="btn btn-outline-dark-2"><span>UPDATE CART</span><i class="icon-refresh"></i></a>
+			            			{% comment %} <a href="#" class="btn btn-outline-dark-2"><span>UPDATE CART</span><i class="icon-refresh"></i></a>    {% endcomment %}
 		            			</div><!-- End .cart-bottom -->
 	                		</div><!-- End .col-lg-9 -->
 	                		<aside class="col-lg-3">
@@ -623,7 +623,7 @@
 	                				
 	                			</div><!-- End .summary -->%
 
-		            			<a href="category.html" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i></a>
+		            			{% comment %} <a href="category.html" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i></a> {% endcomment %}
 	                		</aside><!-- End .col-lg-3 -->
 	                	</div><!-- End .row -->
 	                </div><!-- End .container -->

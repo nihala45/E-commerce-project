@@ -303,7 +303,7 @@
                 <div class="container">
                     <div class="header-left">
                         <div class="header-dropdown">
-                            <a href="#">Usd</a>
+                            {% comment %} <a href="#">Usd</a> {% endcomment %}
                             <div class="header-menu">
                                 <ul>
                                     <li><a href="#">Eur</a></li>
@@ -313,7 +313,7 @@
                         </div><!-- End .header-dropdown -->
 
                         <div class="header-dropdown">
-                            <a href="#">Eng</a>
+                            {% comment %} <a href="#">Eng</a> {% endcomment %}
                             <div class="header-menu">
                                 <ul>
                                     <li><a href="#">English</a></li>
@@ -329,10 +329,10 @@
                             <li>
                                 <a href="#">Links</a>
                                 <ul>
-                                    <li><a href="tel:#"><i class="icon-phone"></i>Call: +0123 456 789</a></li>
-                                    <li><a href="{% url 'wishlist:Wishlist' %}"><i class="icon-heart-o"></i>Wishlist <span>(3)</span></a></li> 
-                                    <li><a href="about.html">About Us</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
+                                    {% comment %} <li><a href="tel:#"><i class="icon-phone"></i>Call: +0123 456 789</a></li> {% endcomment %}
+                                    <li><a href="{% url 'wishlist:Wishlist' %}"><i class="icon-heart-o"></i>Wishlist <span></span></a></li> 
+                                    {% comment %} <li><a href="about.html">About Us</a></li> {% endcomment %}
+                                    {% comment %} <li><a href="contact.html">Contact Us</a></li> {% endcomment %}
                                     {% comment %} <li><a href="#signin-modal" data-toggle="modal"><i class="icon-user"></i>Login</a></li> {% endcomment %}
                                 </ul>
                             </li>
@@ -358,7 +358,7 @@
                                 <li class="megamenu-container active">
                                     <a href="{% url 'logintohome:shop_to_home' %}" class="sf-with-ul">Home</a>
 
-                                    <div class="megamenu demo">
+                                    {% comment %} <div class="megamenu demo">
                                         <div class="menu-col">
                                             <div class="menu-title">Choose your demo</div><!-- End .menu-title -->
 
@@ -537,12 +537,12 @@
                                                 <a href="#" class="btn btn-outline-primary-2 view-all-demos"><span>View All Demos</span><i class="icon-long-arrow-right"></i></a>
                                             </div><!-- End .text-center -->
                                         </div><!-- End .menu-col -->
-                                    </div><!-- End .megamenu -->
+                                    </div><!-- End .megamenu --> {% endcomment %}
                                 </li>
                                 <li>
                                     <a href="{% url 'logintohome:shop' %}" class="sf-with-ul">Shop</a>
 
-                                    <div class="megamenu megamenu-md">
+                                    {% comment %} <div class="megamenu megamenu-md">
                                         <div class="row no-gutters">
                                             <div class="col-md-8">
                                                 <div class="menu-col">
@@ -595,7 +595,7 @@
                                                 </div><!-- End .banner banner-overlay -->
                                             </div><!-- End .col-md-4 -->
                                         </div><!-- End .row -->
-                                    </div><!-- End .megamenu megamenu-md -->
+                                    </div><!-- End .megamenu megamenu-md --> {% endcomment %}
                                 </li>
                                                           </li>
                             </ul><!-- End .menu -->
@@ -604,7 +604,7 @@
 
                     <div class="header-right">
                         <div class="header-search">
-                            <a href="#" class="search-toggle" role="button" title="Search"><i class="icon-search"></i></a>
+                            {% comment %} <a href="#" class="search-toggle" role="button" title="Search"><i class="icon-search"></i></a> {% endcomment %}
                             <form action="#" method="get">
                                 <div class="header-search-wrapper">
                                     <label for="q" class="sr-only">Search</label>
@@ -617,7 +617,7 @@
                         </div><!-- End .header-search -->
                         <div class="dropdown compare-dropdown">
                             <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static" title="Compare Products" aria-label="Compare Products">
-                                <i class="icon-random"></i>
+                                {% comment %} <i class="icon-random"></i> {% endcomment %}
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right">
@@ -642,13 +642,13 @@
                         <div class="dropdown cart-dropdown">
                             <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                                 <i class="icon-shopping-cart"></i>
-                                <span class="cart-count">2</span>
+                                {% comment %} <span class="cart-count">2</span> {% endcomment %}
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right">
                                 <div class="dropdown-cart-products">
                                     <div class="product">
-                                        <div class="product-cart-details">
+                                        {% comment %} <div class="product-cart-details">
                                             <h4 class="product-title">
                                                 <a href="product.html">Beige knitted elastic runner shoes</a>
                                             </h4>
@@ -692,11 +692,11 @@
                                     <span>Total</span>
 
                                     <span class="cart-total-price">$160.00</span>
-                                </div><!-- End .dropdown-cart-total -->
+                                </div><!-- End .dropdown-cart-total --> {% endcomment %}
 
                                 <div class="dropdown-cart-action">
                                     <a href="cart.html" class="btn btn-primary">View Cart</a>
-                                    <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
+                                    {% comment %} <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a> {% endcomment %}
                                 </div><!-- End .dropdown-cart-total -->
                             </div><!-- End .dropdown-menu -->
                         </div><!-- End .cart-dropdown -->
@@ -1016,7 +1016,7 @@
 	        	<div class="container">
 	        		<p class="footer-copyright">Copyright © 2019 Molla Store. All Rights Reserved.</p><!-- End .footer-copyright -->
 	        		<figure class="footer-payments">
-	        			<img src="static/images/payments.png" alt="Payment methods" width="272" height="20">
+	        			{% comment %} <img src="static/images/payments.png" alt="Payment methods" width="272" height="20"> {% endcomment %}
 	        		</figure><!-- End .footer-payments -->
 	        	</div><!-- End .container -->
 	        </div><!-- End .footer-bottom -->
@@ -1034,7 +1034,7 @@
             <form action="#" method="get" class="mobile-search">
                 <label for="mobile-search" class="sr-only">Search</label>
                 <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search in..." required>
-                <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                {% comment %} <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button> {% endcomment %}
             </form>
             
             <nav class="mobile-nav">

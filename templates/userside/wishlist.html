@@ -165,7 +165,7 @@
                             <ul class="menu sf-arrows">
                                 <li class="megamenu-container active">
                                     <a href="{% url 'logintohome:shop_to_home' %}" class="sf-with-ul">Home</a>
-
+{% comment %} 
                                     <div class="megamenu demo">
                                         <div class="menu-col">
                                             <div class="menu-title">Choose your demo</div><!-- End .menu-title -->
@@ -345,11 +345,11 @@
                                                 <a href="#" class="btn btn-outline-primary-2 view-all-demos"><span>View All Demos</span><i class="icon-long-arrow-right"></i></a>
                                             </div><!-- End .text-center -->
                                         </div><!-- End .menu-col -->
-                                    </div><!-- End .megamenu -->
+                                    </div><!-- End .megamenu --> {% endcomment %}
                                 </li>
                                 <li>
                                     <a href="{% url 'logintohome:shop' %}" class="sf-with-ul">Shop</a>
-
+{% comment %} 
                                     <div class="megamenu megamenu-md">
                                         <div class="row no-gutters">
                                             <div class="col-md-8">
@@ -403,7 +403,7 @@
                                                 </div><!-- End .banner banner-overlay -->
                                             </div><!-- End .col-md-4 -->
                                         </div><!-- End .row -->
-                                    </div><!-- End .megamenu megamenu-md -->
+                                    </div><!-- End .megamenu megamenu-md --> {% endcomment %}
                                 </li>
                                 <li>
                                     {% comment %} <a href="product.html" class="sf-with-ul">Product</a> {% endcomment %}
@@ -568,7 +568,7 @@
                         <div class="dropdown cart-dropdown">
                             <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                                 <i class="icon-shopping-cart"></i>
-                                <span class="cart-count">2</span>
+                                {% comment %} <span class="cart-count">2</span> {% endcomment %}
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right">
@@ -761,7 +761,7 @@
 	        	<div class="container">
 	        		<p class="footer-copyright">Copyright © 2019 Molla Store. All Rights Reserved.</p><!-- End .footer-copyright -->
 	        		<figure class="footer-payments">
-	        			<img src="static/images/payments.png" alt="Payment methods" width="272" height="20">
+	        			{% comment %} <img src="static/images/payments.png" alt="Payment methods" width="272" height="20"> {% endcomment %}
 	        		</figure><!-- End .footer-payments -->
 	        	</div><!-- End .container -->
 	        </div><!-- End .footer-bottom -->
