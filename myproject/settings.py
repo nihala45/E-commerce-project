@@ -31,8 +31,6 @@ DEBUG = True
 # ALLOWED_HOSTS = ['*']
 ALLOWED_HOSTS = ['3.111.32.39', '0.0.0.0', '3.111.32.39']
 
-ALLOWED_HOSTS = ['3.111.32.39', '0.0.0.0', '3.111.32.39']
-
 CSRF_TRUSTED_ORIGINS = [
     'https://3.111.32.39',
 ]
