@@ -11,6 +11,8 @@ from django.urls import reverse
 from wishlist.models import WishlistProduct
 from django.db.models import Q
 import pyotp
+from django.core.mail import send_mail
+
 
 
 # Create your views here.
@@ -210,6 +212,10 @@ def resend_otp(request):
                 user.otp_secret = secret_key
                 user.otp_fld = otp_code
                 user.save()
+                subject="OTP Varification"
+                message=f"Your OTP for verification is:{otp_code}"
+                from_email="nihalashirin02@gmail.com"
+                send_mail(subject,message,from_email,[user.email])
 
                 
                 return redirect(reverse('logintohome:otp', args=[user.id]))
