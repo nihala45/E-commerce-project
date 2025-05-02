@@ -15,7 +15,7 @@ from django.core.mail import send_mail
 
 
 
-# Create your views here.
+
 
 def homee(request):
     if 'email' in request.session:
@@ -105,10 +105,6 @@ def otp_varification(request,id):
             return redirect("logintohome:otp", id=id)
 
     return render(request, "userside/otpp.html")
-
-
-
-
 
 
 def filterProduct(request):

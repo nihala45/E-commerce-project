@@ -4,7 +4,7 @@ from django.db.models.signals import post_save
 from django.core.mail import send_mail
 import pyotp
 
-# Create your models here.
+
 class CustomUser(models.Model):
     username=models.CharField(max_length=50)
     email=models.EmailField(unique=True)
@@ -36,4 +36,4 @@ def send_otp_email(instance,otp_code):
 def generate_and_send_otp(sender,instance,created,**kwargs):
     if created:
         otp_code = generate_otp(instance)
-        send_otp_email(instance,otp_code)
+        send_otp_email(instance,otp_code)    

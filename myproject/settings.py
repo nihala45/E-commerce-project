@@ -99,11 +99,11 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'project_db',       # Name of your PostgreSQL database
-        'USER': 'nihala',   # PostgreSQL username
-        'PASSWORD': 'nihala1234',   # PostgreSQL password
-        'HOST': 'localhost',        # PostgreSQL server hostname (default: localhost)
-        'PORT': '5432',             # PostgreSQL port (default: 5432)
+        'NAME': 'project_db',     
+        'USER': 'nihala',   
+        'PASSWORD': 'nihala1234',  
+        'HOST': 'localhost',        
+        'PORT': '5432',           
     }
 }
 
@@ -112,8 +112,7 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "nihalashirin02@gmail.com"
 EMAIL_HOST_PASSWORD = "hyuq brqt tisa hhig"
-EMAIL_USE_TLS = True  # Set it to False if your email server doesn't support TLS
-
+EMAIL_USE_TLS = True  
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
