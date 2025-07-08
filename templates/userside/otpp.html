@@ -79,7 +79,7 @@
 </div>
     <div class="otp-container">
         <h2>Enter OTP</h2>
-        <form action="{% url 'logintohome:otpverification' id=id %}" method="post">
+        <form action="{% url 'logintohome:otp_varification' id=id %}" method="post">
             {% csrf_token %}
             <input name="otp" type="text" class="otp-input" placeholder="Enter OTP">
             <div style="display:flex ;">

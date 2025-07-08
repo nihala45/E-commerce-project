@@ -143,6 +143,22 @@ def product_editsave(request):
             
 
     
-        
-        
-        
+
+def popular_items(request):
+   
+    new_products = newproducts.objects.all()[:8] 
+    
+    context = {
+        'new_products': new_products,
+    }
+    return render(request, 'userside/home.html', context)
+
+
+def product_detail(request, product_id):
+    
+    product = get_object_or_404(newproducts, id=product_id)
+    
+    context = {
+        'product': product,
+    }
+    return render(request, 'userside/home.html', context)

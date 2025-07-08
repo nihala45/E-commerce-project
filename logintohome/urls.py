@@ -9,8 +9,11 @@ urlpatterns = [
     path('', views.homee,name='homee'),
     path('Signup/',views.Signup,name='Signup'),
     path('loginn/',views.loginn,name='loginn'),
+    path('reset_otp_generation/',views.reset_otp_generation,name='reset_otp_generation'),
+    
+    
     # path('userlogout/',views.userlogout,name='userlogout'),
-    path("otpverification/<str:id>/", views.otp_varification, name="otpverification"),
+    path("otp_varification/<str:id>/", views.otp_varification, name="otp_varification"),
     path('otp/<int:id>/', views.otp, name='otp'), 
     path('shop/',views.shop,name='shop'),
     path('shop_to_home/',views.shop_to_home,name='shop_to_home'),

@@ -8,11 +8,12 @@ import pyotp
 class CustomUser(models.Model):
     username=models.CharField(max_length=50)
     email=models.EmailField(unique=True)
-    password=models.CharField(max_length=50)
+    password = models.CharField(max_length=256) 
     phone = models.CharField(max_length=100)
     otp_secret = models.CharField(max_length=200)
     otp_fld = models.CharField(max_length=70)
     is_blocked = models.BooleanField(default=False)
+    is_varified = models.BooleanField(default=False)
 
 def generate_otp(user):
     secret_key = pyotp.random_base32()
@@ -30,10 +31,9 @@ def send_otp_email(instance,otp_code):
     message=f"Your OTP for verification is:{otp_code}"
     from_email="nihalashirin02@gmail.com"
     send_mail(subject,message,from_email,[instance.email])
-    
 
 @receiver(post_save,sender=CustomUser)
 def generate_and_send_otp(sender,instance,created,**kwargs):
     if created:
         otp_code = generate_otp(instance)
-        send_otp_email(instance,otp_code)    
+        send_otp_email(instance,otp_code)        

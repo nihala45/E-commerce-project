@@ -12,8 +12,12 @@ from wishlist.models import WishlistProduct
 from django.db.models import Q
 import pyotp
 from django.core.mail import send_mail
-
-
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import check_password
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
+from logintohome.models import generate_otp, send_otp_email
 
 
 
@@ -24,31 +28,54 @@ def homee(request):
         return render(request,'userside/home.html',{'user12':user})
     return render(request,'userside/home.html')
 
+
+
+
 def Signup(request):
-    
     if request.method == 'POST':
         username = request.POST['user_username']
         email = request.POST['user_email']
         phone = request.POST['user_phone']
         password = request.POST['user_password']
         confirm_password = request.POST['user_confirm']
-        
-        already = CustomUser.objects.filter(email=email) 
-        
-        if already:
-            return JsonResponse({'status':'already','message':'There is already a Account with this Email'})   
-        else:
-            user2 = CustomUser(
+
+        if password != confirm_password:
+            return JsonResponse({'status': 'error', 'message': 'Passwords do not match'})
+
+        try:
+            existing_user = CustomUser.objects.get(email=email)
+
+            if existing_user.is_varified:
+                return JsonResponse({'status': 'already', 'message': 'There is already an account with this email'})
+            else:
+               
+                existing_user.delete()
+
+                
+                user = CustomUser(
+                    username=username,
+                    email=email,
+                    phone=phone,
+                    password=make_password(password)
+                )
+                user.save()
+
+                redirect_url = reverse('logintohome:otp', args=[user.id])
+                return JsonResponse({'status': 'success', 'redirect_url': redirect_url})
+
+        except CustomUser.DoesNotExist:
+            
+            user = CustomUser(
                 username=username,
                 email=email,
-                password=password,
                 phone=phone,
+                password=make_password(password)
             )
-            user2.save()
-        
-        
-        redirect_url = reverse('logintohome:otp', args=[user2.id])
-        return JsonResponse({'status':'success','redirect_url': redirect_url})   
+            user.save()
+
+            redirect_url = reverse('logintohome:otp', args=[user.id])
+            return JsonResponse({'status': 'success', 'redirect_url': redirect_url})
+
         
        
 
@@ -56,32 +83,43 @@ def loginn(request):
     if request.method == 'POST':
         email = request.POST.get('user_email')
         password = request.POST.get('user_password')
+
         try:
-            user = CustomUser.objects.get(email=email, password=password)
-            if user and not user.is_blocked:
-                
-                request.session['email']=email
-                request.session['phone'] = user.phone 
-                request.session['username'] = user.username
-                return JsonResponse({'status':'success'})
-                
-               
+            user = CustomUser.objects.get(email=email)
+            
+            if not check_password(password, user.password):
+                print(password,'password')
+                print(user.password,'user.password')
+                print('passssssssssssss')
+                return JsonResponse({'status': 'wrong', 'message': 'Incorrect password. Please try again.'})
+            
+            if not user.is_varified:
+                print('this is not verfied yet')
+                return JsonResponse({'status': 'not_verified', 'message': 'Please verify your account before logging in.'})
 
-                
-            else:
-                return JsonResponse({'status':'block','message':'Your account is blocked. Please contact support.'})
-                
-                
+            if user.is_blocked:
+                print('blockedddddddd')
+                return JsonResponse({'status': 'block', 'message': 'Your account is blocked. Please contact support.'})
+            
+            
+            request.session['email'] = user.email
+            request.session['phone'] = user.phone
+            request.session['username'] = user.username
+
+            return JsonResponse({'status': 'success'})
+
         except CustomUser.DoesNotExist:
-            return JsonResponse({'status':'wrong','message':'Incorrect email address or password. Please try again.'})
-
+            return JsonResponse({'status': 'wrong', 'message': 'Incorrect email address. Please try again.'})
 
     return redirect('logintohome:homee')
 
 
 
+
 def otp(request, id):
+    
     return render(request, 'userside/otpp.html', {'id': id})
+
 
 def otp_varification(request,id):
     if request.method=='POST':
@@ -92,19 +130,33 @@ def otp_varification(request,id):
         entered_otp=int(entered_otp)
         if entered_otp == p:
             user2 = CustomUser.objects.get(id=id)
-            user2.is_verified = True
+            user2.is_varified = True
             user2.save()
             messages.success(
                 request, "Email verified successfully. You can now log in."
             )
             return redirect('logintohome:homee')
-        
-
         else:
             messages.error(request, "Invalid OTP. Please try again.")
             return redirect("logintohome:otp", id=id)
 
     return render(request, "userside/otpp.html")
+
+
+
+def reset_otp_generation(request):
+    if request.method == "POST":
+        email = request.POST.get('email')
+        try:
+            user = CustomUser.objects.get(email=email)
+            otp = generate_otp(user)
+            send_otp_email(user, otp)
+            messages.success(request, "OTP has been sent to your email.")
+            return redirect('logintohome:otp', id=user.id)  
+        except CustomUser.DoesNotExist:
+            messages.error(request, "No user found with this email.")
+            return redirect('logintohome:reset_otp')
+        
 
 
 def filterProduct(request):
@@ -192,6 +244,7 @@ def shop(request):
 
 
 def resend_otp(request):
+    
     if request.method == "POST":
         user_id = request.POST.get('userid')
 
@@ -203,6 +256,7 @@ def resend_otp(request):
                 secret_key = pyotp.random_base32()
                 otp = pyotp.TOTP(secret_key)
                 otp_code = otp.now()
+                print(otp_code,'this is the resensend otp')
 
                 
                 user.otp_secret = secret_key
